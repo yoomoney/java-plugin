@@ -1,0 +1,32 @@
+
+buildscript {
+    apply from: 'project.gradle', to: buildscript
+    copy {
+        from zipTree(buildscript.configurations.classpath.files.find { it.name.contains('gradle-project-plugin') })
+        into 'tmp'
+        include 'gradle-scripts/**'
+        exclude {
+            def target = new File("tmp/${it.relativePath}")
+            if (!target.exists()) {
+                return false
+            }
+            return target.directory || it.file.text.hashCode() == target.text.hashCode()
+        }
+    }
+}
+apply from: 'tmp/gradle-scripts/_root.gradle'
+/////////////////////////////////////////////
+
+pluginId = 'yamoney-java-module-plugin'
+gradlePlugin {
+    plugins {
+        releasePlugin {
+            id = 'yamoney-java-module-plugin'
+            implementationClass = 'ru.yandex.money.gradle.plugins.backend.build.JavaModulePlugin'
+        }
+    }
+}
+
+dependencies {
+    optional 'com.google.code.findbugs:annotations:3.0.1'
+}
