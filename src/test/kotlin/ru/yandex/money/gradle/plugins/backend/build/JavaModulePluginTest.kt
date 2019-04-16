@@ -10,7 +10,8 @@ import org.testng.annotations.Test
 class JavaModulePluginTest : AbstractPluginTest() {
 
     @Test
-    fun test() {
+    fun `should successfully run jar task`() {
         runTasksSuccessfully("clean", "build", "jar")
+        //TODO: check manifest, jar file, markdown files
     }
 }

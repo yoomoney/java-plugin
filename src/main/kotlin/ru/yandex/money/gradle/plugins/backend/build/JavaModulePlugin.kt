@@ -3,6 +3,7 @@ package ru.yandex.money.gradle.plugins.backend.build
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
+import ru.yandex.money.gradle.plugins.backend.build.errorprone.ErrorProneConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.jar.JarConfigurer
 
 /**
@@ -18,6 +19,7 @@ class JavaModulePlugin : Plugin<Project> {
 
         target.beforeEvaluate {
             JarConfigurer().init(it)
+            ErrorProneConfigurer().init(it)
         }
     }
 }
