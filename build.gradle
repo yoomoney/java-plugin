@@ -17,6 +17,8 @@ buildscript {
 apply from: 'tmp/gradle-scripts/_root.gradle'
 /////////////////////////////////////////////
 
+checkWithKtLint.onlyIf { false }
+
 pluginId = 'yamoney-java-module-plugin'
 gradlePlugin {
     plugins {
