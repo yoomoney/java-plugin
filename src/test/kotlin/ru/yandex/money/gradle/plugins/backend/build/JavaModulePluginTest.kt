@@ -1,7 +1,6 @@
 package ru.yandex.money.gradle.plugins.backend.build
 
 import org.testng.annotations.Test
-import java.io.File
 
 /**
  * TODO:
@@ -13,6 +12,5 @@ class JavaModulePluginTest : AbstractPluginTest() {
     @Test
     fun test() {
         runTasksSuccessfully("clean", "build", "jar")
-        assertFileExists(File("asd"))
     }
 }

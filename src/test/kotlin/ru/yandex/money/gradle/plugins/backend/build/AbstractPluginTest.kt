@@ -93,7 +93,7 @@ abstract class AbstractPluginTest {
                 .setPushAll()
                 .setPushTags()
                 .call()
-        git.checkout().setName("feature/BACKEND-2579_deb_build").setCreateBranch(true).call()
+        git.checkout().setName("feature/BACKEND-2588_build_jar").setCreateBranch(true).call()
 
         println("Work directory: ${projectDir.root.absolutePath}")
         println("Origin git repo directory: ${originRepoFolder.root.absolutePath}")
