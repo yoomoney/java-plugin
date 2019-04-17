@@ -9,6 +9,7 @@ import ru.yandex.money.gradle.plugins.backend.build.errorprone.ErrorProneConfigu
 import ru.yandex.money.gradle.plugins.backend.build.idea.IdeaPluginConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.jar.JarConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.kotlin.KotlinConfigurer
+import ru.yandex.money.gradle.plugins.backend.build.library.LibraryProjectConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.test.TestConfigurer
 
 /**
@@ -31,6 +32,7 @@ class JavaModulePlugin : Plugin<Project> {
             ErrorProneConfigurer().init(it)
             IdeaPluginConfigurer().init(it)
             KotlinConfigurer().init(it)
+            LibraryProjectConfigurer().init(it)
         }
     }
 }
