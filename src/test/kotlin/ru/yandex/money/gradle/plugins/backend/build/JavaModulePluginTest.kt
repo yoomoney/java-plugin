@@ -11,7 +11,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
 
     @Test
     fun `should successfully run jar task`() {
-        runTasksSuccessfully("clean", "build", "jar")
+        runTasksSuccessfully("clean", "build", "jar", "slowTest")
         //TODO: check manifest, jar file, markdown files
     }
 }
