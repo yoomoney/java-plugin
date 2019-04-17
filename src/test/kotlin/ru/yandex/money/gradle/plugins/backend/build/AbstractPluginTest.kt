@@ -137,4 +137,8 @@ abstract class AbstractPluginTest {
             return treeParser
         }
     }
+
+    fun projectName(): String {
+        return projectDir.root.name
+    }
 }

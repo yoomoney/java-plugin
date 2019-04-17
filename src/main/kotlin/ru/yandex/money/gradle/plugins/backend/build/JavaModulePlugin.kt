@@ -25,10 +25,10 @@ class JavaModulePlugin : Plugin<Project> {
         target.pluginManager.apply(GroovyPlugin::class.java)
         target.pluginManager.apply(IdeaPlugin::class.java)
 
+        JarConfigurer().init(target)
         TestConfigurer().init(target)
 
         target.beforeEvaluate {
-            JarConfigurer().init(it)
             ErrorProneConfigurer().init(it)
             IdeaPluginConfigurer().init(it)
             KotlinConfigurer().init(it)
