@@ -12,6 +12,7 @@ import ru.yandex.money.gradle.plugins.backend.build.jar.JarConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.kotlin.KotlinConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.platform.PlatformDependenciesConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.test.TestConfigurer
+import ru.yandex.money.gradle.plugins.backend.build.warning.CompileWarningsChecker
 
 /**
  * Плагин для сборки модулей компонента
@@ -20,6 +21,7 @@ import ru.yandex.money.gradle.plugins.backend.build.test.TestConfigurer
  * @since 22.03.2019
  */
 class JavaModulePlugin : Plugin<Project> {
+
     override fun apply(target: Project) {
         target.buildDir = target.file("target")
 
@@ -32,6 +34,7 @@ class JavaModulePlugin : Plugin<Project> {
         TestConfigurer().init(target)
         KotlinConfigurer().init(target)
         IdeaPluginConfigurer().init(target)
+        CompileWarningsChecker().init(target)
 
         target.beforeEvaluate {
             ErrorProneConfigurer().init(it)
