@@ -34,7 +34,8 @@ dependencies {
     optional 'com.google.code.findbugs:annotations:3.0.1'
 
     compile localGroovy(),
-            'org.eclipse.jgit:org.eclipse.jgit:5.3.0.201903130848-r'
+            'org.eclipse.jgit:org.eclipse.jgit:5.3.0.201903130848-r',
+            'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.61'
 
     testImplementation gradleTestKit(),
             'com.netflix.nebula:nebula-test:7.2.1',
