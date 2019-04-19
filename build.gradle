@@ -31,12 +31,13 @@ gradlePlugin {
 
 dependencies {
 
-    optional 'com.google.code.findbugs:annotations:3.0.1'
+    optional 'com.github.spotbugs:spotbugs-annotations:3.1.12'
 
     compile localGroovy(),
             'org.eclipse.jgit:org.eclipse.jgit:5.3.0.201903130848-r',
             'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.61',
-            'ru.yandex.money.gradle.plugins:yamoney-check-dependencies-plugin:4.4.3'
+            'ru.yandex.money.gradle.plugins:yamoney-check-dependencies-plugin:4.4.5',
+            'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.9'
 
     testImplementation gradleTestKit(),
             'com.netflix.nebula:nebula-test:7.2.1',

@@ -12,8 +12,9 @@ open class JavaModuleExtension(project: Project) {
 
     companion object {
         private const val DEFAULT_CHECKSTYLE_ENABLED = true
+        private const val DEFAULT_SPOTBUGS_ENABLED = true
     }
 
     var checkstyleEnabled: Boolean = DEFAULT_CHECKSTYLE_ENABLED
-
+    var spotbugsEnabled = DEFAULT_SPOTBUGS_ENABLED
 }

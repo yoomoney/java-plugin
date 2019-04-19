@@ -8,12 +8,19 @@
 - Плагин проверяет, что количесто предупреждений checkstyle не превышает лимит.
   Лимит должен быть задан в файле static-analysis.properties. Название настройки лимита - checkstyle.
   Проверку checkstyle можно отключить добавив в build.gradle
-  ```groovy
-  javaModule {
-      checkstyleEnabled = false
-  }
+```groovy
+javaModule {
+  checkstyleEnabled = false
+}
 ```
-
+- Плагин проверяет, что количесто предупреждений spotbugs не превышает лимит.
+  Лимит должен быть задан в файле static-analysis.properties. Название настройки лимита - findbugs.
+  Проверку spotbugs можно отключить добавив в build.gradle
+```groovy
+javaModule {
+    spotbugsEnabled = false
+}
+```
 ## Настройки
 Минимально работающая конфигурация:
 ```groovy

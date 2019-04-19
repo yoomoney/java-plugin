@@ -1,5 +1,6 @@
 package ru.yandex.money.gradle.plugins.backend.build
 
+import com.github.spotbugs.SpotBugsPlugin
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,6 +16,8 @@ import ru.yandex.money.gradle.plugins.backend.build.git.GitFlowConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.idea.IdeaPluginConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.jar.JarConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.kotlin.KotlinConfigurer
+import ru.yandex.money.gradle.plugins.backend.build.spotbugs.SpotBugsAnnotationsConfigurer
+import ru.yandex.money.gradle.plugins.backend.build.spotbugs.SpotBugsConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.test.TestConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.warning.CompileWarningsChecker
 import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPlugin
@@ -39,6 +42,7 @@ class JavaModulePlugin : Plugin<Project> {
         target.pluginManager.apply(CheckstylePlugin::class.java)
 
         target.extensions.create("javaModule", JavaModuleExtension::class.java, target)
+        target.pluginManager.apply(SpotBugsPlugin::class.java)
 
         GitFlowConfigurer().init(target)
         JarConfigurer().init(target)
@@ -46,6 +50,8 @@ class JavaModulePlugin : Plugin<Project> {
         KotlinConfigurer().init(target)
         IdeaPluginConfigurer().init(target)
         CompileWarningsChecker().init(target)
+        SpotBugsConfigurer().init(target)
+        SpotBugsAnnotationsConfigurer().init(target)
         CoverageConfigurer().init(target)
         CheckDependenciesConfigurer().init(target)
         CheckCheckstyleConfigurer().init(target)

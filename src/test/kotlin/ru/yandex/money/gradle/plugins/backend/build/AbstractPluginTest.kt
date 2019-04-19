@@ -61,6 +61,7 @@ abstract class AbstractPluginTest {
         val appSource = projectDir.newFile("src/main/java/sample/HelloWorld.java")
         appSource.writeText("""
             package sample;
+            @javax.annotation.Nonnull
             public class HelloWorld {
                 public static void main(String[] args) {
                     System.out.println("Hello Integration Test");
