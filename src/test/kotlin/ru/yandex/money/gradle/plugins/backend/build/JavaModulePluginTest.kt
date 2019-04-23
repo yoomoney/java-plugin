@@ -16,7 +16,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
     @Test
     fun `should successfully run jar task`() {
         runTasksSuccessfully("clean", "build", "jar")
-        assertFileExists(File(projectDir.root, "/target/libs/yamoney-${projectName()}-1.0.1-SNAPSHOT.jar"))
+        assertFileExists(File(projectDir.root, "/target/libs/yamoney-${projectName()}-1.0.1-feature-BACKEND-2588-build-jar-SNAPSHOT.jar"))
         assertFileExists(File(projectDir.root, "/target/tmp/jar/MANIFEST.MF"))
         val properties = Properties().apply { load(File(projectDir.root, "/target/tmp/jar/MANIFEST.MF").inputStream()) }
         assertThat("Implementation-Version", properties.getProperty("Implementation-Version"), notNullValue())

@@ -14,16 +14,18 @@ class IdeaPluginConfigurer {
         val ideaPlugin = target.plugins.getPlugin(IdeaPlugin::class.java)
         val ideaModule = ideaPlugin.model.module
         ideaModule.scopes["PROVIDED"]?.plusAssign(
-                mapOf("optional" to listOf(target.configurations.maybeCreate("optional")))
+                mapOf("optional" to listOf(target.configurations.getByName("optional")))
         )
         ideaModule.isDownloadJavadoc = true
         ideaModule.isDownloadSources = true
         ideaModule.inheritOutputDirs = true
         ideaModule.excludeDirs.minusAssign(target.buildDir)
-        val toExclude = listOf("classes", "docs", "jacoco", "deb-templates", "publications", "out", "tmp",
+        val toExclude = listOf(
+                "classes", "docs", "jacoco", "deb-templates", "publications", "out", "tmp",
                 "dependency-cache", "resources", "libs", "test-results", "test-reports", "reports",
                 "production", "test", "findbugsReports", "debSource", "debSourceDeploy", "debian",
-                "distributions", "bindings-common", "schema", "checkstyleReports", "../build")
+                "distributions", "bindings-common", "schema", "checkstyleReports", "../build"
+        )
         toExclude.forEach {
             ideaModule.excludeDirs.plusAssign(target.file("${target.buildDir}/$it"))
         }
