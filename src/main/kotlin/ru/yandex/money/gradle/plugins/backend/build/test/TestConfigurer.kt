@@ -7,7 +7,8 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.api.tasks.testing.testng.TestNGOptions
 
 /**
- * TODO:
+ * Конфигрурует тесты и слоу тесты
+ *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 17.04.2019
  */

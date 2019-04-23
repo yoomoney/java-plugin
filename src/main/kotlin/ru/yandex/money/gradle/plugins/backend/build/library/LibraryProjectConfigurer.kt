@@ -4,7 +4,8 @@ import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.Project
 
 /**
- * TODO:
+ * Подключет bom с платформенными библиотеками
+ *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 17.04.2019
  */

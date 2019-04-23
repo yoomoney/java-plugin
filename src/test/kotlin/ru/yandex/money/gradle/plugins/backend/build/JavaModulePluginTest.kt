@@ -8,7 +8,6 @@ import java.io.File
 import java.util.Properties
 
 /**
- * TODO:
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 16.04.2019
  */

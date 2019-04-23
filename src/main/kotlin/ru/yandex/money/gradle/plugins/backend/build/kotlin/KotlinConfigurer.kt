@@ -6,7 +6,8 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
- * TODO:
+ * Конфигурация kotlin плагина
+ *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 17.04.2019
  */

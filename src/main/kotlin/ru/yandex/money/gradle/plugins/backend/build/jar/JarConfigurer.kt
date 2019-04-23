@@ -14,7 +14,8 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 /**
- * TODO:
+ * Конфигурирует сборку jar файла
+ *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 16.04.2019
  */

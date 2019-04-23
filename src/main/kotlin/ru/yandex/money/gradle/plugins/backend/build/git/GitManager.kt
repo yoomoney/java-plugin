@@ -6,7 +6,8 @@ import org.gradle.api.Project
 import java.io.File
 
 /**
- * TODO:
+ * Клиент для работы с гитом
+ *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 23.04.2019
  */

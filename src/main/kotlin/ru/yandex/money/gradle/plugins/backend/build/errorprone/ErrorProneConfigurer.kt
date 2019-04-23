@@ -5,7 +5,8 @@ import org.gradle.api.Project
 import java.net.URI
 
 /**
- * TODO:
+ * Подключает ErrorProne
+ *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 16.04.2019
  */

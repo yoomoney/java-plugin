@@ -3,7 +3,8 @@ package ru.yandex.money.gradle.plugins.backend.build.git
 import org.gradle.api.Project
 
 /**
- * TODO:
+ * Проставляет параметры из гита для release flow
+ *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 23.04.2019
  */

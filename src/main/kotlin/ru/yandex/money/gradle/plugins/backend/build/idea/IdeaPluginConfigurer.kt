@@ -4,7 +4,8 @@ import org.gradle.api.Project
 import org.gradle.plugins.ide.idea.IdeaPlugin
 
 /**
- * TODO:
+ * Настраивает ide
+ *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 17.04.2019
  */
