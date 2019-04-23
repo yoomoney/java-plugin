@@ -30,11 +30,11 @@ class JavaModulePlugin : Plugin<Project> {
         GitFlowConfigurer().init(target)
         JarConfigurer().init(target)
         TestConfigurer().init(target)
+        KotlinConfigurer().init(target)
 
         target.beforeEvaluate {
             ErrorProneConfigurer().init(it)
             IdeaPluginConfigurer().init(it)
-            KotlinConfigurer().init(it)
             LibraryProjectConfigurer().init(it)
         }
     }

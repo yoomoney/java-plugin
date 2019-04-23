@@ -73,14 +73,13 @@ class JarConfigurer {
     }
 
     private fun optionalSourceSet(target: Project) {
-        target.configurations.maybeCreate("optional").apply {
-            target.configurations.getByName("testCompile").setExtendsFrom(listOf(this))
-        }
+        val optional = target.configurations.create("optional")
+        target.configurations.getByName("testCompile").setExtendsFrom(listOf(optional))
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {
             sourceSets.getByName("main").compileClasspath =
                     sourceSets.getByName("main")
                             .compileClasspath
-                            .plus(target.configurations.maybeCreate("optional"))
+                            .plus(target.configurations.getByName("optional"))
         }
     }
 

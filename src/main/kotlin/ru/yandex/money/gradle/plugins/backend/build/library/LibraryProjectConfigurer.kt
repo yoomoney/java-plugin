@@ -11,7 +11,6 @@ import org.gradle.api.Project
 class LibraryProjectConfigurer {
 
     fun init(target: Project) {
-        target.plugins.apply("yamoney-library-project-plugin")
         target.extensions.getByType(DependencyManagementExtension::class.java).apply {
             overriddenByDependencies(false)
             System.getProperty("platformDependenciesVersion")?.let {

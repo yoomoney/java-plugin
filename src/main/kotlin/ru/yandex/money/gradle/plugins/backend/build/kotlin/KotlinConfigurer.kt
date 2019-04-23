@@ -2,6 +2,7 @@ package ru.yandex.money.gradle.plugins.backend.build.kotlin
 
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
@@ -15,7 +16,9 @@ class KotlinConfigurer {
         if (System.getProperty("kotlinVersion") == null) {
             return
         }
-        target.plugins.apply("kotlin")
+        target.plugins.apply(KotlinPluginWrapper::class.java)
+        target.dependencies.add("compile", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${System.getProperty("kotlinVersion")}")
+        target.dependencies.add("compile", "org.jetbrains.kotlin:kotlin-reflect:${System.getProperty("kotlinVersion")}")
         target.tasks.maybeCreate("compileKotlin", KotlinCompile::class.java).apply {
             kotlinOptions.jvmTarget = "1.8"
         }
@@ -23,7 +26,7 @@ class KotlinConfigurer {
             kotlinOptions.jvmTarget = "1.8"
         }
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {
-            sourceSets.getByName("test").allSource.srcDirs += target.file("src/test/kotlin")
+            sourceSets.getByName("test").java.srcDirs += target.file("src/test/kotlin")
         }
     }
 }

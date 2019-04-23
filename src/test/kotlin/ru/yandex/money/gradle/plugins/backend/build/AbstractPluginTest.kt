@@ -35,6 +35,9 @@ abstract class AbstractPluginTest {
 
         buildFile.writeText("""
             buildscript {
+
+                System.setProperty("kotlinVersion", "1.2.61")
+
                 repositories {
                         maven { url 'https://nexus.yamoney.ru/content/repositories/thirdparty/' }
                         maven { url 'https://nexus.yamoney.ru/content/repositories/central/' }
@@ -49,6 +52,9 @@ abstract class AbstractPluginTest {
                 id 'java'
                 id 'yamoney-java-module-plugin'
             }
+            dependencies {
+                optional 'org.testng:testng:6.14.3'
+            }
         """.trimIndent())
 
         projectDir.newFolder("src", "main", "java", "sample")
@@ -58,6 +64,30 @@ abstract class AbstractPluginTest {
             public class HelloWorld {
                 public static void main(String[] args) {
                     System.out.println("Hello Integration Test");
+                }
+            }
+        """.trimIndent())
+
+        projectDir.newFolder("src", "test", "java")
+        val javaTest = projectDir.newFile("src/test/java/JavaTest.java")
+        javaTest.writeText("""
+            import org.testng.annotations.Test;
+            public class JavaTest {
+                @Test
+                public void javaTest() {
+                    System.out.println("run java test...");
+                }
+            }
+        """.trimIndent())
+
+        projectDir.newFolder("src", "test", "kotlin")
+        val kotlinTest = projectDir.newFile("src/test/kotlin/KotlinTest.kt")
+        kotlinTest.writeText("""
+            import org.testng.annotations.Test
+            class KotlinTest {
+                @Test
+                fun `kotlin test`() {
+                    println("run kotlin test...")
                 }
             }
         """.trimIndent())
@@ -102,7 +132,7 @@ abstract class AbstractPluginTest {
     fun runTasksSuccessfully(vararg tasks: String): BuildResult {
         return GradleRunner.create()
                 .withProjectDir(projectDir.root)
-                .withArguments(tasks.toList() + "--stacktrace")
+                .withArguments(tasks.toList() + "--stacktrace" + "-i")
                 .withPluginClasspath()
                 .forwardOutput()
                 .withDebug(true)
