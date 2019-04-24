@@ -49,7 +49,6 @@ abstract class AbstractPluginTest {
                 }
             }
             plugins {
-                id 'java'
                 id 'yamoney-java-module-plugin'
             }
             dependencies {

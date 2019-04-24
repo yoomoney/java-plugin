@@ -7,6 +7,7 @@ import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.wrapper.Wrapper
 import org.gradle.jvm.tasks.Jar
+import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import java.net.InetAddress
 import java.net.URI
 import java.time.LocalDateTime
@@ -98,13 +99,7 @@ class JarConfigurer {
     }
 
     private fun isStableBranch(target: Project): Boolean {
-        val props = listOf("isMasterOrDev", "isReleaseTag", "isReleaseBranch")
-        for (prop in props) {
-            if (target.hasProperty(prop) && target.property(prop) as Boolean) {
-                return true
-            }
-        }
-        return false
+        return !GitManager(target).isFeatureBranch()
     }
 
     private fun setProps(target: Project) {

@@ -10,7 +10,7 @@ import ru.yandex.money.gradle.plugins.backend.build.git.GitFlowConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.idea.IdeaPluginConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.jar.JarConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.kotlin.KotlinConfigurer
-import ru.yandex.money.gradle.plugins.backend.build.library.LibraryProjectConfigurer
+import ru.yandex.money.gradle.plugins.backend.build.platform.PlatformDependenciesConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.test.TestConfigurer
 
 /**
@@ -31,11 +31,11 @@ class JavaModulePlugin : Plugin<Project> {
         JarConfigurer().init(target)
         TestConfigurer().init(target)
         KotlinConfigurer().init(target)
+        IdeaPluginConfigurer().init(target)
 
         target.beforeEvaluate {
             ErrorProneConfigurer().init(it)
-            IdeaPluginConfigurer().init(it)
-            LibraryProjectConfigurer().init(it)
+            PlatformDependenciesConfigurer().init(target)
         }
     }
 }
