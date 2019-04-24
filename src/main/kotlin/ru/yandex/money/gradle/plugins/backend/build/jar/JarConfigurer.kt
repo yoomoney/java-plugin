@@ -26,7 +26,6 @@ class JarConfigurer {
         configureArchiveName(target)
         forceEncoding(target)
         targetJavaVersion(target)
-        setProps(target)
         configureRepos(target)
         optionalSourceSet(target)
         resolutionStrategy(target)
@@ -100,12 +99,6 @@ class JarConfigurer {
 
     private fun isStableBranch(target: Project): Boolean {
         return !GitManager(target).isFeatureBranch()
-    }
-
-    private fun setProps(target: Project) {
-        target.extensions.extraProperties.set("schemaHome", "schema")
-        target.extensions.extraProperties.set("artifactID", target.name)
-        target.extensions.extraProperties.set("groupIdSuffix", "")
     }
 
     private fun targetJavaVersion(target: Project) {
