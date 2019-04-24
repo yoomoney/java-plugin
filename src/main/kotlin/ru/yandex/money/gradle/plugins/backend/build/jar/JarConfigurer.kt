@@ -98,7 +98,7 @@ class JarConfigurer {
     }
 
     private fun isStableBranch(target: Project): Boolean {
-        return !GitManager(target).isFeatureBranch()
+        return GitManager(target).isMasterOrDev()
     }
 
     private fun targetJavaVersion(target: Project) {
