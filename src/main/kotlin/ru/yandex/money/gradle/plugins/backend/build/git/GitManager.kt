@@ -25,7 +25,7 @@ class GitManager(project: Project) : AutoCloseable {
 
     fun isMasterBranch(): Boolean = branchName().equals("master", true)
 
-    fun isDevBranch(): Boolean = branchName().equals("master", true)
+    fun isDevBranch(): Boolean = branchName().equals("dev", true)
 
     fun isMasterOrDev(): Boolean = isMasterBranch() || isDevBranch()
 
