@@ -21,28 +21,15 @@ class GitManager(project: Project) : AutoCloseable {
                     .build()
     )
 
-    fun branchName(): String = git.repository.branch
+    private fun branchName(): String = git.repository.branch
 
-    fun isMasterBranch(): Boolean = branchName().equals("master", true)
+    private fun isMasterBranch(): Boolean = branchName().equals("master", true)
 
-    fun isDevBranch(): Boolean = branchName().equals("dev", true)
+    private fun isDevBranch(): Boolean = branchName().equals("dev", true)
 
     fun isMasterOrDev(): Boolean = isMasterBranch() || isDevBranch()
 
-    fun isReleaseBranch(): Boolean = branchName().matches(Regex("(release)/.*"))
-
-    fun isHotfixBranch(): Boolean = branchName().matches(Regex("(hotfix)/.*"))
-
     fun branchFullName() : String = branchName().replace(Regex("[^a-zA-Z0-9\\-\\.]+"), "-")
-
-    fun isFeatureBranch(): Boolean {
-        return when {
-            isMasterOrDev() -> false
-            isReleaseBranch() -> false
-            isHotfixBranch() -> false
-            else -> true
-        }
-    }
 
     override fun close() = git.close()
 
