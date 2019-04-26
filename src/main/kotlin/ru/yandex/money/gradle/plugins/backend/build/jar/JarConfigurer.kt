@@ -85,7 +85,7 @@ class JarConfigurer {
     private fun configureRepos(target: Project) {
         target.repositories.maven { it.url = repos.getValue("releases") }
         target.repositories.maven { it.url = repos.getValue("jcenter") }
-        if (!isFeatureBranch(target)) {
+        if (isDevelopmentBranch(target)) {
             target.repositories.mavenLocal()
             target.repositories.maven { it.url = repos.getValue("snapshots") }
             target.repositories.maven { it.url = repos.getValue("spp-snapshots") }
@@ -95,7 +95,7 @@ class JarConfigurer {
         target.repositories.maven { it.url = repos.getValue("central") }
     }
 
-    private fun isFeatureBranch(target: Project): Boolean = GitManager(target).isFeatureBranch()
+    private fun isDevelopmentBranch(target: Project): Boolean = GitManager(target).isDevelopmentBranch()
 
     private fun targetJavaVersion(target: Project) {
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {

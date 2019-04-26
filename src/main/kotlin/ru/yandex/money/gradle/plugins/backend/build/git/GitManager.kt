@@ -35,7 +35,7 @@ class GitManager(project: Project) : AutoCloseable {
 
     fun isStableBranch(): Boolean = isMasterOrDev() || isReleaseBranch() || isHotfixBranch()
 
-    fun isFeatureBranch(): Boolean = !isStableBranch()
+    fun isDevelopmentBranch(): Boolean = !isStableBranch()
 
     fun branchFullName() : String = branchName().replace(Regex("[^a-zA-Z0-9\\-\\.]+"), "-")
 
