@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* В java-module-plugin перенесен compile-check.gradle
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.1.0]() (26-04-2019)
 
