@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.2.1]() (26-04-2019)
+
 * Неверно искалась директория с гитом
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.2.0]() (26-04-2019)
 
 * В java-module-plugin перенесен compile-check.gradle
