@@ -3,7 +3,6 @@ package ru.yandex.money.gradle.plugins.backend.build.git
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.gradle.api.Project
-import java.io.File
 
 /**
  * Клиент для работы с гитом
@@ -15,9 +14,8 @@ class GitManager(project: Project) : AutoCloseable {
 
     private val git: Git = Git(
             FileRepositoryBuilder()
-                    .setGitDir(File(project.projectDir, ".git"))
                     .readEnvironment()
-                    .findGitDir()
+                    .findGitDir(project.projectDir)
                     .build()
     )
 
@@ -37,7 +35,7 @@ class GitManager(project: Project) : AutoCloseable {
 
     fun isDevelopmentBranch(): Boolean = !isStableBranch()
 
-    fun branchFullName() : String = branchName().replace(Regex("[^a-zA-Z0-9\\-\\.]+"), "-")
+    fun branchFullName(): String = branchName().replace(Regex("[^a-zA-Z0-9\\-\\.]+"), "-")
 
     override fun close() = git.close()
 
