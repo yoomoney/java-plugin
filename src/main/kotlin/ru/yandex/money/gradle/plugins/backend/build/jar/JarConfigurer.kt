@@ -54,9 +54,7 @@ class JarConfigurer {
         }
     }
 
-    private fun getHostName(): String {
-        return InetAddress.getLocalHost().hostName
-    }
+    private fun getHostName(): String = InetAddress.getLocalHost().hostName
 
     private fun wrapper(target: Project) {
         target.tasks.maybeCreate("wrapper", Wrapper::class.java).apply {
@@ -87,7 +85,7 @@ class JarConfigurer {
     private fun configureRepos(target: Project) {
         target.repositories.maven { it.url = repos.getValue("releases") }
         target.repositories.maven { it.url = repos.getValue("jcenter") }
-        if (!isStableBranch(target)) {
+        if (!isFeatureBranch(target)) {
             target.repositories.mavenLocal()
             target.repositories.maven { it.url = repos.getValue("snapshots") }
             target.repositories.maven { it.url = repos.getValue("spp-snapshots") }
@@ -97,9 +95,7 @@ class JarConfigurer {
         target.repositories.maven { it.url = repos.getValue("central") }
     }
 
-    private fun isStableBranch(target: Project): Boolean {
-        return GitManager(target).isMasterOrDev()
-    }
+    private fun isFeatureBranch(target: Project): Boolean = GitManager(target).isFeatureBranch()
 
     private fun targetJavaVersion(target: Project) {
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {

@@ -12,7 +12,7 @@ class GitFlowConfigurer {
 
     fun init(project: Project) {
         val gitManager = GitManager(project)
-        if (!gitManager.isMasterOrDev()) {
+        if (gitManager.isFeatureBranch()) {
             val mainVersion = project.version.toString().removeSuffix("-SNAPSHOT")
             project.version = "$mainVersion-${gitManager.branchFullName()}-SNAPSHOT"
         }

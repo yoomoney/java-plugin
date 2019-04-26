@@ -27,7 +27,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
     }
 
     @Test
-    fun `should run kotlin test`() {
+    fun `should run tests`() {
         val buildResult = runTasksSuccessfully("clean", "test", "build")
         assertThat("Java tests passed", buildResult.output, containsString("run java test..."))
         assertThat("Kotlin tests passed", buildResult.output, containsString("run kotlin test..."))
