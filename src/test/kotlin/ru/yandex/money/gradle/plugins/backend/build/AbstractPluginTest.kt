@@ -37,6 +37,7 @@ abstract class AbstractPluginTest {
             buildscript {
 
                 System.setProperty("kotlinVersion", "1.2.61")
+                System.setProperty("platformDependenciesVersion", "3.+")
 
                 repositories {
                         maven { url 'https://nexus.yamoney.ru/content/repositories/thirdparty/' }
@@ -52,6 +53,7 @@ abstract class AbstractPluginTest {
                 id 'yamoney-java-module-plugin'
             }
             dependencies {
+                compile 'ru.yandex.money.common:yamoney-command-api:6.0.1'
                 optional 'org.testng:testng:6.14.3'
             }
         """.trimIndent())
@@ -87,6 +89,21 @@ abstract class AbstractPluginTest {
                 @Test
                 fun `kotlin test`() {
                     println("run kotlin test...")
+                }
+            }
+        """.trimIndent())
+
+        projectDir.newFolder("src", "slowTest", "java")
+        val slowTest = projectDir.newFile("src/slowTest/java/SlowTest.java")
+        slowTest.writeText("""
+            import org.testng.Assert;
+            import org.testng.annotations.Test;
+            public class SlowTest {
+                @Test
+                public void slowTest() throws Exception {
+                    sample.HelloWorld.main(null);
+                    System.out.println(ru.yandex.money.common.command.result.CommandResult.Status.SUCCESS);
+                    System.out.println("run slowTest test...");
                 }
             }
         """.trimIndent())

@@ -1,5 +1,6 @@
 package ru.yandex.money.gradle.plugins.backend.build
 
+import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
@@ -7,7 +8,6 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import ru.yandex.money.gradle.plugins.backend.build.coverage.CoverageConfigurer
-import ru.yandex.money.gradle.plugins.backend.build.errorprone.ErrorProneConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.git.GitFlowConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.idea.IdeaPluginConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.jar.JarConfigurer
@@ -31,6 +31,7 @@ class JavaModulePlugin : Plugin<Project> {
         target.pluginManager.apply(GroovyPlugin::class.java)
         target.pluginManager.apply(IdeaPlugin::class.java)
         target.pluginManager.apply(JacocoPlugin::class.java)
+        target.pluginManager.apply(DependencyManagementPlugin::class.java)
 
         GitFlowConfigurer().init(target)
         JarConfigurer().init(target)
@@ -39,10 +40,6 @@ class JavaModulePlugin : Plugin<Project> {
         IdeaPluginConfigurer().init(target)
         CompileWarningsChecker().init(target)
         CoverageConfigurer().init(target)
-
-        target.beforeEvaluate {
-            ErrorProneConfigurer().init(it)
-            PlatformDependenciesConfigurer().init(target)
-        }
+        PlatformDependenciesConfigurer().init(target)
     }
 }

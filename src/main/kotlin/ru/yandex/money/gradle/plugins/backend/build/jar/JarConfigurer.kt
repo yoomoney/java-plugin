@@ -34,7 +34,8 @@ class JarConfigurer {
     }
 
     private fun configureJar(target: Project) {
-        target.tasks.maybeCreate("jar", Jar::class.java).apply {
+        val jarTask = target.tasks.getByName("jar") as Jar
+        jarTask.apply {
             val buildDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             manifest {
                 it.attributes(
@@ -73,7 +74,7 @@ class JarConfigurer {
 
     private fun optionalSourceSet(target: Project) {
         val optional = target.configurations.create("optional")
-        target.configurations.getByName("testCompile").setExtendsFrom(listOf(optional))
+        target.configurations.getByName("testCompile").extendsFrom(optional)
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {
             sourceSets.getByName("main").compileClasspath =
                     sourceSets.getByName("main")
