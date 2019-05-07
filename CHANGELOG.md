@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.3.0]() (07-05-2019)
+
 * Конфигурация coverage.gradle перенесена в java-module-plugin
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.2.1]() (26-04-2019)
 
 * Неверно искалась директория с гитом
