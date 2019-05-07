@@ -5,6 +5,14 @@
   Лимит должен быть задан в файле static-analysis.properties. Название настройки лимита - compiler
 - Плагин проверяет, что покрытие тестами не меньше заданных лимитов.
   Лимиты задются в файле coverage.properties
+- Плагин проверяет, что количесто предупреждений checkstyle не превышает лимит.
+  Лимит должен быть задан в файле static-analysis.properties. Название настройки лимита - checkstyle.
+  Проверку checkstyle можно отключить добавив в build.gradle
+  ```groovy
+  javaModule {
+      checkstyleEnabled = false
+  }
+```
 
 ## Настройки
 Минимально работающая конфигурация:
