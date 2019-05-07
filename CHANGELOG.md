@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.4.0]() (07-05-2019)
 
 * Конфигурация checkstyle.gradle перенесена в java-module-plugin
