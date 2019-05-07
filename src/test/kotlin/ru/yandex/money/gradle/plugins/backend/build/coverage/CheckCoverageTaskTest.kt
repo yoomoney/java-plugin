@@ -52,10 +52,10 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
     @Test
     fun `should return success when coverage check successfully passed`() {
         coverageProperties.writeText("""
-            instruction=0
+            instruction=57
             branch=0
-            method=0
-            class=0
+            method=50
+            class=100
         """.trimIndent())
         val buildResult = runTasksSuccessfully("clean", "checkCoverage")
         assertThat(

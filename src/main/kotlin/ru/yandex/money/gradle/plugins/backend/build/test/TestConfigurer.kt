@@ -3,7 +3,6 @@ package ru.yandex.money.gradle.plugins.backend.build.test
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.testing.Test
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.api.tasks.testing.testng.TestNGOptions
 
 /**
@@ -27,15 +26,6 @@ class TestConfigurer {
                 it.threadCount = 10
             }
             dependsOn("testJunit")
-            testLogging {
-                it.events = setOf(
-                        TestLogEvent.PASSED,
-                        TestLogEvent.SKIPPED,
-                        TestLogEvent.FAILED,
-                        TestLogEvent.STANDARD_OUT,
-                        TestLogEvent.STANDARD_ERROR
-                )
-            }
         }
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {
             val slowTest = sourceSets.create("slowTest")
@@ -45,10 +35,10 @@ class TestConfigurer {
             slowTest.resources { it.srcDir(target.file("src/slowTest/resources")) }
         }
         target.configurations
-                .maybeCreate("slowTestCompile")
+                .getByName("slowTestCompile")
                 .extendsFrom(target.configurations.getByName("testCompile"))
         target.configurations
-                .maybeCreate("slowTestRuntime")
+                .getByName("slowTestRuntime")
                 .extendsFrom(target.configurations.getByName("testRuntime"))
         target.tasks.create("slowTestTestNg", Test::class.java).apply {
             useTestNG()

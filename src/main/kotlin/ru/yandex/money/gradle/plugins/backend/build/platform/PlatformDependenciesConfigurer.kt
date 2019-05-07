@@ -14,9 +14,11 @@ class PlatformDependenciesConfigurer {
     fun init(target: Project) {
         target.extensions.getByType(DependencyManagementExtension::class.java).apply {
             overriddenByDependencies(false)
-            System.getProperty("platformDependenciesVersion")?.let {
+            generatedPomCustomization { customizationHandler -> customizationHandler.enabled(true) }
+            val platformDependenciesVersion = System.getProperty("platformDependenciesVersion")
+            if (platformDependenciesVersion != null) {
                 imports {
-                    it.mavenBom("ru.yandex.money.platform:yamoney-libraries-dependencies:$it")
+                    it.mavenBom("ru.yandex.money.platform:yamoney-libraries-dependencies:$platformDependenciesVersion")
                 }
             }
         }

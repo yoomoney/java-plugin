@@ -28,8 +28,10 @@ class JavaModulePluginTest : AbstractPluginTest() {
 
     @Test
     fun `should run tests`() {
-        val buildResult = runTasksSuccessfully("clean", "test", "build")
+        val buildResult = runTasksSuccessfully("clean", "test", "slowTest")
         assertThat("Java tests passed", buildResult.output, containsString("run java test..."))
         assertThat("Kotlin tests passed", buildResult.output, containsString("run kotlin test..."))
+        assertThat("SlowTest tests passed", buildResult.output, containsString("run slowTest test..."))
     }
+
 }
