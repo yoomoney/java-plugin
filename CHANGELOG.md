@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Конфигурация coverage.gradle перенесена в java-module-plugin
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.2.1]() (26-04-2019)
 

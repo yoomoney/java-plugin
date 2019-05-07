@@ -134,7 +134,6 @@ abstract class AbstractPluginTest {
                 .withArguments(tasks.toList() + "--stacktrace" + "-i")
                 .withPluginClasspath()
                 .forwardOutput()
-                .withDebug(true)
                 .build()
     }
 
@@ -144,7 +143,6 @@ abstract class AbstractPluginTest {
                 .withArguments(tasks.toList() + "--stacktrace")
                 .withPluginClasspath()
                 .forwardOutput()
-                .withDebug(true)
                 .buildAndFail()
     }
 
