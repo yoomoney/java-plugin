@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Файл с конфигурацией checkstyle не резолвился при сборке
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.4.0]() (07-05-2019)
 
