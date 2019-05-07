@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.4.1]() (07-05-2019)
+
 * Файл с конфигурацией checkstyle не резолвился при сборке
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.4.0]() (07-05-2019)
 
 * Конфигурация checkstyle.gradle перенесена в java-module-plugin
