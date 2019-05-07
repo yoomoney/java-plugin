@@ -1,12 +1,14 @@
 package ru.yandex.money.gradle.plugins.backend.build.checkstyle
 
+import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.internal.file.TmpDirTemporaryFileProvider
+import org.gradle.api.internal.resources.StringBackedTextResource
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtensions
-import java.io.File
 
 /**
  * Конфигурация checkstyle
@@ -21,8 +23,6 @@ class CheckCheckstyleConfigurer {
     }
 
     fun init(project: Project) {
-        val javaModuleExtensions = project.extensions.getByType(JavaModuleExtensions::class.java)
-
         configureCheckstyleExtensions(project)
 
         project.tasks.withType(Checkstyle::class.java) {
@@ -34,12 +34,17 @@ class CheckCheckstyleConfigurer {
 
         project.tasks.matching { task -> task.name.contains("checkstyle") }
                 .forEach { t: Task ->
-                    t.onlyIf { javaModuleExtensions.checkstyleEnabled }
+                    t.onlyIf { checkstyleEnabled(t.project) }
                 }
 
         val checkCheckstyleTask = project.tasks.create("checkCheckstyle", CheckCheckstyleTask::class.java)
 
         project.tasks.getByName("checkstyleMain").finalizedBy(checkCheckstyleTask)
+    }
+
+    private fun checkstyleEnabled(project: Project): Boolean {
+        val javaModuleExtensions = project.extensions.getByType(JavaModuleExtensions::class.java)
+        return javaModuleExtensions.checkstyleEnabled
     }
 
     private fun configureCheckstyleExtensions(project: Project) {
@@ -48,7 +53,11 @@ class CheckCheckstyleConfigurer {
         checkstyleExtension.sourceSets = listOf(project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt("main"))
         checkstyleExtension.isIgnoreFailures = true
         checkstyleExtension.reportsDir = project.file("${project.buildDir}/checkstyleReports")
-        checkstyleExtension.configFile = File(this.javaClass.getResource(DEFAULT_CHECKSTYLE_CONFIG).file)
+        checkstyleExtension.config = StringBackedTextResource(TmpDirTemporaryFileProvider(), checkstyleConfig())
+    }
 
+    private fun checkstyleConfig(): String {
+        val inputStream = this.javaClass.getResourceAsStream(DEFAULT_CHECKSTYLE_CONFIG)
+        return IOUtils.toString(inputStream)
     }
 }
