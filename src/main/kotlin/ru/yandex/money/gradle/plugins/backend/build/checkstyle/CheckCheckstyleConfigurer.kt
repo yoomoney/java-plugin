@@ -23,8 +23,6 @@ class CheckCheckstyleConfigurer {
     }
 
     fun init(project: Project) {
-        val javaModuleExtensions = project.extensions.getByType(JavaModuleExtensions::class.java)
-
         configureCheckstyleExtensions(project)
 
         project.tasks.withType(Checkstyle::class.java) {
@@ -36,12 +34,17 @@ class CheckCheckstyleConfigurer {
 
         project.tasks.matching { task -> task.name.contains("checkstyle") }
                 .forEach { t: Task ->
-                    t.onlyIf { javaModuleExtensions.checkstyleEnabled }
+                    t.onlyIf { checkstyleEnabled(t.project) }
                 }
 
         val checkCheckstyleTask = project.tasks.create("checkCheckstyle", CheckCheckstyleTask::class.java)
 
         project.tasks.getByName("checkstyleMain").finalizedBy(checkCheckstyleTask)
+    }
+
+    private fun checkstyleEnabled(project: Project): Boolean {
+        val javaModuleExtensions = project.extensions.getByType(JavaModuleExtensions::class.java)
+        return javaModuleExtensions.checkstyleEnabled
     }
 
     private fun configureCheckstyleExtensions(project: Project) {
