@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.3.1]() (07-05-2019)
+
 * Починены проблемы со сборкой
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.3.0]() (07-05-2019)
 
 * Конфигурация coverage.gradle перенесена в java-module-plugin
