@@ -8,11 +8,12 @@ import org.gradle.api.Project
  * @author Andrey Mochalov
  * @since 06.05.2019
  */
-open class JavaModuleExtensions(project: Project) {
+open class JavaModuleExtension(project: Project) {
 
     companion object {
         private const val DEFAULT_CHECKSTYLE_ENABLED = true
     }
 
-    var checkstyleEnabled = DEFAULT_CHECKSTYLE_ENABLED
+    var checkstyleEnabled: Boolean = DEFAULT_CHECKSTYLE_ENABLED
+
 }

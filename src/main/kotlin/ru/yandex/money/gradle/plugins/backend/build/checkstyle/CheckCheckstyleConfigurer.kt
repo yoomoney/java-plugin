@@ -8,7 +8,7 @@ import org.gradle.api.internal.resources.StringBackedTextResource
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstyleExtension
-import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtensions
+import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
 
 /**
  * Конфигурация checkstyle
@@ -43,8 +43,8 @@ class CheckCheckstyleConfigurer {
     }
 
     private fun checkstyleEnabled(project: Project): Boolean {
-        val javaModuleExtensions = project.extensions.getByType(JavaModuleExtensions::class.java)
-        return javaModuleExtensions.checkstyleEnabled
+        val javaModuleExtension = project.extensions.getByType(JavaModuleExtension::class.java)
+        return javaModuleExtension.checkstyleEnabled
     }
 
     private fun configureCheckstyleExtensions(project: Project) {

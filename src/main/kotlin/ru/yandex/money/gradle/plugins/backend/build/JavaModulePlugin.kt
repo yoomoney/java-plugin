@@ -8,15 +8,16 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
-import ru.yandex.money.gradle.plugins.backend.build.coverage.CoverageConfigurer
+import ru.yandex.money.gradle.plugins.backend.build.checkdependencies.CheckDependenciesConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.checkstyle.CheckCheckstyleConfigurer
+import ru.yandex.money.gradle.plugins.backend.build.coverage.CoverageConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.git.GitFlowConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.idea.IdeaPluginConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.jar.JarConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.kotlin.KotlinConfigurer
-import ru.yandex.money.gradle.plugins.backend.build.platform.PlatformDependenciesConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.test.TestConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.warning.CompileWarningsChecker
+import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPlugin
 
 /**
  * Плагин для сборки модулей компонента
@@ -34,9 +35,10 @@ class JavaModulePlugin : Plugin<Project> {
         target.pluginManager.apply(IdeaPlugin::class.java)
         target.pluginManager.apply(JacocoPlugin::class.java)
         target.pluginManager.apply(DependencyManagementPlugin::class.java)
+        target.pluginManager.apply(CheckDependenciesPlugin::class.java)
         target.pluginManager.apply(CheckstylePlugin::class.java)
 
-        target.extensions.create("javaModule", JavaModuleExtensions::class.java, target)
+        target.extensions.create("javaModule", JavaModuleExtension::class.java, target)
 
         GitFlowConfigurer().init(target)
         JarConfigurer().init(target)
@@ -45,7 +47,7 @@ class JavaModulePlugin : Plugin<Project> {
         IdeaPluginConfigurer().init(target)
         CompileWarningsChecker().init(target)
         CoverageConfigurer().init(target)
-        PlatformDependenciesConfigurer().init(target)
+        CheckDependenciesConfigurer().init(target)
         CheckCheckstyleConfigurer().init(target)
     }
 }
