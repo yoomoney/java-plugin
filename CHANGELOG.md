@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.6.1]() (08-05-2019)
+
 * Неверное условие по включению статического анализатора
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.6.0]() (08-05-2019)
 
 * Добавлен статический анализатор SpotBugs
