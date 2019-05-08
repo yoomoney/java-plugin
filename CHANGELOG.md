@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.4.2]() (08-05-2019)
+
 * Фикс округления coverage
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.4.1]() (07-05-2019)
 
 * Файл с конфигурацией checkstyle не резолвился при сборке
