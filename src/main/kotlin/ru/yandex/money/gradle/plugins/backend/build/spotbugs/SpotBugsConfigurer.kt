@@ -25,10 +25,7 @@ class SpotBugsConfigurer {
 
     fun init(target: Project) {
         val gitManager = GitManager(target)
-        if (!gitManager.isDevelopmentBranch()) {
-            target.logger.warn("SpotBugs check is enabled on feature/ and hotfix/ and bugfix/ branches. Skipping.")
-            return
-        }
+
         val extension = target.extensions.getByType(SpotBugsExtension::class.java)
         extension.toolVersion = "3.1.12"
         extension.sourceSets = listOf(target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt("main"))
@@ -44,7 +41,7 @@ class SpotBugsConfigurer {
         }
 
         target.tasks.filter { it.name.contains("spotbugs") }
-                .forEach { it.onlyIf { spotbugsEnabled(target) } }
+                .forEach { it.onlyIf { spotbugsEnabled(target, gitManager) } }
 
         target.tasks.getByName("build").dependsOn("spotbugsMain")
         applyCheckTask(target)
@@ -74,7 +71,11 @@ class SpotBugsConfigurer {
         }
     }
 
-    private fun spotbugsEnabled(target: Project): Boolean {
+    private fun spotbugsEnabled(target: Project, gitManager: GitManager): Boolean {
+        if (!gitManager.isDevelopmentBranch()) {
+            target.logger.warn("SpotBugs check is enabled on feature/ and hotfix/ and bugfix/ branches. Skipping.")
+            return false
+        }
         val module = target.extensions.getByType(JavaModuleExtension::class.java)
         return module.spotbugsEnabled
     }

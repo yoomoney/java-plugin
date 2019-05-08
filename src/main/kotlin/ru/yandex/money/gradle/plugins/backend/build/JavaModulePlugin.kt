@@ -40,9 +40,9 @@ class JavaModulePlugin : Plugin<Project> {
         target.pluginManager.apply(DependencyManagementPlugin::class.java)
         target.pluginManager.apply(CheckDependenciesPlugin::class.java)
         target.pluginManager.apply(CheckstylePlugin::class.java)
+        target.pluginManager.apply(SpotBugsPlugin::class.java)
 
         target.extensions.create("javaModule", JavaModuleExtension::class.java, target)
-        target.pluginManager.apply(SpotBugsPlugin::class.java)
 
         GitFlowConfigurer().init(target)
         JarConfigurer().init(target)
