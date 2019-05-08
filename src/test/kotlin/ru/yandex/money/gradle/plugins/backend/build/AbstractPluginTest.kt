@@ -37,7 +37,6 @@ abstract class AbstractPluginTest {
             buildscript {
 
                 System.setProperty("kotlinVersion", "1.2.61")
-                System.setProperty("platformDependenciesVersion", "3.+")
 
                 repositories {
                         maven { url 'https://nexus.yamoney.ru/content/repositories/thirdparty/' }
