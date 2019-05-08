@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.5.0]() (08-05-2019)
+
 * Подключен yamoney-check-dependencies-plugin
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.4.2]() (08-05-2019)
 
 * Фикс округления coverage
