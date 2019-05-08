@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.6.0]() (08-05-2019)
+
 * Добавлен статический анализатор SpotBugs
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.5.0]() (08-05-2019)
 
 * Подключен yamoney-check-dependencies-plugin
