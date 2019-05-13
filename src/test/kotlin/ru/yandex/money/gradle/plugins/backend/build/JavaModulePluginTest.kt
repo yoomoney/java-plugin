@@ -31,10 +31,51 @@ class JavaModulePluginTest : AbstractPluginTest() {
 
     @Test
     fun `should run tests`() {
+        projectDir.newFolder("src", "test", "java")
+        val javaTest = projectDir.newFile("src/test/java/JavaTest.java")
+        javaTest.writeText("""
+            import org.testng.annotations.Test;
+            public class JavaTest {
+                @Test
+                public void javaTest() {
+                    System.out.println("run java test...");
+                }
+            }
+        """.trimIndent())
+
+        projectDir.newFolder("src", "test", "kotlin")
+        val kotlinTest = projectDir.newFile("src/test/kotlin/KotlinTest.kt")
+        kotlinTest.writeText("""
+            import org.testng.annotations.Test
+            class KotlinTest {
+                @Test
+                fun `kotlin test`() {
+                    println("run kotlin test...")
+                }
+            }
+        """.trimIndent())
+
+        projectDir.newFolder("src", "slowTest", "java")
+        val slowTest = projectDir.newFile("src/slowTest/java/SlowTest.java")
+        slowTest.writeText("""
+            import org.testng.Assert;
+            import org.testng.annotations.Test;
+            public class SlowTest {
+                @Test
+                public void slowTest() throws Exception {
+                    sample.HelloWorld.main(null);
+                    System.out.println(ru.yandex.money.common.command.result.CommandResult.Status.SUCCESS);
+                    System.out.println("run slowTest test...");
+                }
+            }
+        """.trimIndent())
         val buildResult = runTasksSuccessfully("clean", "test", "slowTest")
         assertThat("Java tests passed", buildResult.output, containsString("run java test..."))
         assertThat("Kotlin tests passed", buildResult.output, containsString("run kotlin test..."))
         assertThat("SlowTest tests passed", buildResult.output, containsString("run slowTest test..."))
+        Files.delete(javaTest.toPath())
+        Files.delete(kotlinTest.toPath())
+        Files.delete(slowTest.toPath())
     }
 
     @Test

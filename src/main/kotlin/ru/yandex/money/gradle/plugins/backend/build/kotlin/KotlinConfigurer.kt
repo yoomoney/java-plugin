@@ -14,10 +14,15 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 class KotlinConfigurer {
 
     fun init(target: Project) {
-        val kotlinVersion = System.getProperty("kotlinVersion") ?: return
         target.plugins.apply(KotlinPluginWrapper::class.java)
-        target.dependencies.add("testCompile", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-        target.dependencies.add("testCompile", "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+        target.dependencies.add(
+                "testCompile",
+                "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${KotlinVersion.CURRENT}"
+        )
+        target.dependencies.add(
+                "testCompile",
+                "org.jetbrains.kotlin:kotlin-reflect:${KotlinVersion.CURRENT}"
+        )
         target.tasks.maybeCreate("compileKotlin", KotlinCompile::class.java).apply {
             kotlinOptions.jvmTarget = "1.8"
         }

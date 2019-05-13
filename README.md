@@ -26,10 +26,11 @@ javaModule {
 ```groovy
 buildscript {
     repositories {
-        maven { url 'http://nexus.yamoney.ru/content/repositories/thirdparty/' }
-        maven { url 'http://nexus.yamoney.ru/content/repositories/central/' }
-        maven { url 'http://nexus.yamoney.ru/content/repositories/releases/' }
-        maven { url 'http://nexus.yamoney.ru/content/repositories/jcenter.bintray.com/' }
+        maven { url 'https://nexus.yamoney.ru/repository/gradle-plugins/' }
+        maven { url 'https://nexus.yamoney.ru/repository/thirdparty/' }
+        maven { url 'https://nexus.yamoney.ru/repository/central/' }
+        maven { url 'https://nexus.yamoney.ru/repository/releases/' }
+        maven { url 'https://nexus.yamoney.ru/repository/jcenter.bintray.com/' }
     }
     dependencies {
         classpath 'ru.yandex.money.gradle.plugins:yamoney-java-module-plugin:1.+'
@@ -38,4 +39,27 @@ buildscript {
 
 apply plugin: 'yamoney-java-module-plugin'
 
+```
+
+## Kotlin
+
+В состав проекта так же входит плагин для kotlin с подключением линтера и статического анализатора, походит только для проектов
+где основной язык написания кода - kotlin.
+
+Применение:
+```groovy
+buildscript {
+    repositories {
+        maven { url 'https://nexus.yamoney.ru/repository/gradle-plugins/' }
+        maven { url 'https://nexus.yamoney.ru/repository/thirdparty/' }
+        maven { url 'https://nexus.yamoney.ru/repository/central/' }
+        maven { url 'https://nexus.yamoney.ru/repository/releases/' }
+        maven { url 'https://nexus.yamoney.ru/repository/jcenter.bintray.com/' }
+    }
+    dependencies {
+        classpath 'ru.yandex.money.gradle.plugins:yamoney-java-module-plugin:1.+'
+    }
+}
+
+apply plugin: 'yamoney-kotlin-module-plugin'
 ```
