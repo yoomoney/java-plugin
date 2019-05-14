@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.7.0]() (14-05-2019)
+
 * Добавлен плагин для подключения kotlin
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.6.2]() (14-05-2019)
 
 * Добавлен репозиторий с Gradle плагинами
