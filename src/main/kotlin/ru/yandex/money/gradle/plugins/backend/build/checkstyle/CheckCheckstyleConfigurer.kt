@@ -57,7 +57,8 @@ class CheckCheckstyleConfigurer {
     private fun configureCheckstyleExtensions(project: Project) {
         val checkstyleExtension = project.extensions.getByType(CheckstyleExtension::class.java)
         checkstyleExtension.toolVersion = "7.3"
-        checkstyleExtension.sourceSets = listOf(project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt("main"))
+        checkstyleExtension.sourceSets = listOf(project.convention.getPlugin(JavaPluginConvention::class.java)
+                .sourceSets.getAt("main"))
         checkstyleExtension.isIgnoreFailures = true
         checkstyleExtension.reportsDir = project.file("${project.buildDir}/checkstyleReports")
         checkstyleExtension.config = StringBackedTextResource(TmpDirTemporaryFileProvider(), checkstyleConfig())

@@ -36,16 +36,23 @@ open class CheckCheckstyleTask : DefaultTask() {
         }
 
         val documentBuilderFactory = DocumentBuilderFactory.newInstance()
-        documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
-        documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+        documentBuilderFactory.setFeature(
+                "http://apache.org/xml/features/disallow-doctype-decl",
+                false
+        )
+        documentBuilderFactory.setFeature(
+                "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+                false
+        )
 
         val checkStyleReportDoc = documentBuilderFactory.newDocumentBuilder().parse(checkStyleReport)
         val errorsCount = checkStyleReportDoc.getElementsByTagName("error").length
 
         when {
-            errorsCount > limit -> throw GradleException("Too much checkstyle errors: actual=$errorsCount, limit=$limit")
-            errorsCount < getCheckstyleLowerLimit(limit) -> throw GradleException("Сheckstyle limit is too high, must be $errorsCount. " +
-                    "Decrease it in file static-analysis.properties.")
+            errorsCount > limit -> throw GradleException("Too much checkstyle errors: actual=$errorsCount," +
+                    " limit=$limit")
+            errorsCount < getCheckstyleLowerLimit(limit) -> throw GradleException("Сheckstyle limit is too high, " +
+                    "must be $errorsCount. Decrease it in file static-analysis.properties.")
             else -> logger.lifecycle("Checkstyle check successfully passed with $errorsCount errors")
         }
     }

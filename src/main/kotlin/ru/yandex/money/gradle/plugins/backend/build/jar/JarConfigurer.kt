@@ -5,7 +5,6 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginConvention
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.api.tasks.wrapper.Wrapper
 import org.gradle.jvm.tasks.Jar
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import java.net.InetAddress
@@ -29,7 +28,6 @@ class JarConfigurer {
         configureRepos(target)
         optionalSourceSet(target)
         resolutionStrategy(target)
-        wrapper(target)
         configureJar(target)
     }
 
@@ -56,12 +54,6 @@ class JarConfigurer {
     }
 
     private fun getHostName(): String = InetAddress.getLocalHost().hostName
-
-    private fun wrapper(target: Project) {
-        target.tasks.maybeCreate("wrapper", Wrapper::class.java).apply {
-            distributionUrl = "https://nexus.yamoney.ru/content/repositories/http-proxy-services.gradle.org/distributions/gradle-4.10.2-all.zip"
-        }
-    }
 
     private fun resolutionStrategy(target: Project) {
         target.configurations.all { conf ->

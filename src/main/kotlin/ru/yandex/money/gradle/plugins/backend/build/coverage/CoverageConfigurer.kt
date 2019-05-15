@@ -53,6 +53,7 @@ class CoverageConfigurer {
         return jacocoAggReportTask
     }
 
+    @Suppress("ReturnCount", "ComplexMethod")
     private fun configureCheckCoverageTask(project: Project): Task {
         val checkCoverageTask = project.tasks.create("checkCoverage") {
             it.description = "Check Coverage"
@@ -64,7 +65,8 @@ class CoverageConfigurer {
                 return@doLast
             }
 
-            val jacocoTestReport = project.file("${project.buildDir}/reports/jacoco/jacocoAggReport/jacocoAggReport.xml")
+            val jacocoTestReport = project.file("${project.buildDir}/reports/jacoco/jacocoAggReport/" +
+                    "jacocoAggReport.xml")
             if (!jacocoTestReport.exists() || !jacocoTestReport.isFile) {
                 project.logger.warn("Have not found jacocoAggReport.xml, skipping check.")
                 return@doLast
@@ -77,8 +79,14 @@ class CoverageConfigurer {
             }
 
             val documentBuilderFactory = DocumentBuilderFactory.newInstance()
-            documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
-            documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+            documentBuilderFactory.setFeature(
+                    "http://apache.org/xml/features/disallow-doctype-decl",
+                    false
+            )
+            documentBuilderFactory.setFeature(
+                    "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+                    false
+            )
             val actualCoverageData = documentBuilderFactory.newDocumentBuilder().parse(jacocoTestReport)
             var isLimitsCheckPass = true
             var errorMessages = ""
@@ -96,17 +104,20 @@ class CoverageConfigurer {
                             ?: throw GradleException("Not found settings in coverage.properties for: type=$type")
                     val limit = coverageLimit.toDouble().toInt()
                     val covered = counter.attributes.getNamedItem("covered").textContent.toDouble()
-                    val coveragePercent = (100 * covered / (counter.attributes.getNamedItem("missed").textContent.toDouble() + covered)).toInt()
+                    val coveragePercent = (100 * covered / (counter.attributes.getNamedItem("missed")
+                            .textContent.toDouble() + covered)).toInt()
                     currentCoverageInfo += "\n[$type]: actual=$coveragePercent, limit=$limit"
                     newCoverage += "$type=$coveragePercent\n"
                     if (coveragePercent < limit) {
                         isLimitsCheckPass = false
-                        errorMessages += "\nNeed more tests! Not enough coverage for: type=$type, actual=$coveragePercent, limit=$limit"
+                        errorMessages += "\nNeed more tests! Not enough coverage for: type=$type, " +
+                                "actual=$coveragePercent, limit=$limit"
                     }
                     if (coveragePercent > limit + 3) {
                         isLimitsCheckPass = false
-                        errorMessages += "\nGreat! Coverage gone up, increase it to $coveragePercent in coverage.properties " +
-                                "and you're good to go: type=$type, actual=$coveragePercent, limit=$limit"
+                        errorMessages += "\nGreat! Coverage gone up, increase it to $coveragePercent in " +
+                                "coverage.properties and you're good to go: type=$type, " +
+                                "actual=$coveragePercent, limit=$limit"
                     }
                 }
             }

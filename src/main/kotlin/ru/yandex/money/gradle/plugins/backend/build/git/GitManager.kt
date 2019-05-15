@@ -38,5 +38,4 @@ class GitManager(project: Project) : AutoCloseable {
     fun branchFullName(): String = branchName().replace(Regex("[^a-zA-Z0-9\\-\\.]+"), "-")
 
     override fun close() = git.close()
-
 }
