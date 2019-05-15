@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Применение котлина для тестов откачено на условие по наличию проперти
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.7.0]() (14-05-2019)
 

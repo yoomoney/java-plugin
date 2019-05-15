@@ -35,6 +35,7 @@ abstract class AbstractPluginTest {
 
         buildFile.writeText("""
             buildscript {
+                System.setProperty("kotlinVersion", "any")
                 repositories {
                         maven { url 'https://nexus.yamoney.ru/repository/gradle-plugins/' }
                         maven { url 'https://nexus.yamoney.ru/repository/thirdparty/' }
