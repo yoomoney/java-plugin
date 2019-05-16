@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.7.2]() (16-05-2019)
 
 * Coverage окргуляем до целых чисел и checkstyle только для feature веток
