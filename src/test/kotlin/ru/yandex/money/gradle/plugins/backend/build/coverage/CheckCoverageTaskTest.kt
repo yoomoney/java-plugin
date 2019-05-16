@@ -91,7 +91,7 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
             }
         """.trimIndent())
         coverageProperties.writeText("""
-            instruction=57
+            instruction=57.32
             branch=0
             method=50
             class=100

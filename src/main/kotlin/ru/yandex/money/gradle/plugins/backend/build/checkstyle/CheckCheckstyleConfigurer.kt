@@ -9,6 +9,7 @@ import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
+import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 
 /**
  * Конфигурация checkstyle
@@ -32,9 +33,11 @@ class CheckCheckstyleConfigurer {
             }
         }
 
+        val gitManager = GitManager(project)
+
         project.tasks.matching { task -> task.name.contains("checkstyle") }
                 .forEach { t: Task ->
-                    t.onlyIf { checkstyleEnabled(t.project) }
+                    t.onlyIf { checkstyleEnabled(t.project, gitManager) }
                 }
 
         val checkCheckstyleTask = project.tasks.create("checkCheckstyle", CheckCheckstyleTask::class.java)
@@ -42,7 +45,11 @@ class CheckCheckstyleConfigurer {
         project.tasks.getByName("checkstyleMain").finalizedBy(checkCheckstyleTask)
     }
 
-    private fun checkstyleEnabled(project: Project): Boolean {
+    private fun checkstyleEnabled(project: Project, gitManager: GitManager): Boolean {
+        if (!gitManager.isDevelopmentBranch()) {
+            project.logger.warn("Checkstyle is enabled on feature/ and hotfix/ and bugfix/ branches. Skipping.")
+            return false
+        }
         val javaModuleExtension = project.extensions.getByType(JavaModuleExtension::class.java)
         return javaModuleExtension.checkstyleEnabled
     }

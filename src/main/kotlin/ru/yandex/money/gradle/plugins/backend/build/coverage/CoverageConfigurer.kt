@@ -94,19 +94,18 @@ class CoverageConfigurer {
                     }
                     val coverageLimit = coverageLimits.getProperty(type)
                             ?: throw GradleException("Not found settings in coverage.properties for: type=$type")
-                    val limit = coverageLimit.toDouble()
+                    val limit = coverageLimit.toDouble().toInt()
                     val covered = counter.attributes.getNamedItem("covered").textContent.toDouble()
-                    val coveragePercent = String.format("%.2f",
-                            (100 * covered / (counter.attributes.getNamedItem("missed").textContent.toDouble() + covered))).toDouble()
+                    val coveragePercent = (100 * covered / (counter.attributes.getNamedItem("missed").textContent.toDouble() + covered)).toInt()
                     currentCoverageInfo += "\n[$type]: actual=$coveragePercent, limit=$limit"
-                    newCoverage += "$type=${coveragePercent.toInt()}\n"
+                    newCoverage += "$type=$coveragePercent\n"
                     if (coveragePercent < limit) {
                         isLimitsCheckPass = false
                         errorMessages += "\nNeed more tests! Not enough coverage for: type=$type, actual=$coveragePercent, limit=$limit"
                     }
                     if (coveragePercent > limit + 3) {
                         isLimitsCheckPass = false
-                        errorMessages += "\nGreat! Coverage gone up, increase it to ${coveragePercent.toInt()} in coverage.properties " +
+                        errorMessages += "\nGreat! Coverage gone up, increase it to $coveragePercent in coverage.properties " +
                                 "and you're good to go: type=$type, actual=$coveragePercent, limit=$limit"
                     }
                 }

@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Coverage окргуляем до целых чисел и checkstyle только для feature веток
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.7.1]() (16-05-2019)
 
