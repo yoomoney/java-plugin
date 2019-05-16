@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 class KotlinConfigurer {
 
     fun init(target: Project) {
+        System.getProperty("kotlinVersion") ?: return
         target.plugins.apply(KotlinPluginWrapper::class.java)
         target.dependencies.add(
                 "testCompile",
