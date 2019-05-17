@@ -14,7 +14,6 @@ import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import java.lang.Integer.max
 import javax.xml.parsers.DocumentBuilderFactory
 
-
 /**
  * Настраивает статический анализ SpotBugs
  *
@@ -28,7 +27,8 @@ class SpotBugsConfigurer {
 
         val extension = target.extensions.getByType(SpotBugsExtension::class.java)
         extension.toolVersion = "3.1.12"
-        extension.sourceSets = listOf(target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt("main"))
+        extension.sourceSets = listOf(target.convention.getPlugin(JavaPluginConvention::class.java)
+                .sourceSets.getAt("main"))
         extension.reportsDir = target.file(target.buildDir.resolve("spotbugsReports"))
         extension.effort = "default"
         extension.reportLevel = "medium"
@@ -46,15 +46,21 @@ class SpotBugsConfigurer {
         target.tasks.getByName("build").dependsOn("spotbugsMain")
         applyCheckTask(target)
         target.tasks.getByName("spotbugsMain").finalizedBy("checkFindBugsReport")
-        target.dependencies.add("spotbugsPlugins", "com.mebigfatguy.sb-contrib:sb-contrib:7.4.5")
-        target.dependencies.add("spotbugsPlugins", "com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0")
+        target.dependencies.add(
+                "spotbugsPlugins",
+                "com.mebigfatguy.sb-contrib:sb-contrib:7.4.5"
+        )
+        target.dependencies.add(
+                "spotbugsPlugins",
+                "com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0"
+        )
     }
 
     private fun applyCheckTask(target: Project) {
         target.tasks.create("checkFindBugsReport").doLast {
             val limit = getStaticAnalysisLimit(target, "findbugs").orElse(0)
             val xmlReport = target.tasks.maybeCreate("spotbugsMain", SpotBugsTask::class.java).reports.xml
-            //если в проекте нет исходников, то отчет создан не будет. Пропускает такие проекты
+            // если в проекте нет исходников, то отчет создан не будет. Пропускает такие проекты
             if (!xmlReport.destination.exists()) {
                 target.logger.lifecycle("SpotBugs report not found: ${xmlReport.destination}. SpotBugs skipped.")
                 return@doLast
@@ -64,9 +70,12 @@ class SpotBugsConfigurer {
             val bugsFound = document.getElementsByTagName("BugInstance").length
 
             when {
-                bugsFound > limit -> throw GradleException("Too much SpotBugs errors: actual=$bugsFound, limit=$limit. See the report at: ${xmlReport.destination}")
-                bugsFound < max(0, limit - 10) -> throw GradleException("SpotBugs limit is too high, must be $bugsFound. Decrease it in file static-analysis.properties.")
-                else -> target.logger.lifecycle("SpotBugs successfully passed with $bugsFound (limit=$limit) errors. See the report at: ${xmlReport.destination}")
+                bugsFound > limit -> throw GradleException("Too much SpotBugs errors: actual=$bugsFound, " +
+                        "limit=$limit. See the report at: ${xmlReport.destination}")
+                bugsFound < max(0, limit - 10) -> throw GradleException("SpotBugs limit is too high, " +
+                        "must be $bugsFound. Decrease it in file static-analysis.properties.")
+                else -> target.logger.lifecycle("SpotBugs successfully passed with $bugsFound (limit=$limit) errors." +
+                        " See the report at: ${xmlReport.destination}")
             }
         }
     }
@@ -84,5 +93,4 @@ class SpotBugsConfigurer {
         val inputStream = this.javaClass.getResourceAsStream("/findbugs-exclude.xml")
         return IOUtils.toString(inputStream)
     }
-
 }

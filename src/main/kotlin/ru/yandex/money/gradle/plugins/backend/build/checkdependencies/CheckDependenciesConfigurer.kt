@@ -4,7 +4,8 @@ import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.Project
 import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPluginExtension
 import ru.yandex.money.gradle.plugins.library.dependencies.checkversion.MajorVersionCheckerExtension
-import java.util.*
+import java.util.Arrays
+import java.util.HashSet
 
 /**
  * Конфигурация yamoney-check-dependencies-plugin
@@ -36,21 +37,26 @@ class CheckDependenciesConfigurer {
             val platformDependenciesVersion = System.getProperty("platformDependenciesVersion")
             if (platformDependenciesVersion != null) {
                 imports {
-                    it.mavenBom("ru.yandex.money.platform:yamoney-libraries-dependencies:$platformDependenciesVersion")
+                    it.mavenBom(
+                            "ru.yandex.money.platform:yamoney-libraries-dependencies:$platformDependenciesVersion"
+                    )
                 }
             }
         }
     }
 
     private fun configureCheckDependenciesExtension(project: Project) {
-        val checkDependenciesPluginExtension = project.extensions.findByType(CheckDependenciesPluginExtension::class.java)
+        val checkDependenciesPluginExtension = project.extensions
+                .findByType(CheckDependenciesPluginExtension::class.java)
 
         checkDependenciesPluginExtension!!.excludedConfigurations = Arrays.asList(
                 "checkstyle", "errorprone", "optional", "findbugs",
                 "architecture", "architectureTestCompile", "architectureTestCompileClasspath",
                 "architectureTestRuntime", "architectureTestRuntimeClasspath")
 
-        checkDependenciesPluginExtension.exclusionsRulesSources = listOf("ru.yandex.money.platform:yamoney-libraries-dependencies",
-                "libraries-versions-exclusions.properties")
+        checkDependenciesPluginExtension.exclusionsRulesSources = listOf(
+                "ru.yandex.money.platform:yamoney-libraries-dependencies",
+                "libraries-versions-exclusions.properties"
+        )
     }
 }

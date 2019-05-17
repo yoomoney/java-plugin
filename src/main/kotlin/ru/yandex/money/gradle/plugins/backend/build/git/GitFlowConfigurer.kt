@@ -17,5 +17,4 @@ class GitFlowConfigurer {
             project.version = "$mainVersion-${gitManager.branchFullName()}-SNAPSHOT"
         }
     }
-
 }

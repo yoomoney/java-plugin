@@ -1,6 +1,5 @@
 package ru.yandex.money.gradle.plugins.backend.build
 
-import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.revwalk.RevWalk
@@ -14,7 +13,6 @@ import org.junit.rules.TemporaryFolder
 import org.testng.annotations.BeforeMethod
 import ru.yandex.money.tools.testing.matcher.BooleanMatchers
 import java.io.File
-import java.nio.file.Paths
 
 abstract class AbstractPluginTest {
 
@@ -68,9 +66,6 @@ abstract class AbstractPluginTest {
         git = Git.init().setDirectory(File(projectDir.root.absolutePath))
                 .setBare(false)
                 .call()
-
-        FileUtils.copyDirectory(Paths.get(System.getProperty("user.dir"), "tmp", "gradle-scripts").toFile(),
-                Paths.get(projectDir.root.absolutePath, "tmp", "gradle-scripts").toFile())
 
         projectDir.newFile(".gitignore")
                 .writeBytes(this::class.java.getResourceAsStream("/gitignore")

@@ -25,7 +25,8 @@ open class CompileWarningsChecker {
 
         val gitManager = GitManager(project)
         if (!gitManager.isDevelopmentBranch()) {
-            project.logger.warn("Compiler warnings check is enabled on feature/ and hotfix/ and release/ branches. Skipping.")
+            project.logger.warn("Compiler warnings check is enabled on feature/ and hotfix/ and release/ branches. " +
+                    "Skipping.")
             return
         }
 
@@ -49,23 +50,22 @@ open class CompileWarningsChecker {
     }
 
     private fun checkCompileWarnings(project: Project, outputEvents: List<CharSequence>, limit: Int) {
+        val pattern = Pattern.compile(" warning: ")
         val warnCount = outputEvents.stream()
-                .filter { WARNING_PATTERN.matcher(it).find() }
+                .filter { pattern.matcher(it).find() }
                 .count()
 
         when {
             warnCount > limit -> throw GradleException("Too much compiler warnings: actual=$warnCount, limit=$limit")
-            warnCount < getCompilerLowerLimit(limit) -> throw GradleException("Compiler warnings limit is too high, must be $warnCount. " +
-                    "Decrease it in file static-analysis.properties.")
+            warnCount < getCompilerLowerLimit(limit) -> throw GradleException("Compiler warnings limit is too high, " +
+                    "must be $warnCount. Decrease it in file static-analysis.properties.")
             else -> project.logger.lifecycle("Compiler warnings check successfully passed with $warnCount warnings")
         }
     }
 
     private fun getCompilerLowerLimit(limit: Int) = limit * 95 / 100
 
-
     companion object {
-        private val WARNING_PATTERN = Pattern.compile(" warning: ")
         private const val LIMIT_NAME = "compiler"
     }
 }

@@ -82,5 +82,4 @@ class CheckCheckstyleTest : AbstractPluginTest() {
         val buildResult = runTasksSuccessfully("clean", "build")
         assertThat(buildResult.output, containsString("Checkstyle check successfully passed"))
     }
-
 }

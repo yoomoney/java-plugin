@@ -8,7 +8,7 @@ import org.gradle.api.Project
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 24.04.2019
  */
-class  SpotBugsAnnotationsConfigurer {
+class SpotBugsAnnotationsConfigurer {
 
     fun init(target: Project) {
         target.dependencies.add("optional", "com.github.spotbugs:spotbugs-annotations:3.1.12")

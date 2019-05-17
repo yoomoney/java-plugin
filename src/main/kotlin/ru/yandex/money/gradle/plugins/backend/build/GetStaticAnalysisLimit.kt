@@ -23,10 +23,8 @@ internal fun getStaticAnalysisLimit(project: Project, limitName: String): Option
     limits.load(FileInputStream(limitsFile))
 
     val limitStr: String? = limits.getProperty(limitName)
-    if (limitStr == null) {
+    return if (limitStr == null) {
         project.logger.warn("Not found settings in ${limitsFile.name} for: type=$limitName")
-        return Optional.empty()
-    }
-
-    return Optional.of(Integer.parseInt(limitStr))
+        Optional.empty()
+    } else Optional.of(Integer.parseInt(limitStr))
 }
