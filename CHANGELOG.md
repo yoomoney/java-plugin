@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* errorprone временно удалён, из-за невозможности одновренного его использования и с java 8 и с java 11
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.8.0]() (17-05-2019)
 

@@ -29,7 +29,6 @@ dependencies {
             'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.9',
             'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.0.RC9.2',
             'org.jlleitschuh.gradle:ktlint-gradle:8.0.0',
-            'net.ltgt.gradle:gradle-errorprone-plugin:0.0.10',
             'commons-io:commons-io:2.6'
 
     testImplementation gradleTestKit(),

@@ -12,7 +12,6 @@ import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import ru.yandex.money.gradle.plugins.backend.build.checkdependencies.CheckDependenciesConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.checkstyle.CheckCheckstyleConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.coverage.CoverageConfigurer
-import ru.yandex.money.gradle.plugins.backend.build.errorprone.ErrorProneConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.git.GitFlowConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.gradle.WrapperConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.idea.IdeaPluginConfigurer
@@ -46,7 +45,6 @@ class JavaModulePlugin : Plugin<Project> {
 
         target.extensions.create("javaModule", JavaModuleExtension::class.java, target)
 
-        ErrorProneConfigurer().init(target)
         WrapperConfigurer().init(target)
         GitFlowConfigurer().init(target)
         JarConfigurer().init(target)
