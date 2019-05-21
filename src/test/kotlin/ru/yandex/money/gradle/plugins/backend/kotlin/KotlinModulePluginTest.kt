@@ -9,8 +9,6 @@ import ru.yandex.money.gradle.plugins.backend.build.AbstractPluginTest
 import java.nio.file.Files
 
 /**
- * TODO:
- *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 13.05.2019
  */
@@ -47,6 +45,10 @@ class KotlinModulePluginTest : AbstractPluginTest() {
     @Test
     fun `should fail with detekt errors`() {
         val sourceFile = writeSourceFile("src/main/kotlin", "Sample.kt", "class InvalidClass {}")
+        val staticAnalysis = projectDir.newFile("static-analysis.properties")
+        staticAnalysis.writeText("""
+            detekt=0
+        """.trimIndent())
         val buildResult = runTasksFail("clean", "build", "check")
         val detektTask = buildResult.tasks.find { it.path.contains(":detekt") }
         MatcherAssert.assertThat("Detekt task exists", detektTask, CoreMatchers.notNullValue())
@@ -57,6 +59,24 @@ class KotlinModulePluginTest : AbstractPluginTest() {
                 CoreMatchers.containsString("Build failed with 3 weighted issues")
         )
         Files.delete(sourceFile.toPath())
+        Files.delete(staticAnalysis.toPath())
+    }
+
+    @Test
+    fun `should not fail with detekt errors`() {
+        val sourceFile = writeSourceFile("src/main/kotlin", "Sample.kt", "class InvalidClass {}")
+        val staticAnalysis = projectDir.newFile("static-analysis.properties")
+        staticAnalysis.writeText("""
+            detekt=3
+        """.trimIndent())
+        val buildResult = runTasksFail("clean", "build", "check")
+        println(buildResult.output)
+        val detektTask = buildResult.tasks.find { it.path.contains(":detekt") }
+
+        MatcherAssert.assertThat("Detekt task exists", detektTask, CoreMatchers.notNullValue())
+        MatcherAssert.assertThat("Detekt task succeeded", detektTask?.outcome, CoreMatchers.equalTo(TaskOutcome.SUCCESS))
+        Files.delete(sourceFile.toPath())
+        Files.delete(staticAnalysis.toPath())
     }
 
     @Test

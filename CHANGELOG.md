@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Улучшена документация.
+* Добавлен лимит `detekt` в static-analysis.properties для проектов на kotlin.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.8.1]() (20-05-2019)
 
