@@ -92,12 +92,7 @@ class KotlinModulePlugin : Plugin<Project> {
     }
 
     private fun getDetektLimit(target: Project): Int {
-        val limitOpt = getStaticAnalysisLimit(target, "detekt")
-        if (!limitOpt.isPresent) {
-            target.logger.warn("skipping detekt check")
-            return 999999
-        }
-        return limitOpt.get() + 1
+        return getStaticAnalysisLimit(target, "detekt").orElse(99999) + 1
     }
 
     private fun detektConfig(): String {
