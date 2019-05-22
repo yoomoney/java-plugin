@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.9.0]() (22-05-2019)
+
 * Улучшена документация.
 * Добавлен лимит `detekt` в static-analysis.properties для проектов на kotlin.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.8.1]() (20-05-2019)
 
 * errorprone временно удалён, из-за невозможности одновренного его использования и с java 8 и с java 11
