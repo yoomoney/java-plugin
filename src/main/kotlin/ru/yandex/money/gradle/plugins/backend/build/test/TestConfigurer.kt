@@ -59,6 +59,10 @@ class TestConfigurer {
             classpath = slowTest.runtimeClasspath
             dependsOn("slowTestTestNg")
         }
+        target.tasks.create("componentTest", Test::class.java).apply {
+            systemProperty("file.encoding", "UTF-8")
+            dependsOn("slowTest")
+        }
         target.tasks.withType(Test::class.java).forEach {
             it.reports.junitXml.destination = target.file("${target.property("testResultsDir")}/${it.name}")
             it.reports.html.destination = target.file("${target.buildDir}/reports/${it.name}")
@@ -66,6 +70,7 @@ class TestConfigurer {
         target.tasks.getByName("check").apply {
             dependsOn -= "slowTest"
             dependsOn -= "slowTestTestNg"
+            dependsOn -= "componentTest"
             dependsOn += "compileSlowTestJava"
         }
     }
