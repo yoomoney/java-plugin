@@ -13,6 +13,7 @@ import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
 import ru.yandex.money.gradle.plugins.backend.build.JavaModulePlugin
+import ru.yandex.money.gradle.plugins.backend.build.getStaticAnalysisLimit
 import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPluginExtension
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -79,7 +80,7 @@ class KotlinModulePlugin : Plugin<Project> {
             it.doLast {
                 val tmp = TmpDirTemporaryFileProvider()
                 val config = tmp.createTemporaryFile("detekt", "yml")
-                config.writeText(detektConfig())
+                config.writeText(detektConfig().replace("%MAX_ISSUES%", getDetektLimit(target).toString(), false))
                 val targetConfig = Paths.get(target.buildDir.absolutePath, "detekt.yml")
                 Files.deleteIfExists(targetConfig)
                 Files.move(config.toPath(), targetConfig)
@@ -88,6 +89,10 @@ class KotlinModulePlugin : Plugin<Project> {
         target.tasks.withType(Detekt::class.java).forEach {
             it.dependsOn("copyDetektConfig")
         }
+    }
+
+    private fun getDetektLimit(target: Project): Int {
+        return getStaticAnalysisLimit(target, "detekt").orElse(99999) + 1
     }
 
     private fun detektConfig(): String {

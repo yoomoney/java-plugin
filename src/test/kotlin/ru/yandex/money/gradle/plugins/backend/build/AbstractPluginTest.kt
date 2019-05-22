@@ -1,11 +1,7 @@
 package ru.yandex.money.gradle.plugins.backend.build
 
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.lib.ObjectId
-import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.transport.URIish
-import org.eclipse.jgit.treewalk.AbstractTreeIterator
-import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.hamcrest.MatcherAssert.assertThat
@@ -128,17 +124,6 @@ abstract class AbstractPluginTest {
         val sourceFile = projectDir.newFile("$path/$fileName")
         sourceFile.writeText(source)
         return sourceFile
-    }
-
-    fun prepareTreeParser(objectId: ObjectId): AbstractTreeIterator {
-        RevWalk(git.repository).use { walk ->
-            val commit = walk.parseCommit(objectId)
-            val tree = walk.parseTree(commit.tree.id)
-            val treeParser = CanonicalTreeParser()
-            git.repository.newObjectReader().use { reader -> treeParser.reset(reader, tree.id) }
-            walk.dispose()
-            return treeParser
-        }
     }
 
     fun projectName(): String {
