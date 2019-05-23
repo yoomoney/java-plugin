@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.9.2]() (23-05-2019)
+
 * Добавил sourceset dockerJava в список исключений при проверке зависимостей.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.9.1]() (23-05-2019)
 
 * В настройке котлина для тестов отключена компиляция для `main` дерева исходников, так как она нарушает
