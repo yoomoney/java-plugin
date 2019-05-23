@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавил sourceset dockerJava в список исключений при проверке зависимостей.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.9.1]() (23-05-2019)
 

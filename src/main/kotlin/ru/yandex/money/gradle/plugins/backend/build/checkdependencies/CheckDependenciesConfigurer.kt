@@ -52,7 +52,7 @@ class CheckDependenciesConfigurer {
         checkDependenciesPluginExtension!!.excludedConfigurations = Arrays.asList(
                 "checkstyle", "errorprone", "optional", "findbugs",
                 "architecture", "architectureTestCompile", "architectureTestCompileClasspath",
-                "architectureTestRuntime", "architectureTestRuntimeClasspath")
+                "architectureTestRuntime", "architectureTestRuntimeClasspath", "dockerJava")
 
         checkDependenciesPluginExtension.exclusionsRulesSources = listOf(
                 "ru.yandex.money.platform:yamoney-libraries-dependencies",
