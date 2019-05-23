@@ -24,14 +24,14 @@ class KotlinConfigurer {
                 "testCompile",
                 "org.jetbrains.kotlin:kotlin-reflect:${KotlinVersion.CURRENT}"
         )
-        target.tasks.maybeCreate("compileKotlin", KotlinCompile::class.java).apply {
-            kotlinOptions.jvmTarget = "1.8"
-        }
-        target.tasks.maybeCreate("compileTestKotlin", KotlinCompile::class.java).apply {
-            kotlinOptions.jvmTarget = "1.8"
+        target.tasks.withType(KotlinCompile::class.java).configureEach {
+            it.kotlinOptions.jvmTarget = "1.8"
         }
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {
             sourceSets.getByName("test").java.srcDirs += target.file("src/test/kotlin")
+        }
+        target.afterEvaluate {
+            target.tasks.getByName("compileJava").dependsOn.remove(target.tasks.getByName("compileKotlin"))
         }
     }
 }

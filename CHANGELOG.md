@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* В настройке котлина для тестов отключена компиляция для `main` дерева исходников, так как она нарушает 
+последовательность тасок для плагинов, которые генерируют код, и тем самым приводит к ошибкам компиляции Java.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.9.0]() (22-05-2019)
 
