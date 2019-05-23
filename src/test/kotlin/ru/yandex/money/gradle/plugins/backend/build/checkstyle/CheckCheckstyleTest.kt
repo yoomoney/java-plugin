@@ -29,7 +29,7 @@ class CheckCheckstyleTest : AbstractPluginTest() {
             findbugs=0
         """.trimIndent())
 
-        val buildResult = runTasksSuccessfully("clean", "checkCheckstyle")
+        val buildResult = runTasksSuccessfully("checkCheckstyle")
         assertThat(buildResult.output, containsString("Not found settings in static-analysis.properties for: type=checkstyle"))
         assertThat(buildResult.output, containsString("skipping check checkstyle"))
     }
@@ -42,7 +42,7 @@ class CheckCheckstyleTest : AbstractPluginTest() {
             findbugs=0
         """.trimIndent())
 
-        val buildResult = runTasksSuccessfully("clean", "checkCheckstyle")
+        val buildResult = runTasksSuccessfully("checkCheckstyle")
         assertThat(buildResult.output, containsString("Have not found"))
     }
 
@@ -54,7 +54,7 @@ class CheckCheckstyleTest : AbstractPluginTest() {
             findbugs=0
         """.trimIndent())
 
-        val buildResult = runTasksFail("clean", "build")
+        val buildResult = runTasksFail("build")
         assertThat(buildResult.output, containsString("Too much checkstyle errors"))
     }
 
@@ -66,7 +66,7 @@ class CheckCheckstyleTest : AbstractPluginTest() {
             findbugs=0
         """.trimIndent())
 
-        val buildResult = runTasksFail("clean", "build")
+        val buildResult = runTasksFail("build")
         assertThat(buildResult.output, containsString("Сheckstyle limit is too high"))
         assertThat(buildResult.output, containsString("Decrease it in file static-analysis.properties."))
     }
@@ -79,7 +79,7 @@ class CheckCheckstyleTest : AbstractPluginTest() {
             findbugs=0
         """.trimIndent())
 
-        val buildResult = runTasksSuccessfully("clean", "build")
+        val buildResult = runTasksSuccessfully("build")
         assertThat(buildResult.output, containsString("Checkstyle check successfully passed"))
     }
 }

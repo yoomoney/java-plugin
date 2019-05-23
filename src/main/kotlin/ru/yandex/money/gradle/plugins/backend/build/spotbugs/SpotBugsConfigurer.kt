@@ -8,6 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.internal.file.TmpDirTemporaryFileProvider
 import org.gradle.api.internal.resources.StringBackedTextResource
 import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.tasks.SourceSet
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
 import ru.yandex.money.gradle.plugins.backend.build.getStaticAnalysisLimit
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
@@ -26,9 +27,11 @@ class SpotBugsConfigurer {
         val gitManager = GitManager(target)
 
         val extension = target.extensions.getByType(SpotBugsExtension::class.java)
+        extension.sourceSets = listOf(
+                target.convention.getPlugin(JavaPluginConvention::class.java)
+                        .sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+        )
         extension.toolVersion = "3.1.12"
-        extension.sourceSets = listOf(target.convention.getPlugin(JavaPluginConvention::class.java)
-                .sourceSets.getAt("main"))
         extension.reportsDir = target.file(target.buildDir.resolve("spotbugsReports"))
         extension.effort = "default"
         extension.reportLevel = "medium"
@@ -38,6 +41,25 @@ class SpotBugsConfigurer {
         target.tasks.withType(SpotBugsTask::class.java).forEach {
             it.reports.html.isEnabled = false
             it.reports.xml.isEnabled = true
+        }
+
+        target.afterEvaluate {
+            extension.sourceSets = listOf(
+                    target.convention.getPlugin(JavaPluginConvention::class.java)
+                            .sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+            )
+
+            /*
+            Отключает все таски spotbugs не относящиеся к main source set'у
+            Возникают проблемы с плагинами которые создают свои конфигурации, которые экстендятся из стандартных
+            джавовских, на них потом пытается пройти конфигуратор spotbugs и фейлится
+            Возможно починено в новых версиях плагина, но там нужен gradle версии 5 и выше
+             */
+            target.tasks.all { task ->
+                if (task.path.contains("spotbugs") && !task.path.contains("Main")) {
+                    task.enabled = false
+                }
+            }
         }
 
         target.tasks.filter { it.name.contains("spotbugs") }

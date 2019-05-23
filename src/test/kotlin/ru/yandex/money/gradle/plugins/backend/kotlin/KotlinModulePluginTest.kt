@@ -49,7 +49,7 @@ class KotlinModulePluginTest : AbstractPluginTest() {
         staticAnalysis.writeText("""
             detekt=0
         """.trimIndent())
-        val buildResult = runTasksFail("clean", "build", "check")
+        val buildResult = runTasksFail("build", "check")
         val detektTask = buildResult.tasks.find { it.path.contains(":detekt") }
         MatcherAssert.assertThat("Detekt task exists", detektTask, CoreMatchers.notNullValue())
         MatcherAssert.assertThat("Detekt task failed", detektTask?.outcome, CoreMatchers.equalTo(TaskOutcome.FAILED))
@@ -69,7 +69,7 @@ class KotlinModulePluginTest : AbstractPluginTest() {
         staticAnalysis.writeText("""
             detekt=3
         """.trimIndent())
-        val buildResult = runTasksFail("clean", "build", "check")
+        val buildResult = runTasksFail("build", "check")
         println(buildResult.output)
         val detektTask = buildResult.tasks.find { it.path.contains(":detekt") }
 
@@ -90,7 +90,7 @@ class KotlinModulePluginTest : AbstractPluginTest() {
                 }
                 """.trimIndent() + '\n'
         )
-        val buildResult = runTasksFail("clean", "build", "check")
+        val buildResult = runTasksFail("build", "check")
         val ktlintTask = buildResult.tasks.find { it.path.contains(":ktlintMainSourceSetCheck") }
         MatcherAssert.assertThat("ktlint task exists", ktlintTask, CoreMatchers.notNullValue())
         MatcherAssert.assertThat("ktlint task failed", ktlintTask?.outcome, CoreMatchers.equalTo(TaskOutcome.FAILED))
@@ -113,7 +113,7 @@ class KotlinModulePluginTest : AbstractPluginTest() {
                 }
                 """.trimIndent() + '\n'
         )
-        runTasksSuccessfully("clean", "build", "check")
+        runTasksSuccessfully("build", "check")
         Files.delete(sourceFile.toPath())
     }
 }

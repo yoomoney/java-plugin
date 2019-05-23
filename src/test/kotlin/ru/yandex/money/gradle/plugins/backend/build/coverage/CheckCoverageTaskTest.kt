@@ -32,7 +32,7 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
     @Test
     fun `should skip checkCoverage when coverage properties not found`() {
         coverageProperties.delete()
-        val buildResult = runTasksSuccessfully("clean", "checkCoverage")
+        val buildResult = runTasksSuccessfully("checkCoverage")
         assertThat(
                 buildResult.output,
                 containsString("Have not found coverage.properties, skipping check.")
@@ -43,7 +43,7 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
     fun `should return failed when not found setting in coverage properties`() {
         coverageProperties.writeText("""
         """.trimIndent())
-        val buildResult = runTasksFail("clean", "checkCoverage")
+        val buildResult = runTasksFail("checkCoverage")
         assertThat(
                 buildResult.output,
                 containsString("Not found settings in coverage.properties for: type=instruction")
@@ -96,7 +96,7 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
             method=50
             class=100
         """.trimIndent())
-        val buildResult = runTasksSuccessfully("clean", "checkCoverage")
+        val buildResult = runTasksSuccessfully("checkCoverage")
         assertThat(
                 buildResult.output,
                 containsString("Coverage check successfully passed")
@@ -114,7 +114,7 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
             method=100
             class=100
         """.trimIndent())
-        val buildResult = runTasksFail("clean", "checkCoverage")
+        val buildResult = runTasksFail("checkCoverage")
         assertThat(
                 buildResult.output,
                 containsString("Coverage limit failure")
