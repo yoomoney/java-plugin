@@ -5,6 +5,7 @@ import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.hasSize
 import org.testng.annotations.Test
 import java.io.File
 import java.nio.file.Files
@@ -18,7 +19,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
 
     @Test
     fun `should successfully run jar task`() {
-        runTasksSuccessfully("clean", "build", "slowTest", "jar")
+        runTasksSuccessfully("build", "slowTest", "jar")
         assertFileExists(File(projectDir.root, "/target/libs/yamoney-${projectName()}-1.0.1-feature-BACKEND-2588-build-jar-SNAPSHOT.jar"))
         assertFileExists(File(projectDir.root, "/target/tmp/jar/MANIFEST.MF"))
         val properties = Properties().apply { load(File(projectDir.root, "/target/tmp/jar/MANIFEST.MF").inputStream()) }
@@ -69,7 +70,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
                 }
             }
         """.trimIndent())
-        val buildResult = runTasksSuccessfully("clean", "test", "slowTest")
+        val buildResult = runTasksSuccessfully("test", "slowTest")
         assertThat("Java tests passed", buildResult.output, containsString("run java test..."))
         assertThat("Kotlin tests passed", buildResult.output, containsString("run kotlin test..."))
         assertThat("SlowTest tests passed", buildResult.output, containsString("run slowTest test..."))
@@ -91,7 +92,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
                 }
             }
         """.trimIndent())
-        val buildResult = runTasksFail("clean", "test", "build")
+        val buildResult = runTasksFail("test", "build")
         val reportTask = buildResult.tasks.find { it.path == ":checkFindBugsReport" }
         assertThat("Report task exists", reportTask, notNullValue())
         assertThat("Report task failed", reportTask?.outcome, equalTo(TaskOutcome.FAILED))
@@ -122,7 +123,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
                 }
             }
         """.trimIndent())
-        val buildResult = runTasksSuccessfully("clean", "test", "build")
+        val buildResult = runTasksSuccessfully("test", "build")
         val reportTask = buildResult.tasks.find { it.path == ":checkFindBugsReport" }
         assertThat("Report task exists", reportTask, notNullValue())
         assertThat("Report task succeed", reportTask?.outcome, equalTo(TaskOutcome.SUCCESS))
@@ -133,5 +134,12 @@ class JavaModulePluginTest : AbstractPluginTest() {
         )
         Files.delete(spotBugsSource.toPath())
         Files.delete(staticAnalysisPropertiesFile.toPath())
+    }
+
+    @Test
+    fun `should only contain spotbugs task for main source set`() {
+        val buildResult = runTasksSuccessfully("test", "build")
+        val tasks = buildResult.tasks.filter { it.path.contains("spotbugs") }
+        assertThat("Only one spotbugs task", tasks, hasSize(1))
     }
 }

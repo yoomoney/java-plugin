@@ -53,7 +53,7 @@ class CompileWarningsCheckerTest : AbstractPluginTest() {
 
         val result = GradleRunner.create()
                 .withProjectDir(projectDir.root)
-                .withArguments("clean", "compileJava")
+                .withArguments("compileJava")
                 .withPluginClasspath()
                 .forwardOutput()
                 .withDebug(true)
@@ -72,7 +72,7 @@ class CompileWarningsCheckerTest : AbstractPluginTest() {
 
         val result = GradleRunner.create()
                 .withProjectDir(projectDir.root)
-                .withArguments("clean", "compileJava")
+                .withArguments("compileJava")
                 .withPluginClasspath()
                 .forwardOutput()
                 .withDebug(true)
@@ -91,7 +91,7 @@ class CompileWarningsCheckerTest : AbstractPluginTest() {
 
         val result = GradleRunner.create()
                 .withProjectDir(projectDir.root)
-                .withArguments("clean", "compileJava")
+                .withArguments("compileJava")
                 .withPluginClasspath()
                 .forwardOutput()
                 .withDebug(true)
@@ -109,7 +109,7 @@ class CompileWarningsCheckerTest : AbstractPluginTest() {
 
         val result = GradleRunner.create()
                 .withProjectDir(projectDir.root)
-                .withArguments("clean", "compileJava")
+                .withArguments("compileJava")
                 .withPluginClasspath()
                 .forwardOutput()
                 .withDebug(true)
