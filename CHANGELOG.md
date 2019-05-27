@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
-Фикс определения тега как стабильной ветки 
-### NEXT_VERSION_DESCRIPTION_END
+## [1.9.4]() (27-05-2019)
+
+Фикс определения тега как стабильной ветки
+
 ## [1.9.3]() (24-05-2019)
 
 * По какой-то причине spotbugs создавал таски для всех source set'ов
