@@ -71,7 +71,6 @@ abstract class AbstractPluginTest {
         gradleProperties.writeText("version=1.0.1-SNAPSHOT")
 
         projectDir.newFile("CHANGELOG.md").writeText("CHANGELOG")
-        projectDir.newFile("README.md").writeText("README")
 
         git.add().addFilepattern(".").call()
         git.commit().setMessage("build.gradle commit").call()
@@ -88,6 +87,10 @@ abstract class AbstractPluginTest {
                 .setPushTags()
                 .call()
         git.checkout().setName("feature/BACKEND-2588_build_jar").setCreateBranch(true).call()
+
+        projectDir.newFile("README.md").writeText("README")
+        git.add().addFilepattern(".").call()
+        git.commit().setMessage("README commit").call()
 
         println("Work directory: ${projectDir.root.absolutePath}")
         println("Origin git repo directory: ${originRepoFolder.root.absolutePath}")
