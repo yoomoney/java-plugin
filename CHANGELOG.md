@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлена таска componentTest для дальнейшего перехода на запуск из source set componentTest
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.9.4]() (27-05-2019)
 
