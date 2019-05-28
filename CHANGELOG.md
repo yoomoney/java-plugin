@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.10.0]() (28-05-2019)
+
 * Добавлена таска componentTest для дальнейшего перехода на запуск из source set componentTest
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.9.4]() (27-05-2019)
 
 Фикс определения тега как стабильной ветки
