@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.10.0]() (28-05-2019)
 
 * Добавлена таска componentTest для дальнейшего перехода на запуск из source set componentTest
