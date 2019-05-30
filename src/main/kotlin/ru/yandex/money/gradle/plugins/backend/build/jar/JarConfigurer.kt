@@ -29,6 +29,7 @@ class JarConfigurer {
         optionalSourceSet(target)
         resolutionStrategy(target)
         configureJar(target)
+        enableCompileJavaFork(target)
     }
 
     private fun configureJar(target: Project) {
@@ -113,6 +114,13 @@ class JarConfigurer {
                 archivesBaseName.startsWith("yamoney-") -> archivesBaseName
                 else -> "yamoney-$archivesBaseName"
             }
+        }
+    }
+
+    private fun enableCompileJavaFork(target: Project) {
+        (target.tasks.getByName("compileJava") as JavaCompile).apply {
+            options.isFork = true
+            options.forkOptions.javaHome = target.file(System.getenv("JAVA_HOME"))
         }
     }
 

@@ -2,11 +2,9 @@ package ru.yandex.money.gradle.plugins.backend.build.warning
 
 import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.api.logging.StandardOutputListener
 import org.gradle.api.tasks.compile.JavaCompile
 import ru.yandex.money.gradle.plugins.backend.build.getStaticAnalysisLimit
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
-import java.util.regex.Pattern
 
 /**
  * Класс для проверки, что количество compile warnings не превышает заданное в файле static-analysis.properties
@@ -30,30 +28,33 @@ open class CompileWarningsChecker {
             return
         }
 
+        val compileErrorOutDirPath = "${project.buildDir}/reports/compileJava/"
+        val compileErrorOutFilePath = compileErrorOutDirPath + "compile_error_out.txt"
+
         val compileJavaTask = project.tasks.findByName("compileJava") as JavaCompile
         compileJavaTask.options.isDeprecation = false
-        compileJavaTask.options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Xmaxwarns", "10000"))
-
-        val outputEvents = mutableListOf<CharSequence>()
-        val listener = StandardOutputListener { event ->
-            outputEvents.add(event)
-        }
+        compileJavaTask.options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Xmaxwarns", "10000", "-Xstdout", compileErrorOutFilePath))
 
         compileJavaTask.doFirst {
-            it.logging.addStandardErrorListener(listener)
+            project.mkdir(compileErrorOutDirPath)
         }
 
         compileJavaTask.doLast {
-            it.logging.removeStandardErrorListener(listener)
-            CompileWarningsChecker().checkCompileWarnings(project, outputEvents, limitOpt.get())
+            CompileWarningsChecker().checkCompileWarnings(project, compileErrorOutFilePath, limitOpt.get())
         }
     }
 
-    private fun checkCompileWarnings(project: Project, outputEvents: List<CharSequence>, limit: Int) {
-        val pattern = Pattern.compile(" warning: ")
-        val warnCount = outputEvents.stream()
-                .filter { pattern.matcher(it).find() }
-                .count()
+    private fun checkCompileWarnings(project: Project, compileErrorOutFilePath: String, limit: Int) {
+        var warnCount = 0
+
+        project.file(compileErrorOutFilePath).forEachLine {
+            if (" warning: " in it) {
+                warnCount++
+            }
+
+            // Вывод в system.out
+            println(it)
+        }
 
         when {
             warnCount > limit -> throw GradleException("Too much compiler warnings: actual=$warnCount, limit=$limit")
