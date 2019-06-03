@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.11.0]() (03-06-2019)
 
 * Внесены изменения в проверку кол-ва warnings во время компиляции для поддержки параллельной сборки
