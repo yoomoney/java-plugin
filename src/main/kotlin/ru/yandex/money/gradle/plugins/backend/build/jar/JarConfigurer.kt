@@ -5,6 +5,7 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginConvention
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.internal.jvm.Jvm
 import org.gradle.jvm.tasks.Jar
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import java.net.InetAddress
@@ -118,9 +119,22 @@ class JarConfigurer {
     }
 
     private fun enableCompileJavaFork(target: Project) {
-        (target.tasks.getByName("compileJava") as JavaCompile).apply {
-            options.isFork = true
-            options.forkOptions.javaHome = target.file(System.getenv("JAVA_HOME"))
+        val javaHomePath = getJavaHomePath()
+        if (javaHomePath != null) {
+            (target.tasks.getByName("compileJava") as JavaCompile).apply {
+                options.isFork = true
+                options.forkOptions.javaHome = target.file(javaHomePath)
+            }
+        }
+    }
+
+    private fun getJavaHomePath(): String? {
+        return if (Jvm.current() != null) {
+            Jvm.current().javaHome.absolutePath
+        } else if (System.getProperty("java.home") != null) {
+            System.getProperty("java.home")
+        } else {
+            System.getenv("JAVA_HOME")
         }
     }
 

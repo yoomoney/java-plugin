@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Включать fork компиляцию только если установлена переменная JAVA_HOME
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.11.1]() (03-06-2019)
 
