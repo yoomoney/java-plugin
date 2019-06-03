@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.11.0]() (03-06-2019)
+
 * Внесены изменения в проверку кол-ва warnings во время компиляции для поддержки параллельной сборки
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.10.0]() (28-05-2019)
 
 * Добавлена таска componentTest для дальнейшего перехода на запуск из source set componentTest
