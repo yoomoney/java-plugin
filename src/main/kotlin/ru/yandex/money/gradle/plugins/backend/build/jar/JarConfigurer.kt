@@ -118,9 +118,12 @@ class JarConfigurer {
     }
 
     private fun enableCompileJavaFork(target: Project) {
-        (target.tasks.getByName("compileJava") as JavaCompile).apply {
-            options.isFork = true
-            options.forkOptions.javaHome = target.file(System.getenv("JAVA_HOME"))
+        val javaHomePath = System.getenv("JAVA_HOME")
+        if (javaHomePath != null) {
+            (target.tasks.getByName("compileJava") as JavaCompile).apply {
+                options.isFork = true
+                options.forkOptions.javaHome = target.file(javaHomePath)
+            }
         }
     }
 
