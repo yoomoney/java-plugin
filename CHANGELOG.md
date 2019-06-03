@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Проверяем наличие тэгов перед получением описания при проверке стабильности ветки проекта
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.11.0]() (03-06-2019)
 
