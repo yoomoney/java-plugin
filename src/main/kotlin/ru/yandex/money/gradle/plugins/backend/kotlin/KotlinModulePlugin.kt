@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
-import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
 import ru.yandex.money.gradle.plugins.backend.build.JavaModulePlugin
 import ru.yandex.money.gradle.plugins.backend.build.getStaticAnalysisLimit
 import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPluginExtension
@@ -33,11 +32,14 @@ class KotlinModulePlugin : Plugin<Project> {
         target.pluginManager.apply(KtlintPlugin::class.java)
         target.pluginManager.apply(DetektPlugin::class.java)
 
-        disableJavaChecks(target)
         configureKtlint(target)
         configureDetekt(target)
         configureKotlinDeps(target)
         configureCheckDepsPlugin(target)
+
+        target.afterEvaluate {
+            target.tasks.getByName("compileJava").dependsOn(target.tasks.getByName("compileKotlin"))
+        }
     }
 
     private fun configureCheckDepsPlugin(target: Project) {
@@ -55,13 +57,6 @@ class KotlinModulePlugin : Plugin<Project> {
                 "compile",
                 "org.jetbrains.kotlin:kotlin-reflect:${KotlinVersion.CURRENT}"
         )
-    }
-
-    private fun disableJavaChecks(target: Project) {
-        target.extensions.getByType(JavaModuleExtension::class.java).apply {
-            spotbugsEnabled = false
-            checkstyleEnabled = false
-        }
     }
 
     private fun configureKtlint(target: Project) {

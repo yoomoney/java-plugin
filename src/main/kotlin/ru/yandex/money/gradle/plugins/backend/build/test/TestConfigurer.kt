@@ -22,8 +22,8 @@ class TestConfigurer {
             systemProperty("file.encoding", "UTF-8")
             options {
                 it as TestNGOptions
-                it.parallel = "tests"
-                it.threadCount = 10
+                it.parallel = "classes"
+                it.threadCount = 8
             }
             dependsOn("testJunit")
         }
@@ -45,8 +45,8 @@ class TestConfigurer {
             systemProperty("file.encoding", "UTF-8")
             options {
                 it as TestNGOptions
-                it.parallel = "tests"
-                it.threadCount = 10
+                it.parallel = "classes"
+                it.threadCount = 8
             }
             val slowTest = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt("slowTest")
             testClassesDirs = slowTest.output.classesDirs

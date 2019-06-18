@@ -1,5 +1,31 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+1. Включение kotlin тестов по умолчанию, добавлять `System.setProperty("kotlinVersion", "")` теперь не требуется.
+2. Убрано отключение findbugs и checkstyle при подключении kotlin-module-plugin. Могут начать находиться нарушения.
+3. При подключении KotlinModulePlugin добавляется зависимость таски compileJava от compileKotlin, иначе появляются 
+ошибки компиляции в проектах с двумя языках
+4. Включен параллельный запуск test и slowTest в 8 потоков.
+Если для вашего компонента параллельный запуск не работает, можно переопределить настройку в build.gradle, например, 
+так выглядела настройка до изменений:
+```
+slowTestTestNg {
+    useTestNG() {
+        options {
+            parallel = 'tests'
+            threadCount = 10
+        }
+    }
+}
+
+test {
+    useTestNG() {
+        options {
+            parallel = 'tests'
+            threadCount = 10
+        }
+    }
+}
+```
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.11.2]() (03-06-2019)
 
