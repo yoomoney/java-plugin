@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.12.0]() (19-06-2019)
 
 1. Включение kotlin тестов по умолчанию, добавлять `System.setProperty("kotlinVersion", "")` теперь не требуется.
