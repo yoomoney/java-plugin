@@ -1,7 +1,7 @@
 ### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
-* В конфигурацию плагина check-dependencies добавлено определение версии yamoney-libraries-dependencies при указании 
-версии с "+". Определяется новейшая возможная версия из релизного репозитория и подключается именно она.
+* В конфигурации плагина check-dependencies исправлено определение версии yamoney-libraries-dependencies.
+ При указании версии с "+" определяется новейшая возможная версия из релизного репозитория и подключается именно она.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.12.0]() (19-06-2019)
 

@@ -42,6 +42,8 @@ class CheckDependenciesConfigurer {
             val platformDependenciesVersion = getPlatformDependenciesVersion()
 
             if (platformDependenciesVersion != null) {
+                project.logger.lifecycle("Version \"ru.yandex.money.platform:yamoney-libraries-dependencies\" resolved: " +
+                        "$platformDependenciesVersion")
                 imports {
                     it.mavenBom(
                             "${librariesDependencies.group}:${librariesDependencies.name}:$platformDependenciesVersion"
