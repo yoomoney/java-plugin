@@ -2,8 +2,10 @@ package ru.yandex.money.gradle.plugins.backend.build.checkdependencies
 
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.Project
+import ru.yandex.money.gradle.plugins.backend.build.nexus.NexusUtils
 import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPluginExtension
 import ru.yandex.money.gradle.plugins.library.dependencies.checkversion.MajorVersionCheckerExtension
+import ru.yandex.money.gradle.plugins.library.dependencies.dsl.LibraryName
 import java.util.Arrays
 import java.util.HashSet
 
@@ -14,6 +16,9 @@ import java.util.HashSet
  * @since 08.05.2019
  */
 class CheckDependenciesConfigurer {
+
+    private val librariesDependencies: LibraryName =
+            LibraryName("ru.yandex.money.platform", "yamoney-libraries-dependencies")
 
     fun init(target: Project) {
         configureCheckDependenciesExtension(target)
@@ -34,15 +39,28 @@ class CheckDependenciesConfigurer {
         project.extensions.getByType(DependencyManagementExtension::class.java).apply {
             overriddenByDependencies(false)
             generatedPomCustomization { customizationHandler -> customizationHandler.enabled(true) }
-            val platformDependenciesVersion = System.getProperty("platformDependenciesVersion")
+            val platformDependenciesVersion = getPlatformDependenciesVersion()
+
             if (platformDependenciesVersion != null) {
+                project.logger.lifecycle("Version \"ru.yandex.money.platform:yamoney-libraries-dependencies\" resolved: " +
+                        "$platformDependenciesVersion")
                 imports {
                     it.mavenBom(
-                            "ru.yandex.money.platform:yamoney-libraries-dependencies:$platformDependenciesVersion"
+                            "${librariesDependencies.group}:${librariesDependencies.name}:$platformDependenciesVersion"
                     )
                 }
             }
         }
+    }
+
+    private fun getPlatformDependenciesVersion(): String? {
+        val platformDependenciesVersion: String? = System.getProperty("platformDependenciesVersion")
+
+        if (platformDependenciesVersion?.contains('+') ?: false) {
+            return NexusUtils.resolveVersion(librariesDependencies.group, librariesDependencies.name,
+                    platformDependenciesVersion!!)
+        }
+        return platformDependenciesVersion
     }
 
     private fun configureCheckDependenciesExtension(project: Project) {
