@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.12.1]() (02-07-2019)
 
 * В конфигурации плагина check-dependencies исправлено определение версии yamoney-libraries-dependencies.
