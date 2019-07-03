@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Исправлена проблема с отсутствием информации об ошибках компиляции в консоле
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.12.1]() (02-07-2019)
 

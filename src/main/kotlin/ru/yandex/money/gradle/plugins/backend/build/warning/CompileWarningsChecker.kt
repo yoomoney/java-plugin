@@ -28,8 +28,8 @@ open class CompileWarningsChecker {
             return
         }
 
-        val compileErrorOutDirPath = "${project.buildDir}/reports/compileJava/"
-        val compileErrorOutFilePath = compileErrorOutDirPath + "compile_error_out.txt"
+        val compileErrorOutDirPath = "${project.buildDir}/$REPORT_DIR_PATH"
+        val compileErrorOutFilePath = "$compileErrorOutDirPath/$ERROR_OUT_FILE_NAME"
 
         val compileJavaTask = project.tasks.findByName("compileJava") as JavaCompile
         compileJavaTask.options.isDeprecation = false
@@ -42,6 +42,15 @@ open class CompileWarningsChecker {
         compileJavaTask.doLast {
             CompileWarningsChecker().checkCompileWarnings(project, compileErrorOutFilePath, limitOpt.get())
         }
+
+        // Вывод error и warn при компиляции в system.out
+        project.gradle.taskGraph.afterTask { task ->
+            if (task is JavaCompile) {
+                project.file(compileErrorOutFilePath).forEachLine {
+                    println(it)
+                }
+            }
+        }
     }
 
     private fun checkCompileWarnings(project: Project, compileErrorOutFilePath: String, limit: Int) {
@@ -51,9 +60,6 @@ open class CompileWarningsChecker {
             if (" warning: " in it) {
                 warnCount++
             }
-
-            // Вывод в system.out
-            println(it)
         }
 
         when {
@@ -68,5 +74,7 @@ open class CompileWarningsChecker {
 
     companion object {
         private const val LIMIT_NAME = "compiler"
+        private const val REPORT_DIR_PATH = "reports/compileJava"
+        private const val ERROR_OUT_FILE_NAME = "compile_error_out.txt"
     }
 }
