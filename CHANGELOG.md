@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.13.0]() (03-07-2019)
 
 * Исправлена проблема с отсутствием информации об ошибках компиляции в консоле
