@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.13.2]() (04-07-2019)
 
 * Переключение на последнюю версию gradle-project-plugin `5.+` после исправления ошибки
