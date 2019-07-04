@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Фикс ошибки в процедуре проверки warnings (FileNotFoundException ../compile_error_out.txt)
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.13.0]() (03-07-2019)
 

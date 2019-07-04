@@ -45,9 +45,10 @@ open class CompileWarningsChecker {
 
         // Вывод error и warn при компиляции в system.out
         project.gradle.taskGraph.afterTask { task ->
-            if (task is JavaCompile) {
-                project.file(compileErrorOutFilePath).forEachLine {
-                    println(it)
+            if (task is JavaCompile && task.name == "compileJava") {
+                val errorOutFile = project.file(compileErrorOutFilePath)
+                if (errorOutFile.exists()) {
+                    project.file(compileErrorOutFilePath).forEachLine { println(it) }
                 }
             }
         }
