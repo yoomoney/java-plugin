@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Переключение на последнюю версию gradle-project-plugin `5.+` после исправления ошибки 
+в процедуре проверки warnings (FileNotFoundException ../compile_error_out.txt)
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.13.1]() (04-07-2019)
 
