@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.13.1]() (04-07-2019)
+
 * Фикс ошибки в процедуре проверки warnings (FileNotFoundException ../compile_error_out.txt)
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.13.0]() (03-07-2019)
 
 * Исправлена проблема с отсутствием информации об ошибках компиляции в консоле
