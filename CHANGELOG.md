@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлено автоподнятие coverage при увеличении тестового покрытия при локальной сборке
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.13.2]() (04-07-2019)
 
