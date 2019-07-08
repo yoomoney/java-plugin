@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.14.0]() (08-07-2019)
+
 * Добавлено автоподнятие coverage при увеличении тестового покрытия при локальной сборке
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.13.2]() (04-07-2019)
 
 * Переключение на последнюю версию gradle-project-plugin `5.+` после исправления ошибки
