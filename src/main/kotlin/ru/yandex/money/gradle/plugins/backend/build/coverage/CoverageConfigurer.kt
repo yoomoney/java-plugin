@@ -7,6 +7,7 @@ import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.util.Properties
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -106,17 +107,31 @@ class CoverageConfigurer {
                     val covered = counter.attributes.getNamedItem("covered").textContent.toDouble()
                     val coveragePercent = (100 * covered / (counter.attributes.getNamedItem("missed")
                             .textContent.toDouble() + covered)).toInt()
-                    currentCoverageInfo += "\n[$type]: actual=$coveragePercent, limit=$limit"
+                    val maxLimitWithoutIncrease = limit + 3
+                    currentCoverageInfo += if (coveragePercent > maxLimitWithoutIncrease) {
+                        if (!project.hasProperty("ci")) {
+                            coverageLimits.setProperty(type, coveragePercent.toString())
+                            coverageLimits.apply {
+                                FileOutputStream(coveragePropertiesFile).use {
+                                    store(it, null)
+                                }
+                            }
+                            project.logger.info("Coverage increased for type=$type, setting limit to $coveragePercent")
+                            "\n[$type]: actual=$coveragePercent, limit=$coveragePercent"
+                        } else {
+                            isLimitsCheckPass = false
+                            errorMessages += "\nGreat! Coverage gone up, increase it to $coveragePercent in " +
+                                    "coverage.properties and you're good to go: type=$type, " +
+                                    "actual=$coveragePercent, limit=$limit"
+                            "\n[$type]: actual=$coveragePercent, limit=$limit"
+                        }
+                    } else {
+                        "\n[$type]: actual=$coveragePercent, limit=$limit"
+                    }
                     newCoverage += "$type=$coveragePercent\n"
                     if (coveragePercent < limit) {
                         isLimitsCheckPass = false
                         errorMessages += "\nNeed more tests! Not enough coverage for: type=$type, " +
-                                "actual=$coveragePercent, limit=$limit"
-                    }
-                    if (coveragePercent > limit + 3) {
-                        isLimitsCheckPass = false
-                        errorMessages += "\nGreat! Coverage gone up, increase it to $coveragePercent in " +
-                                "coverage.properties and you're good to go: type=$type, " +
                                 "actual=$coveragePercent, limit=$limit"
                     }
                 }
