@@ -80,7 +80,25 @@ class JavaModulePluginTest : AbstractPluginTest() {
     }
 
     @Test
+    fun `should skip spotBugs execution when findbugs limit is missing`() {
+        val staticAnalysisPropertiesFile = projectDir.newFile("static-analysis.properties")
+        staticAnalysisPropertiesFile.writeText("""
+            dummy=123
+        """.trimIndent())
+
+        val buildResult = runTasksSuccessfully("checkFindBugsReport")
+
+        assertThat(buildResult.output, containsString("Not found settings in static-analysis.properties for: type=findbugs"))
+        assertThat(buildResult.output, containsString("findbugs limit not found, skipping check"))
+        Files.delete(staticAnalysisPropertiesFile.toPath())
+    }
+
+    @Test
     fun `should find bug`() {
+        val staticAnalysisPropertiesFile = projectDir.newFile("static-analysis.properties")
+        staticAnalysisPropertiesFile.writeText("""
+            findbugs=0
+        """.trimIndent())
         val spotBugsSource = projectDir.newFile("src/main/java/sample/SpotBugs.java")
         spotBugsSource.writeText("""
             package sample;
@@ -102,6 +120,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
                 containsString("Too much SpotBugs errors: actual=1, limit=0")
         )
         Files.delete(spotBugsSource.toPath())
+        Files.delete(staticAnalysisPropertiesFile.toPath())
     }
 
     @Test
