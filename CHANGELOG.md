@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.14.1]() (11-07-2019)
+
 * Исправлено отключение findbugs при удалении лимита findbugs static-analysis.properties
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.14.0]() (08-07-2019)
 
 * Добавлено автоподнятие coverage при увеличении тестового покрытия при локальной сборке
