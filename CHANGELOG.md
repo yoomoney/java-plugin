@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.14.1]() (11-07-2019)
 
 * Исправлено отключение findbugs при удалении лимита findbugs static-analysis.properties
