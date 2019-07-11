@@ -80,7 +80,13 @@ class SpotBugsConfigurer {
 
     private fun applyCheckTask(target: Project) {
         target.tasks.create("checkFindBugsReport").doLast {
-            val limit = getStaticAnalysisLimit(target, "findbugs").orElse(0)
+            val limitOpt = getStaticAnalysisLimit(target, "findbugs")
+            if (!limitOpt.isPresent) {
+                target.logger.warn("findbugs limit not found, skipping check")
+                return@doLast
+            }
+            val limit = limitOpt.get()
+
             val xmlReport = target.tasks.maybeCreate("spotbugsMain", SpotBugsTask::class.java).reports.xml
             // если в проекте нет исходников, то отчет создан не будет. Пропускает такие проекты
             if (!xmlReport.destination.exists()) {
