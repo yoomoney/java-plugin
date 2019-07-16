@@ -104,6 +104,15 @@ abstract class AbstractPluginTest {
                 .build()
     }
 
+    fun runTasksOnJenkinsFail(vararg tasks: String): BuildResult {
+        return GradleRunner.create()
+                .withProjectDir(projectDir.root)
+                .withArguments(tasks.toList() + "--stacktrace" + "-Pci=true")
+                .withPluginClasspath()
+                .forwardOutput()
+                .buildAndFail()
+    }
+
     fun runTasksFail(vararg tasks: String): BuildResult {
         return GradleRunner.create()
                 .withProjectDir(projectDir.root)

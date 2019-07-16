@@ -110,7 +110,7 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
     }
 
     @Test
-    fun `should return success and increase coverage when it's gone up`() {
+    fun `should return success and increase coverage when it's gone up on local machine`() {
         projectDir.newFolder("src", "test", "java")
         val javaTest = projectDir.newFile("src/test/java/JavaTest.java")
         javaTest.writeText("""
@@ -150,10 +150,11 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
             }
         """.trimIndent())
         coverageProperties.writeText("""
-            instruction=57.32
+            instruction=57
+            line=100
             branch=0
             method=40
-            class=100
+            class=96
         """.trimIndent())
 
         val buildResult = runTasksSuccessfully("checkCoverage")
@@ -165,6 +166,10 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
                 buildResult.output,
                 containsString("Coverage increased for type=method, setting limit to 50")
         )
+        assertThat(
+                buildResult.output,
+                containsString("Coverage increased for type=class, setting limit to 100")
+        )
         val coverageLimits = Properties().apply {
             FileInputStream(coverageProperties).use {
                 load(it)
@@ -172,6 +177,139 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
         }
         coverageLimits.getProperty("method")
         assertEquals(coverageLimits.getProperty("method"), "50")
+        Files.delete(javaTest.toPath())
+        Files.delete(kotlinTest.toPath())
+        Files.delete(slowTest.toPath())
+    }
+
+    @Test
+    fun `should return failed and when coverage gone up on CI build`() {
+        projectDir.newFolder("src", "test", "java")
+        val javaTest = projectDir.newFile("src/test/java/JavaTest.java")
+        javaTest.writeText("""
+            import org.testng.annotations.Test;
+            public class JavaTest {
+                @Test
+                public void javaTest() {
+                    System.out.println("run java test...");
+                }
+            }
+        """.trimIndent())
+
+        projectDir.newFolder("src", "test", "kotlin")
+        val kotlinTest = projectDir.newFile("src/test/kotlin/KotlinTest.kt")
+        kotlinTest.writeText("""
+            import org.testng.annotations.Test
+            class KotlinTest {
+                @Test
+                fun `kotlin test`() {
+                    println("run kotlin test...")
+                }
+            }
+        """.trimIndent())
+
+        projectDir.newFolder("src", "slowTest", "java")
+        val slowTest = projectDir.newFile("src/slowTest/java/SlowTest.java")
+        slowTest.writeText("""
+            import org.testng.Assert;
+            import org.testng.annotations.Test;
+            public class SlowTest {
+                @Test
+                public void slowTest() throws Exception {
+                    sample.HelloWorld.main(null);
+                    System.out.println(ru.yandex.money.common.command.result.CommandResult.Status.SUCCESS);
+                    System.out.println("run slowTest test...");
+                }
+            }
+        """.trimIndent())
+        coverageProperties.writeText("""
+            instruction=57
+            branch=0
+            method=40
+            class=100
+        """.trimIndent())
+
+        val buildResult = runTasksOnJenkinsFail("checkCoverage")
+        assertThat(
+                buildResult.output,
+                containsString("Coverage limit failure")
+        )
+        assertThat(
+                buildResult.output,
+                containsString("Great! Coverage gone up, increase it to 50 in coverage.properties and you're good to go: type=method, actual=50, limit=40")
+        )
+        val coverageLimits = Properties().apply {
+            FileInputStream(coverageProperties).use {
+                load(it)
+            }
+        }
+        coverageLimits.getProperty("method")
+        assertEquals(coverageLimits.getProperty("method"), "40")
+        Files.delete(javaTest.toPath())
+        Files.delete(kotlinTest.toPath())
+        Files.delete(slowTest.toPath())
+    }
+
+    @Test
+    fun `should return failed and rewrite only upped coverage properties if coverage gone down on local machine`() {
+        projectDir.newFolder("src", "test", "java")
+        val javaTest = projectDir.newFile("src/test/java/JavaTest.java")
+        javaTest.writeText("""
+            import org.testng.annotations.Test;
+            public class JavaTest {
+                @Test
+                public void javaTest() {
+                    System.out.println("run java test...");
+                }
+            }
+        """.trimIndent())
+
+        projectDir.newFolder("src", "test", "kotlin")
+        val kotlinTest = projectDir.newFile("src/test/kotlin/KotlinTest.kt")
+        kotlinTest.writeText("""
+            import org.testng.annotations.Test
+            class KotlinTest {
+                @Test
+                fun `kotlin test`() {
+                    println("run kotlin test...")
+                }
+            }
+        """.trimIndent())
+
+        projectDir.newFolder("src", "slowTest", "java")
+        val slowTest = projectDir.newFile("src/slowTest/java/SlowTest.java")
+        slowTest.writeText("""
+            import org.testng.Assert;
+            import org.testng.annotations.Test;
+            public class SlowTest {
+                @Test
+                public void slowTest() throws Exception {
+                    sample.HelloWorld.main(null);
+                    System.out.println(ru.yandex.money.common.command.result.CommandResult.Status.SUCCESS);
+                    System.out.println("run slowTest test...");
+                }
+            }
+        """.trimIndent())
+        coverageProperties.writeText("""
+            instruction=58
+            branch=0
+            method=40
+            class=96
+        """.trimIndent())
+
+        val buildResult = runTasksFail("checkCoverage")
+        assertThat(
+                buildResult.output,
+                containsString("Coverage limit failure")
+        )
+        val coverageLimits = Properties().apply {
+            FileInputStream(coverageProperties).use {
+                load(it)
+            }
+        }
+        coverageLimits.getProperty("method")
+        assertEquals(coverageLimits.getProperty("method"), "50")
+        assertEquals(coverageLimits.getProperty("class"), "100")
         Files.delete(javaTest.toPath())
         Files.delete(kotlinTest.toPath())
         Files.delete(slowTest.toPath())
@@ -189,6 +327,17 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
         assertThat(
                 buildResult.output,
                 containsString("Coverage limit failure")
+        )
+    }
+
+    @Test
+    fun `should return failed when dont' have limit for type`() {
+        coverageProperties.writeText("""
+        """.trimIndent())
+        val buildResult = runTasksFail("checkCoverage")
+        assertThat(
+                buildResult.output,
+                containsString("Not found settings in coverage.properties for: type=instruction")
         )
     }
 }

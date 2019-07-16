@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Изменен формат вывода в лог таски `checkCoverage`
+* Исправлен баг с проставлением timestamp при локальном автоподнятии coverage
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.14.1]() (11-07-2019)
 
