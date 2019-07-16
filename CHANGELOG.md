@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.14.2]() (16-07-2019)
+
 * Изменен формат вывода в лог таски `checkCoverage`
 * Исправлен баг с проставлением timestamp при локальном автоподнятии coverage
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.14.1]() (11-07-2019)
 
 * Исправлено отключение findbugs при удалении лимита findbugs static-analysis.properties
