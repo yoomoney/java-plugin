@@ -1,5 +1,10 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Из проверки spotbug исключены паттерны:,
+ - OCP_OVERLY_CONCRETE_PARAMETER - метод декларирует в аргументах конкретные классы, хотя в его теле используются только методы,
+ определенные в супер-классе или в реализуемом интерфейсе.
+ - CE_CLASS_ENVY - метод активнее использует методы другого класса, по сранению с методами своего собственного.
+ - CC_CYCLOMATIC_COMPLEXITY - метод имеет высокий показатель цикломатической сложности.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.14.2]() (16-07-2019)
 
