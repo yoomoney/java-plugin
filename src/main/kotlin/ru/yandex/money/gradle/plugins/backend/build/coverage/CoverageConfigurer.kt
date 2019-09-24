@@ -137,6 +137,7 @@ class CoverageConfigurer {
             if (isLimitsCheckPass) {
                 project.logger.info("Coverage check successfully passed")
             } else {
+                project.logger.lifecycle("Actual coverage: \n{}", actualCoverage)
                 throw GradleException("Coverage limit failure: $errorMessages")
             }
         }
