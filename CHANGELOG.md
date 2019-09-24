@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.15.0]() (24-09-2019)
 
 * При сборке в Jenkins теперь пишется актуальный coverage в формате удобным для copy paste в coverage.properties
