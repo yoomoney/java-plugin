@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.15.0]() (24-09-2019)
+
 * При сборке в Jenkins теперь пишется актуальный coverage в формате удобным для copy paste в coverage.properties
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.14.3]() (05-09-2019)
 
 * Из проверки spotbug исключены паттерны:,
