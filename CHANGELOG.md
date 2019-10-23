@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.15.1]() (23-10-2019)
+
 * Убрано требование одной (в строке) закрывющей скобки для цикла do..while
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.15.0]() (24-09-2019)
 
 * При сборке в Jenkins теперь пишется актуальный coverage в формате удобным для copy paste в coverage.properties
