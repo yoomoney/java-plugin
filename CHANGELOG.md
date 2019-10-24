@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Из проверки spotbug исключен паттерн:
+- BAS_BLOATED_ASSIGNMENT_SCOPE - переменная объявлена не в том скоупе, где она используется. Эксперименатальный метод
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.15.1]() (23-10-2019)
 
