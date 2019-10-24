@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.15.2]() (24-10-2019)
+
 * Из проверки spotbug исключен паттерн:
 - BAS_BLOATED_ASSIGNMENT_SCOPE - переменная объявлена не в том скоупе, где она используется. Эксперименатальный метод
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.15.1]() (23-10-2019)
 
 * Убрано требование одной (в строке) закрывющей скобки для цикла do..while
