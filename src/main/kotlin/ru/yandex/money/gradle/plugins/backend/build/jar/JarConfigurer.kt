@@ -14,6 +14,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
+private const val COMPILE_JAVA_TASK_NAME = "compileJava"
+
 /**
  * Конфигурирует сборку jar файла
  *
@@ -39,13 +41,13 @@ class JarConfigurer {
             val buildDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             manifest {
                 it.attributes(
-                        mapOf(
-                                "Implementation-Version" to "built at $buildDate on ${getHostName()}",
-                                "Bundle-SymbolicName" to target.name,
-                                "Built-By" to System.getProperty("user.name"),
-                                "Built-Date" to buildDate,
-                                "Built-At" to getHostName()
-                        )
+                    mapOf(
+                        "Implementation-Version" to "built at $buildDate on ${getHostName()}",
+                        "Bundle-SymbolicName" to target.name,
+                        "Built-By" to System.getProperty("user.name"),
+                        "Built-Date" to buildDate,
+                        "Built-At" to getHostName()
+                    )
                 )
             }
             from(target.projectDir) {
@@ -71,9 +73,9 @@ class JarConfigurer {
         target.configurations.getByName("testCompile").extendsFrom(optional)
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {
             sourceSets.getByName("main").compileClasspath =
-                    sourceSets.getByName("main")
-                            .compileClasspath
-                            .plus(target.configurations.getByName("optional"))
+                sourceSets.getByName("main")
+                    .compileClasspath
+                    .plus(target.configurations.getByName("optional"))
         }
     }
 
@@ -97,10 +99,17 @@ class JarConfigurer {
             sourceCompatibility = JavaVersion.VERSION_1_8
             targetCompatibility = JavaVersion.VERSION_1_8
         }
+
+        val javaVersion = Jvm.current().javaVersion
+        if (javaVersion == null || javaVersion.isJava9Compatible) {
+            (target.tasks.getByName(COMPILE_JAVA_TASK_NAME) as JavaCompile).apply {
+                options.compilerArgs.addAll(listOf("--release", JavaVersion.VERSION_1_8.majorVersion))
+            }
+        }
     }
 
     private fun forceEncoding(target: Project) {
-        (target.tasks.getByName("compileJava") as JavaCompile).apply {
+        (target.tasks.getByName(COMPILE_JAVA_TASK_NAME) as JavaCompile).apply {
             options.encoding = "UTF-8"
         }
         (target.tasks.getByName("compileTestJava") as JavaCompile).apply {
@@ -121,7 +130,7 @@ class JarConfigurer {
     private fun enableCompileJavaFork(target: Project) {
         val javaHomePath = getJavaHomePath()
         if (javaHomePath != null) {
-            (target.tasks.getByName("compileJava") as JavaCompile).apply {
+            (target.tasks.getByName(COMPILE_JAVA_TASK_NAME) as JavaCompile).apply {
                 options.isFork = true
                 options.forkOptions.javaHome = target.file(javaHomePath)
             }
@@ -140,13 +149,13 @@ class JarConfigurer {
 
     companion object {
         val repos = mapOf(
-                "central" to URI("https://nexus.yamoney.ru/content/repositories/central/"),
-                "jcenter" to URI("https://nexus.yamoney.ru/content/repositories/jcenter.bintray.com/"),
-                "snapshots" to URI("https://nexus.yamoney.ru/content/repositories/snapshots/"),
-                "releases" to URI("https://nexus.yamoney.ru/content/repositories/releases/"),
-                "thirdparty" to URI("https://nexus.yamoney.ru/content/repositories/thirdparty/"),
-                "spp-snapshots" to URI("https://nexus.yamoney.ru/content/repositories/spp-snapshots/"),
-                "spp-releases" to URI("https://nexus.yamoney.ru/content/repositories/spp-releases/")
+            "central" to URI("https://nexus.yamoney.ru/content/repositories/central/"),
+            "jcenter" to URI("https://nexus.yamoney.ru/content/repositories/jcenter.bintray.com/"),
+            "snapshots" to URI("https://nexus.yamoney.ru/content/repositories/snapshots/"),
+            "releases" to URI("https://nexus.yamoney.ru/content/repositories/releases/"),
+            "thirdparty" to URI("https://nexus.yamoney.ru/content/repositories/thirdparty/"),
+            "spp-snapshots" to URI("https://nexus.yamoney.ru/content/repositories/spp-snapshots/"),
+            "spp-releases" to URI("https://nexus.yamoney.ru/content/repositories/spp-releases/")
         )
     }
 }
