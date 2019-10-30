@@ -3,6 +3,7 @@ package ru.yandex.money.gradle.plugins.backend.build.jar
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginConvention
+import org.gradle.api.plugins.JavaPlugin.COMPILE_JAVA_TASK_NAME
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.internal.jvm.Jvm
@@ -13,8 +14,6 @@ import java.net.URI
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
-
-private const val COMPILE_JAVA_TASK_NAME = "compileJava"
 
 /**
  * Конфигурирует сборку jar файла
