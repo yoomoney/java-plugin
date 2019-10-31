@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.15.3]() (31-10-2019)
 
 * Для таски `compileJava` добавлен аргумент компиляции `--release 8`, если версия java >= 9
