@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.15.3]() (31-10-2019)
+
 * Для таски `compileJava` добавлен аргумент компиляции `--release 8`, если версия java >= 9
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.15.2]() (24-10-2019)
 
 * Из проверки spotbug исключен паттерн:
