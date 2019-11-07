@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Убрано лишнее логирование при подсчете покрытия тестами
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.15.3]() (31-10-2019)
 
