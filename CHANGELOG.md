@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.16.0]() (08-11-2019)
+
 * Убрано лишнее логирование при подсчете покрытия тестами
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.15.3]() (31-10-2019)
 
 * Для таски `compileJava` добавлен аргумент компиляции `--release 8`, если версия java >= 9
