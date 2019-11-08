@@ -133,11 +133,10 @@ class CoverageConfigurer {
             if (isLocalBuild) {
                 coveragePropertiesFile.writeText(actualCoverage)
             }
-            project.logger.lifecycle("Current coverage:\n$currentCoverageInfo")
+            project.logger.lifecycle("Actual coverage:\n$currentCoverageInfo")
             if (isLimitsCheckPass) {
                 project.logger.info("Coverage check successfully passed")
             } else {
-                project.logger.lifecycle("Actual coverage: \n{}", actualCoverage)
                 throw GradleException("Coverage limit failure: $errorMessages")
             }
         }
