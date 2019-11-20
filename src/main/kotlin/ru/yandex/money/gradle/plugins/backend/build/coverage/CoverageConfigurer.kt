@@ -29,7 +29,7 @@ class CoverageConfigurer {
         val jacocoAggReportTask = configureJacocoAggReportTask(project)
         val checkCoverageTask = configureCheckCoverageTask(project)
 
-        jacocoAggReportTask.dependsOn("check", "slowTest")
+        jacocoAggReportTask.dependsOn("check", "componentTest")
         checkCoverageTask.dependsOn("jacocoAggReport")
     }
 
