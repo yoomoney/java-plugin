@@ -2,6 +2,7 @@ package ru.yandex.money.gradle.plugins.backend.build.spotbugs
 
 import com.github.spotbugs.SpotBugsExtension
 import com.github.spotbugs.SpotBugsTask
+import com.github.spotbugs.SpotBugsXmlReport
 import org.apache.commons.io.IOUtils
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -10,9 +11,10 @@ import org.gradle.api.internal.resources.StringBackedTextResource
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.SourceSet
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
-import ru.yandex.money.gradle.plugins.backend.build.getStaticAnalysisLimit
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
+import ru.yandex.money.gradle.plugins.backend.build.staticanalysis.StaticAnalysisProperties
 import java.lang.Integer.max
+import java.nio.charset.StandardCharsets
 import javax.xml.parsers.DocumentBuilderFactory
 
 /**
@@ -80,12 +82,13 @@ class SpotBugsConfigurer {
 
     private fun applyCheckTask(target: Project) {
         target.tasks.create("checkFindBugsReport").doLast {
-            val limitOpt = getStaticAnalysisLimit(target, "findbugs")
-            if (!limitOpt.isPresent) {
+            val staticAnalysis = StaticAnalysisProperties.load(target)
+
+            val findbugsLimit = staticAnalysis?.findbugs
+            if (findbugsLimit == null) {
                 target.logger.warn("findbugs limit not found, skipping check")
                 return@doLast
             }
-            val limit = limitOpt.get()
 
             val xmlReport = target.tasks.maybeCreate("spotbugsMain", SpotBugsTask::class.java).reports.xml
             // если в проекте нет исходников, то отчет создан не будет. Пропускает такие проекты
@@ -98,12 +101,11 @@ class SpotBugsConfigurer {
             val bugsFound = document.getElementsByTagName("BugInstance").length
 
             when {
-                bugsFound > limit -> throw GradleException("Too much SpotBugs errors: actual=$bugsFound, " +
-                        "limit=$limit. See the report at: ${xmlReport.destination}")
-                bugsFound < max(0, limit - 10) -> throw GradleException("SpotBugs limit is too high, " +
-                        "must be $bugsFound. Decrease it in file static-analysis.properties.")
-                else -> target.logger.lifecycle("SpotBugs successfully passed with $bugsFound (limit=$limit) errors." +
-                        " See the report at: ${xmlReport.destination}")
+                bugsFound > findbugsLimit -> throw GradleException("Too much SpotBugs errors: actual=$bugsFound, " +
+                        "limit=$findbugsLimit. See the report at: ${xmlReport.destination}")
+                bugsFound < max(0, findbugsLimit - 10) -> updateIfLocalOrElseThrow(target, staticAnalysis, bugsFound,
+                        findbugsLimit, xmlReport)
+                else -> logSuccess(target, bugsFound, findbugsLimit, xmlReport)
             }
         }
     }
@@ -119,6 +121,23 @@ class SpotBugsConfigurer {
 
     private fun spotbugsExclude(): String {
         val inputStream = this.javaClass.getResourceAsStream("/findbugs-exclude.xml")
-        return IOUtils.toString(inputStream)
+        return IOUtils.toString(inputStream, StandardCharsets.UTF_8)
+    }
+
+    private fun updateIfLocalOrElseThrow(target: Project, staticAnalysis: StaticAnalysisProperties, bugsFound: Int, bugsLimit: Int, xmlReport: SpotBugsXmlReport) {
+        if (!target.hasProperty("ci")) {
+            staticAnalysis.findbugs = bugsFound
+            staticAnalysis.store()
+
+            logSuccess(target, bugsFound, bugsLimit, xmlReport)
+        } else {
+            throw GradleException("SpotBugs limit is too high, " +
+                    "must be $bugsFound. Decrease it in file static-analysis.properties.")
+        }
+    }
+
+    private fun logSuccess(target: Project, bugsFound: Int, bugsLimit: Int, xmlReport: SpotBugsXmlReport) {
+        target.logger.lifecycle("SpotBugs successfully passed with $bugsFound (limit=$bugsLimit) errors." +
+                " See the report at: ${xmlReport.destination}")
     }
 }

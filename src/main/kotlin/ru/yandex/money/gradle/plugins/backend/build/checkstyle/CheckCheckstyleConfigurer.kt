@@ -10,6 +10,7 @@ import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
+import java.nio.charset.StandardCharsets
 
 /**
  * Конфигурация checkstyle
@@ -66,6 +67,6 @@ class CheckCheckstyleConfigurer {
 
     private fun checkstyleConfig(): String {
         val inputStream = this.javaClass.getResourceAsStream(DEFAULT_CHECKSTYLE_CONFIG)
-        return IOUtils.toString(inputStream)
+        return IOUtils.toString(inputStream, StandardCharsets.UTF_8)
     }
 }

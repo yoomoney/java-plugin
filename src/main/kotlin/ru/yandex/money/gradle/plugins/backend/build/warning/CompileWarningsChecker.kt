@@ -3,8 +3,8 @@ package ru.yandex.money.gradle.plugins.backend.build.warning
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
-import ru.yandex.money.gradle.plugins.backend.build.getStaticAnalysisLimit
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
+import ru.yandex.money.gradle.plugins.backend.build.staticanalysis.StaticAnalysisProperties
 
 /**
  * Класс для проверки, что количество compile warnings не превышает заданное в файле static-analysis.properties
@@ -15,8 +15,10 @@ import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 open class CompileWarningsChecker {
 
     fun init(project: Project) {
-        val limitOpt = getStaticAnalysisLimit(project, LIMIT_NAME)
-        if (!limitOpt.isPresent) {
+        val staticAnalysis = StaticAnalysisProperties.load(project)
+
+        val compilerLimit = staticAnalysis?.compiler
+        if (compilerLimit == null) {
             project.logger.warn("No settings for compiler warnings check. Skipping.")
             return
         }
@@ -40,7 +42,7 @@ open class CompileWarningsChecker {
         }
 
         compileJavaTask.doLast {
-            CompileWarningsChecker().checkCompileWarnings(project, compileErrorOutFilePath, limitOpt.get())
+            checkCompileWarnings(project, staticAnalysis, compileErrorOutFilePath, compilerLimit)
         }
 
         // Вывод error и warn при компиляции в system.out
@@ -54,7 +56,7 @@ open class CompileWarningsChecker {
         }
     }
 
-    private fun checkCompileWarnings(project: Project, compileErrorOutFilePath: String, limit: Int) {
+    private fun checkCompileWarnings(project: Project, staticAnalysis: StaticAnalysisProperties, compileErrorOutFilePath: String, limit: Int) {
         var warnCount = 0
 
         project.file(compileErrorOutFilePath).forEachLine {
@@ -65,16 +67,30 @@ open class CompileWarningsChecker {
 
         when {
             warnCount > limit -> throw GradleException("Too much compiler warnings: actual=$warnCount, limit=$limit")
-            warnCount < getCompilerLowerLimit(limit) -> throw GradleException("Compiler warnings limit is too high, " +
-                    "must be $warnCount. Decrease it in file static-analysis.properties.")
-            else -> project.logger.lifecycle("Compiler warnings check successfully passed with $warnCount warnings")
+            warnCount < getCompilerLowerLimit(limit) -> updateIfLocalOrElseThrow(project, staticAnalysis, warnCount)
+            else -> logSuccess(project, warnCount)
         }
     }
 
     private fun getCompilerLowerLimit(limit: Int) = limit * 95 / 100
 
+    private fun updateIfLocalOrElseThrow(project: Project, staticAnalysis: StaticAnalysisProperties, warnCount: Int) {
+        if (!project.hasProperty("ci")) {
+            staticAnalysis.compiler = warnCount
+            staticAnalysis.store()
+
+            logSuccess(project, warnCount)
+        } else {
+            throw GradleException("Compiler warnings limit is too high, " +
+                    "must be $warnCount. Decrease it in file static-analysis.properties.")
+        }
+    }
+
+    private fun logSuccess(project: Project, warnCount: Int) {
+        project.logger.lifecycle("Compiler warnings check successfully passed with $warnCount warnings")
+    }
+
     companion object {
-        private const val LIMIT_NAME = "compiler"
         private const val REPORT_DIR_PATH = "reports/compileJava"
         private const val ERROR_OUT_FILE_NAME = "compile_error_out.txt"
     }
