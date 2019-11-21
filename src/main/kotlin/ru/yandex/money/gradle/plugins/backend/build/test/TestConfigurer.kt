@@ -6,7 +6,7 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.testng.TestNGOptions
 
 /**
- * Конфигрурует тесты и слоу тесты
+ * Конфигрурует unit тесты и компонетные тесты
  *
  * @author Valerii Zhirnov (vazhirnov@yamoney.ru)
  * @since 17.04.2019
@@ -27,20 +27,24 @@ class TestConfigurer {
             }
             dependsOn("testJunit")
         }
+        val chosenSourceSet = if (target.file("src/componentTest").exists()) "componentTest" else "slowTest"
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {
-            val slowTest = sourceSets.create("slowTest")
-            slowTest.java { it.srcDir(target.file("src/slowTest/java")) }
-            slowTest.compileClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
-            slowTest.runtimeClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
-            slowTest.resources { it.srcDir(target.file("src/slowTest/resources")) }
+            val componentTest = sourceSets.create(chosenSourceSet)
+            componentTest.compileClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
+            componentTest.runtimeClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
+            componentTest.java { it.srcDir(target.file("src/$chosenSourceSet/java")) }
+            componentTest.resources {
+                it.srcDir(target.file("src/$chosenSourceSet/resources"))
+            }
         }
+
         target.configurations
-                .getByName("slowTestCompile")
+                .getByName("${chosenSourceSet}Compile")
                 .extendsFrom(target.configurations.getByName("testCompile"))
         target.configurations
-                .getByName("slowTestRuntime")
+                .getByName("${chosenSourceSet}Runtime")
                 .extendsFrom(target.configurations.getByName("testRuntime"))
-        target.tasks.create("slowTestTestNg", Test::class.java).apply {
+        target.tasks.create("${chosenSourceSet}TestNg", Test::class.java).apply {
             useTestNG()
             systemProperty("file.encoding", "UTF-8")
             options {
@@ -48,30 +52,31 @@ class TestConfigurer {
                 it.parallel = "classes"
                 it.threadCount = 8
             }
-            val slowTest = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt("slowTest")
+            val slowTest = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSet)
             testClassesDirs = slowTest.output.classesDirs
             classpath = slowTest.runtimeClasspath
         }
-        target.tasks.create("slowTest", Test::class.java).apply {
+        target.tasks.create("${chosenSourceSet}Test", Test::class.java).apply {
             systemProperty("file.encoding", "UTF-8")
-            val slowTest = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt("slowTest")
+            val slowTest = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSet)
             testClassesDirs = slowTest.output.classesDirs
             classpath = slowTest.runtimeClasspath
-            dependsOn("slowTestTestNg")
+            dependsOn("${chosenSourceSet}TestNg")
         }
         target.tasks.create("componentTest", Test::class.java).apply {
             systemProperty("file.encoding", "UTF-8")
-            dependsOn("slowTest")
+            dependsOn("${chosenSourceSet}Test")
         }
         target.tasks.withType(Test::class.java).forEach {
             it.reports.junitXml.destination = target.file("${target.property("testResultsDir")}/${it.name}")
             it.reports.html.destination = target.file("${target.buildDir}/reports/${it.name}")
         }
+        val compileTestJavaTaskName = if (target.file("src/componentTest").exists()) "compileComponentTestJava" else "compileSlowTestJava"
         target.tasks.getByName("check").apply {
-            dependsOn -= "slowTest"
-            dependsOn -= "slowTestTestNg"
             dependsOn -= "componentTest"
-            dependsOn += "compileSlowTestJava"
+            dependsOn -= "${chosenSourceSet}Test"
+            dependsOn -= "${chosenSourceSet}TestNg"
+            dependsOn += compileTestJavaTaskName
         }
     }
 }
