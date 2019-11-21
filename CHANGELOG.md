@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
-* Добавлена возможность запускать прогон компонетных тестов из обоих source set (componentTest, slowTest) на время переезда тестов в 
+## [1.17.0]() (21-11-2019)
+
+* Добавлена возможность запускать прогон компонетных тестов из обоих source set (componentTest, slowTest) на время переезда тестов в
 правильный source set
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.16.0]() (08-11-2019)
 
 * Убрано лишнее логирование при подсчете покрытия тестами
