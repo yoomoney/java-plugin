@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.17.1]() (26-11-2019)
+
 * Обновлена зависимость ```yamoney-check-dependencies-plugin``` ```4.4.5``` -> ```4.5.3```
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.17.0]() (21-11-2019)
 
 * Добавлена возможность запускать прогон компонетных тестов из обоих source set (componentTest, slowTest) на время переезда тестов в
