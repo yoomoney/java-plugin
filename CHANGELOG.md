@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Обновлена зависимость ```yamoney-check-dependencies-plugin``` ```4.4.5``` -> ```4.5.3```
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.17.0]() (21-11-2019)
 
