@@ -11,21 +11,18 @@ import java.util.stream.Collectors.toMap
  *
  * @author Anton Kuzmin
  */
-class StaticAnalysisProperties(
+class StaticAnalysisProperties
+private constructor(
     /** Файл с ограничениями */
         val file: File,
-    /** Ограничение на количество compiler */
-        var compiler: Int?,
-    /** Ограничение на количество checkstyle */
-        var checkstyle: Int?,
-    /** Ограничение на количество findbugs */
-        var findbugs: Int?
+    /** Ограничения */
+        val properties: MutableMap<String, Int>
 ) {
 
     companion object {
-        private const val COMPILER_KEY = "compiler"
-        private const val CHECKSTYLE_KEY = "checkstyle"
-        private const val FINDBUGS_KEY = "findbugs"
+        const val COMPILER_KEY = "compiler"
+        const val CHECKSTYLE_KEY = "checkstyle"
+        const val FINDBUGS_KEY = "findbugs"
 
         private const val STATIC_ANALYSIS_FILE = "static-analysis.properties"
 
@@ -42,19 +39,27 @@ class StaticAnalysisProperties(
             }
 
             val properties = Files.newBufferedReader(file.toPath()).lines()
+                    .filter { !it.startsWith("#") }
                     .map { it.split("=") }
                     .collect(toMap(
                             { splitted: List<String> -> splitted[0] },
-                            { splitted: List<String> -> splitted[1] }
+                            { splitted: List<String> -> splitted[1].toInt() }
                     ))
 
-            return StaticAnalysisProperties(
-                    file = file,
-                    compiler = properties[COMPILER_KEY]?.toInt(),
-                    checkstyle = properties[CHECKSTYLE_KEY]?.toInt(),
-                    findbugs = properties[FINDBUGS_KEY]?.toInt()
-            )
+            return StaticAnalysisProperties(file, properties)
         }
+    }
+
+    /**
+     * Получает значение ограничения по его ключу
+     */
+    fun getProperty(key: String) = properties[key]
+
+    /**
+     * Устанавливает значение ограничения
+     */
+    fun setProperty(key: String, value: Int) {
+        properties[key] = value
     }
 
     /**
@@ -62,9 +67,7 @@ class StaticAnalysisProperties(
      */
     fun store() {
         Files.newBufferedWriter(file.toPath()).use { writer ->
-            compiler?.also { storeValue(writer, COMPILER_KEY, it) }
-            checkstyle?.also { storeValue(writer, CHECKSTYLE_KEY, it) }
-            findbugs?.also { storeValue(writer, FINDBUGS_KEY, it) }
+            properties.entries.forEach { storeValue(writer, it.key, it.value) }
         }
     }
 

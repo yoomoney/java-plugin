@@ -84,7 +84,7 @@ class SpotBugsConfigurer {
         target.tasks.create("checkFindBugsReport").doLast {
             val staticAnalysis = StaticAnalysisProperties.load(target)
 
-            val findbugsLimit = staticAnalysis?.findbugs
+            val findbugsLimit = staticAnalysis?.getProperty(StaticAnalysisProperties.FINDBUGS_KEY)
             if (findbugsLimit == null) {
                 target.logger.warn("findbugs limit not found, skipping check")
                 return@doLast
@@ -126,7 +126,7 @@ class SpotBugsConfigurer {
 
     private fun updateIfLocalOrElseThrow(target: Project, staticAnalysis: StaticAnalysisProperties, bugsFound: Int, bugsLimit: Int, xmlReport: SpotBugsXmlReport) {
         if (!target.hasProperty("ci")) {
-            staticAnalysis.findbugs = bugsFound
+            staticAnalysis.setProperty(StaticAnalysisProperties.FINDBUGS_KEY, bugsFound)
             staticAnalysis.store()
 
             logSuccess(target, bugsFound, bugsLimit, xmlReport)

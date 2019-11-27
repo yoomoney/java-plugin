@@ -19,7 +19,7 @@ open class CheckCheckstyleTask : DefaultTask() {
     fun checkCheckstyle() {
         val staticAnalysis = StaticAnalysisProperties.load(project)
 
-        val checkstyleLimit = staticAnalysis?.checkstyle
+        val checkstyleLimit = staticAnalysis?.getProperty(StaticAnalysisProperties.CHECKSTYLE_KEY)
         if (checkstyleLimit == null) {
             logger.warn("skipping check checkstyle")
             return
@@ -55,7 +55,7 @@ open class CheckCheckstyleTask : DefaultTask() {
 
     private fun updateIfLocalOrElseThrow(staticAnalysis: StaticAnalysisProperties, errorsCount: Int) {
         if (!project.hasProperty("ci")) {
-            staticAnalysis.checkstyle = errorsCount
+            staticAnalysis.setProperty(StaticAnalysisProperties.CHECKSTYLE_KEY, errorsCount)
             staticAnalysis.store()
 
             logSuccess(errorsCount)

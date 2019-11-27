@@ -17,7 +17,7 @@ open class CompileWarningsChecker {
     fun init(project: Project) {
         val staticAnalysis = StaticAnalysisProperties.load(project)
 
-        val compilerLimit = staticAnalysis?.compiler
+        val compilerLimit = staticAnalysis?.getProperty(StaticAnalysisProperties.COMPILER_KEY)
         if (compilerLimit == null) {
             project.logger.warn("No settings for compiler warnings check. Skipping.")
             return
@@ -76,7 +76,7 @@ open class CompileWarningsChecker {
 
     private fun updateIfLocalOrElseThrow(project: Project, staticAnalysis: StaticAnalysisProperties, warnCount: Int) {
         if (!project.hasProperty("ci")) {
-            staticAnalysis.compiler = warnCount
+            staticAnalysis.setProperty(StaticAnalysisProperties.COMPILER_KEY, warnCount)
             staticAnalysis.store()
 
             logSuccess(project, warnCount)
