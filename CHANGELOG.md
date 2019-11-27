@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлено автоматическое обновление значений в файле `static-analysis.properties` при локальной сборке
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.17.1]() (26-11-2019)
 

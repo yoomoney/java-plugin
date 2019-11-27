@@ -4,7 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import org.gradle.api.tasks.TaskAction
-import ru.yandex.money.gradle.plugins.backend.build.getStaticAnalysisLimit
+import ru.yandex.money.gradle.plugins.backend.build.staticanalysis.StaticAnalysisProperties
 import javax.xml.parsers.DocumentBuilderFactory
 
 /**
@@ -15,18 +15,15 @@ import javax.xml.parsers.DocumentBuilderFactory
  */
 open class CheckCheckstyleTask : DefaultTask() {
 
-    companion object {
-        private const val LIMIT_NAME = "checkstyle"
-    }
-
     @TaskAction
     fun checkCheckstyle() {
-        val limitOpt = getStaticAnalysisLimit(project, LIMIT_NAME)
-        if (!limitOpt.isPresent) {
+        val staticAnalysis = StaticAnalysisProperties.load(project)
+
+        val checkstyleLimit = staticAnalysis?.checkstyle
+        if (checkstyleLimit == null) {
             logger.warn("skipping check checkstyle")
             return
         }
-        val limit = limitOpt.get()
 
         val reportsDir = project.extensions.getByType(CheckstyleExtension::class.java).reportsDir
         val checkStyleReport = project.file("$reportsDir/main.xml")
@@ -49,12 +46,26 @@ open class CheckCheckstyleTask : DefaultTask() {
         val errorsCount = checkStyleReportDoc.getElementsByTagName("error").length
 
         when {
-            errorsCount > limit -> throw GradleException("Too much checkstyle errors: actual=$errorsCount," +
-                    " limit=$limit")
-            errorsCount < getCheckstyleLowerLimit(limit) -> throw GradleException("Сheckstyle limit is too high, " +
-                    "must be $errorsCount. Decrease it in file static-analysis.properties.")
-            else -> logger.lifecycle("Checkstyle check successfully passed with $errorsCount errors")
+            errorsCount > checkstyleLimit -> throw GradleException("Too much checkstyle errors: actual=$errorsCount," +
+                    " limit=$checkstyleLimit")
+            errorsCount < getCheckstyleLowerLimit(checkstyleLimit) -> updateIfLocalOrElseThrow(staticAnalysis, errorsCount)
+            else -> logSuccess(errorsCount)
         }
+    }
+
+    private fun updateIfLocalOrElseThrow(staticAnalysis: StaticAnalysisProperties, errorsCount: Int) {
+        if (!project.hasProperty("ci")) {
+            staticAnalysis.checkstyle = errorsCount
+            staticAnalysis.store()
+
+            logSuccess(errorsCount)
+        } else {
+            throw GradleException("Сheckstyle limit is too high, must be $errorsCount. Decrease it in file static-analysis.properties.")
+        }
+    }
+
+    private fun logSuccess(errorsCount: Int) {
+        logger.lifecycle("Checkstyle check successfully passed with $errorsCount errors")
     }
 
     private fun getCheckstyleLowerLimit(limit: Int): Int {

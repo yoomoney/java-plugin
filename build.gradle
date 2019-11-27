@@ -31,6 +31,8 @@ dependencies {
             'org.jlleitschuh.gradle:ktlint-gradle:8.0.0',
             'commons-io:commons-io:2.6'
 
+    testCompile 'org.amshove.kluent:kluent:1.34'
+
     testImplementation gradleTestKit(),
             'com.netflix.nebula:nebula-test:7.2.1',
             'ru.yandex.money.common:yamoney-test-utils:22.3.0',
