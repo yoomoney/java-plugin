@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.18.1]() (27-11-2019)
+
 * Добавлено игнорирование закомментированных строк при чтении `static-analysis.properties`
 * Исправлено удаление неизвестных ключей в `static-analysis.properties`
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.18.0]() (27-11-2019)
 
 * Добавлено автоматическое обновление значений в файле `static-analysis.properties` при локальной сборке
