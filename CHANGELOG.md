@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [1.18.1]() (27-11-2019)
 
 * Добавлено игнорирование закомментированных строк при чтении `static-analysis.properties`
