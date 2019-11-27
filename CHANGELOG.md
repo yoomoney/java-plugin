@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.18.0]() (27-11-2019)
+
 * Добавлено автоматическое обновление значений в файле `static-analysis.properties` при локальной сборке
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.17.1]() (26-11-2019)
 
 * Обновлена зависимость ```yamoney-check-dependencies-plugin``` ```4.4.5``` -> ```4.5.3```
