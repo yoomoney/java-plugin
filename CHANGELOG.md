@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.18.2]() (05-12-2019)
+
 * Добавил sourceset grafana в список исключений при проверке зависимостей.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.18.1]() (27-11-2019)
 
 * Добавлено игнорирование закомментированных строк при чтении `static-analysis.properties`
