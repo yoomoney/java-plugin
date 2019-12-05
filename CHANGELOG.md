@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавил sourceset grafana в список исключений при проверке зависимостей.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.18.1]() (27-11-2019)
 
