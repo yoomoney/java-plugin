@@ -72,7 +72,8 @@ class CheckDependenciesConfigurer {
                 "architecture", "architectureTestCompile", "architectureTestCompileClasspath",
                 "architectureTestRuntime", "architectureTestRuntimeClasspath", "dockerJava",
                 "grafanaDashboardsCompile", "grafana", "grafanaCompile", "grafanaCompileClasspath",
-                "grafanaRuntime", "grafanaRuntimeClasspath")
+                "grafanaRuntime", "grafanaRuntimeClasspath", "grafanaFromArtifactCompile",
+                "grafanaFromArtifactCompileClasspath", "grafanaFromArtifactRuntime", "grafanaFromArtifactRuntimeClasspath")
 
         checkDependenciesPluginExtension.exclusionsRulesSources = listOf(
                 "ru.yandex.money.platform:yamoney-libraries-dependencies",
