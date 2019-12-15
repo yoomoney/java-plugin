@@ -13,7 +13,7 @@ class WrapperConfigurer {
     fun init(target: Project) {
         target.tasks.maybeCreate("wrapper", Wrapper::class.java).apply {
             distributionUrl = "https://nexus.yamoney.ru/content/repositories/" +
-                    "http-proxy-services.gradle.org/distributions/gradle-4.10.2-all.zip"
+                    "http-proxy-services.gradle.org/distributions/gradle-6.0.1-all.zip"
         }
     }
 }

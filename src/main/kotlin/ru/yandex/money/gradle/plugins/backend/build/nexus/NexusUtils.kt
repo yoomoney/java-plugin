@@ -50,7 +50,7 @@ object NexusUtils {
 
         val dbFactory = DocumentBuilderFactory.newInstance()
         val documentBuilder = dbFactory.newDocumentBuilder()
-        val doc = documentBuilder.parse(IOUtils.toInputStream(content))
+        val doc = documentBuilder.parse(IOUtils.toInputStream(content, StandardCharsets.UTF_8))
 
         doc.documentElement.normalize()
         return doc.getElementsByTagName("version")

@@ -4,6 +4,7 @@ import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.apache.commons.io.IOUtils
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.internal.file.TmpDirTemporaryFileProvider
@@ -61,7 +62,8 @@ class KotlinModulePlugin : Plugin<Project> {
 
     private fun configureKtlint(target: Project) {
         target.extensions.getByType(KtlintExtension::class.java).apply {
-            reporters.set(listOf(ReporterType.PLAIN_GROUP_BY_FILE, ReporterType.CHECKSTYLE))
+            reporters(Action { listOf(ReporterType.PLAIN_GROUP_BY_FILE, ReporterType.CHECKSTYLE) })
+            disabledRules.set(setOf("import-ordering", "final-newline"))
             android.set(false)
         }
     }

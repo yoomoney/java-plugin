@@ -73,9 +73,6 @@ class TestConfigurer {
         }
         val compileTestJavaTaskName = if (target.file("src/componentTest").exists()) "compileComponentTestJava" else "compileSlowTestJava"
         target.tasks.getByName("check").apply {
-            dependsOn -= "componentTest"
-            dependsOn -= "${chosenSourceSet}Test"
-            dependsOn -= "${chosenSourceSet}TestNg"
             dependsOn += compileTestJavaTaskName
         }
     }
