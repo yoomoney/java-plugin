@@ -15,7 +15,7 @@
 
 ## Настроки компиляции java кода
 
-Плагин порзволяет через gradle property `yamoney.java-module-plugin.jvm.version` указать целевую версию java для проекта.
+Плагин порзволяет через gradle property `yamoney-java-module-plugin.jvm-version` указать целевую версию java для проекта.
 Данная версия будет использована для задания аргументов компиляции `--release`, `-source`, `-target`
 
 Допускается указывать версию в двух форматах:

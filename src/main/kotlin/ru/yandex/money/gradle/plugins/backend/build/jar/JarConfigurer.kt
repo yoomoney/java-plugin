@@ -95,7 +95,7 @@ class JarConfigurer {
 
     private fun targetJavaVersion(target: Project) {
         val targetJavaVersion = target
-            .findProperty("yamoney.java-module-plugin.jvm.version")
+            .findProperty("yamoney-java-module-plugin.jvm-version")
             ?.let { it.toString().trim().let { version -> JavaVersion.toVersion(version) } }
             ?: JavaVersion.VERSION_1_8
 
