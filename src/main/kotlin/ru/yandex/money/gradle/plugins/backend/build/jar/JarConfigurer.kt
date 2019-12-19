@@ -94,15 +94,20 @@ class JarConfigurer {
     private fun isDevelopmentBranch(target: Project): Boolean = GitManager(target).isDevelopmentBranch()
 
     private fun targetJavaVersion(target: Project) {
+        val targetJavaVersion = target
+            .findProperty("yamoney.java-module-plugin.jvm.version")
+            ?.let { it.toString().trim().let { version -> JavaVersion.toVersion(version) } }
+            ?: JavaVersion.VERSION_1_8
+
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = targetJavaVersion
+            targetCompatibility = targetJavaVersion
         }
 
-        val javaVersion = Jvm.current().javaVersion
-        if (javaVersion == null || javaVersion.isJava9Compatible) {
+        val currentCompileJavaVersion = Jvm.current().javaVersion
+        if (currentCompileJavaVersion == null || currentCompileJavaVersion.isJava9Compatible) {
             (target.tasks.getByName(COMPILE_JAVA_TASK_NAME) as JavaCompile).apply {
-                options.compilerArgs.addAll(listOf("--release", JavaVersion.VERSION_1_8.majorVersion))
+                options.compilerArgs.addAll(listOf("--release", targetJavaVersion.majorVersion))
             }
         }
     }
