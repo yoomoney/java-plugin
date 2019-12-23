@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [1.19.0]() (23-12-2019)
+
 * Добавлена возможность указать версию java через gradle свойство `yamoney-java-module-plugin.jvm-version`
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.18.3]() (06-12-2019)
 
 * Добавил sourceset grafanaFromArtifact в список исключений при проверке зависимостей.
