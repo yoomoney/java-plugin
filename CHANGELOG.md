@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлена возможность указать версию java через gradle свойство `yamoney-java-module-plugin.jvm-version`
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.18.3]() (06-12-2019)
 
