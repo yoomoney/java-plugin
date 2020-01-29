@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [2.0.0]() (29-01-2020)
 
 * Поднята версия gradle: 4.10.2 -> 6.0.1. Подняты версии подключаемых плагинов.
