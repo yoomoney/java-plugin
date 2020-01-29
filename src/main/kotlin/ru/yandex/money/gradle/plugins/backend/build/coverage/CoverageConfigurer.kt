@@ -20,7 +20,7 @@ class CoverageConfigurer {
 
     fun init(project: Project) {
         val jacocoPluginExtension = project.extensions.getByType(JacocoPluginExtension::class.java)
-        jacocoPluginExtension.toolVersion = "0.8.3"
+        jacocoPluginExtension.toolVersion = "0.8.5"
 
         val jacocoTestReportTask = project.tasks.findByName("jacocoTestReport") as JacocoReport
         jacocoTestReportTask.reports.xml.isEnabled = true
@@ -36,17 +36,14 @@ class CoverageConfigurer {
     private fun configureJacocoAggReportTask(project: Project): JacocoReport {
         val jacocoAggReportTask = project.tasks.create("jacocoAggReport", JacocoReport::class.java)
         val sourceSets = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets
-        jacocoAggReportTask.sourceDirectories = project.files(sourceSets.getByName("main").allSource.srcDirs)
-        jacocoAggReportTask.classDirectories = project.files(sourceSets.getByName("main").output)
-        jacocoAggReportTask.executionData = project.files()
+
+        jacocoAggReportTask.getSourceDirectories().setFrom(project.files(sourceSets.getByName("main").allSource.srcDirs))
+        jacocoAggReportTask.getClassDirectories().setFrom(project.files(sourceSets.getByName("main").output))
+        jacocoAggReportTask.getExecutionData().setFrom(project.fileTree(project.buildDir).include("/jacoco/*.exec"))
+
         jacocoAggReportTask.reports.xml.isEnabled = true
         jacocoAggReportTask.reports.html.isEnabled = true
-        jacocoAggReportTask.doFirst {
-            val reportDir = project.file("${project.buildDir}/jacoco")
-            if (reportDir.exists()) {
-                jacocoAggReportTask.executionData = project.files(reportDir.listFiles())
-            }
-        }
+
         jacocoAggReportTask.setOnlyIf {
             true
         }

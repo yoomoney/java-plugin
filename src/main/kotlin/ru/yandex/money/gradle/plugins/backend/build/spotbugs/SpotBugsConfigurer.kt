@@ -43,6 +43,7 @@ class SpotBugsConfigurer {
         target.tasks.withType(SpotBugsTask::class.java).forEach {
             it.reports.html.isEnabled = false
             it.reports.xml.isEnabled = true
+            it.maxHeapSize = "3g"
         }
 
         target.afterEvaluate {
@@ -89,8 +90,9 @@ class SpotBugsConfigurer {
                 target.logger.warn("findbugs limit not found, skipping check")
                 return@doLast
             }
+            val spotBugsTask = target.tasks.maybeCreate("spotbugsMain", SpotBugsTask::class.java)
 
-            val xmlReport = target.tasks.maybeCreate("spotbugsMain", SpotBugsTask::class.java).reports.xml
+            val xmlReport = spotBugsTask.reports.xml
             // если в проекте нет исходников, то отчет создан не будет. Пропускает такие проекты
             if (!xmlReport.destination.exists()) {
                 target.logger.lifecycle("SpotBugs report not found: ${xmlReport.destination}. SpotBugs skipped.")

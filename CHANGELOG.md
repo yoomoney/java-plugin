@@ -1,5 +1,9 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MAJOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Поднята версия gradle: 4.10.2 -> 6.0.1. Подняты версии подключаемых плагинов.
+**breaking changes** 
+* Для сборки плагина необходима 6 версия gradle. 
+* Больше нет удаления зависимостей между задачами.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [1.19.0]() (23-12-2019)
 

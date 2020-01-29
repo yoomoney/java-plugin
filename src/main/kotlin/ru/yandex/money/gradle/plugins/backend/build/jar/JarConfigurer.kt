@@ -86,6 +86,7 @@ class JarConfigurer {
             target.repositories.maven { it.url = repos.getValue("snapshots") }
             target.repositories.maven { it.url = repos.getValue("spp-snapshots") }
         }
+        target.repositories.maven { it.url = repos.getValue("snapshots") }
         target.repositories.maven { it.url = repos.getValue("spp-releases") }
         target.repositories.maven { it.url = repos.getValue("thirdparty") }
         target.repositories.maven { it.url = repos.getValue("central") }

@@ -18,8 +18,6 @@ class KotlinModulePluginTest : AbstractPluginTest() {
     fun before() {
         buildFile.writeText("""
             buildscript {
-                System.setProperty("platformDependenciesVersion", "3.+")
-
                 repositories {
                         maven { url 'https://nexus.yamoney.ru/repository/gradle-plugins/' }
                         maven { url 'https://nexus.yamoney.ru/repository/thirdparty/' }
@@ -37,7 +35,7 @@ class KotlinModulePluginTest : AbstractPluginTest() {
                 maven { url 'https://nexus.yamoney.ru/content/repositories/jcenter.bintray.com/' }
             }
             dependencies {
-                compile 'org.testng:testng:6.14.3'
+                implementation 'org.testng:testng:6.14.3'
             }
         """.trimIndent())
     }

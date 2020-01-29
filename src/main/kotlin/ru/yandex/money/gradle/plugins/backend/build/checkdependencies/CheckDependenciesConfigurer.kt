@@ -68,7 +68,7 @@ class CheckDependenciesConfigurer {
                 .findByType(CheckDependenciesPluginExtension::class.java)
 
         checkDependenciesPluginExtension!!.excludedConfigurations = Arrays.asList(
-                "checkstyle", "errorprone", "optional", "findbugs",
+                "checkstyle", "errorprone", "optional", "findbugs", "spotbugs",
                 "architecture", "architectureTestCompile", "architectureTestCompileClasspath",
                 "architectureTestRuntime", "architectureTestRuntimeClasspath", "dockerJava",
                 "grafanaDashboardsCompile", "grafana", "grafanaCompile", "grafanaCompileClasspath",
