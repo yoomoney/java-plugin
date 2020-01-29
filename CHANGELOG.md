@@ -1,10 +1,10 @@
-### NEXT_VERSION_TYPE=MAJOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.0.0]() (29-01-2020)
+
 * Поднята версия gradle: 4.10.2 -> 6.0.1. Подняты версии подключаемых плагинов.
-**breaking changes** 
-* Для сборки плагина необходима 6 версия gradle. 
+**breaking changes**
+* Для сборки плагина необходима 6 версия gradle.
 * Больше нет удаления зависимостей между задачами.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [1.19.0]() (23-12-2019)
 
 * Добавлена возможность указать версию java через gradle свойство `yamoney-java-module-plugin.jvm-version`
