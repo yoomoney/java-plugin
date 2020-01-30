@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.0.1]() (30-01-2020)
+
 * Удален snapshots репозиторий.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.0.0]() (29-01-2020)
 
 * Поднята версия gradle: 4.10.2 -> 6.0.1. Подняты версии подключаемых плагинов.
