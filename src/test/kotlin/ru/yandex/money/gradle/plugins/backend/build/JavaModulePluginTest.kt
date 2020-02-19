@@ -1,10 +1,12 @@
 package ru.yandex.money.gradle.plugins.backend.build
 
+import org.apache.commons.io.IOUtils
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.testng.annotations.Test
 import java.io.File
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.util.Properties
 
@@ -67,10 +69,30 @@ class JavaModulePluginTest : AbstractPluginTest() {
                 }
             }
         """.trimIndent())
+
+        projectDir.newFolder("target", "tmp", "logs", "test")
+        val slowTestLogs = projectDir.newFile("target/tmp/logs/test/LOGS-SlowTest.xml")
+        slowTestLogs.writeText("""
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+            <testlogs className="SlowTest">
+                <testlog name="slowTest"><![CDATA[
+                       [test] SUCCESS
+                       [test] run slowTest test... 
+                ]]></testlog>
+            </testlogs>    
+        """.trimIndent())
+
         val buildResult = runTasksSuccessfully("test", "componentTest")
         assertThat("Java tests passed", buildResult.output, containsString("run java test..."))
         assertThat("Kotlin tests passed", buildResult.output, containsString("run kotlin test..."))
         assertThat("SlowTest tests passed", buildResult.output, containsString("run slowTest test..."))
+        assertThat("SlowTest reports overwritten",
+                IOUtils.toString(
+                        File(projectDir.root, "/target/test-results/slowTestTestNg/TEST-SlowTest.xml").inputStream(),
+                        StandardCharsets.UTF_8
+                ),
+                containsString("[test]")
+        )
         Files.delete(javaTest.toPath())
         Files.delete(kotlinTest.toPath())
         Files.delete(slowTest.toPath())
