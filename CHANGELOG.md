@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
-* Добавлена новая Gradle-задача `overwriteTestReports`, которая выполняется после прогона компонентных тестов для 
-  перезаписывания логов в тестовых отчетах с разбиением по TraceID.
-### NEXT_VERSION_DESCRIPTION_END
+## [2.2.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/1) (28-02-2020)
+
+* Добавлена новая Gradle-задача `overwriteTestReports`, которая выполняется после прогона компонентных тестов для
+перезаписывания логов в тестовых отчетах с разбиением по TraceID.
+
 ## [2.1.0]() (14-02-2020)
 
 * Сборка на java 11
