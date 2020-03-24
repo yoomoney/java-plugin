@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Удален spp-releases, spp-snapshots репозитории, в которых оставались calypso зависимости. 
+  Используемые артефакты перенесены в репозиторий releases. 
 ### NEXT_VERSION_DESCRIPTION_END
 ## [2.2.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/1) (28-02-2020)
 

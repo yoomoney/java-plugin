@@ -84,9 +84,7 @@ class JarConfigurer {
         if (isDevelopmentBranch(target)) {
             target.repositories.mavenLocal()
             target.repositories.maven { it.url = repos.getValue("snapshots") }
-            target.repositories.maven { it.url = repos.getValue("spp-snapshots") }
         }
-        target.repositories.maven { it.url = repos.getValue("spp-releases") }
         target.repositories.maven { it.url = repos.getValue("thirdparty") }
         target.repositories.maven { it.url = repos.getValue("central") }
     }
@@ -157,9 +155,7 @@ class JarConfigurer {
             "jcenter" to URI("https://nexus.yamoney.ru/content/repositories/jcenter.bintray.com/"),
             "snapshots" to URI("https://nexus.yamoney.ru/content/repositories/snapshots/"),
             "releases" to URI("https://nexus.yamoney.ru/content/repositories/releases/"),
-            "thirdparty" to URI("https://nexus.yamoney.ru/content/repositories/thirdparty/"),
-            "spp-snapshots" to URI("https://nexus.yamoney.ru/content/repositories/spp-snapshots/"),
-            "spp-releases" to URI("https://nexus.yamoney.ru/content/repositories/spp-releases/")
+            "thirdparty" to URI("https://nexus.yamoney.ru/content/repositories/thirdparty/")
         )
     }
 }
