@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Для задачи `overwriteTestReports` поправлено чтение некорректных XML символов из файла логов.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [2.2.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/2) (25-03-2020)
 
