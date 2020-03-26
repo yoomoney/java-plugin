@@ -6,7 +6,9 @@ import org.gradle.api.tasks.TaskAction
 import org.w3c.dom.Document
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
+import org.xml.sax.InputSource
 import java.io.File
+import java.io.StringReader
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
@@ -42,6 +44,8 @@ open class OverwriteTestReportsTask : DefaultTask() {
         private const val TEST_LOG_NAME_ATTRIBUTE_NAME = "name"
 
         private const val SYSTEM_OUT_TAG_NAME = "system-out"
+
+        private val XML_INVALID_CHARS = "&#(x?)([A-Fa-f0-9]+);".toRegex()
     }
 
     @Input
@@ -140,7 +144,9 @@ open class OverwriteTestReportsTask : DefaultTask() {
     }
 
     private fun parseXmlDocument(file: File): Document {
+        val content = file.readText().replace(XML_INVALID_CHARS, "")
         val documentBuilder = documentBuilderFactory.newDocumentBuilder()
-        return documentBuilder.parse(file)
+        val inputSource = InputSource(StringReader(content))
+        return documentBuilder.parse(inputSource)
     }
 }
