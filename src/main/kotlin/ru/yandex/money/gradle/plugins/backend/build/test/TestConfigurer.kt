@@ -4,6 +4,7 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.testng.TestNGOptions
+import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
 
 /**
  * Конфигрурует unit тесты и компонетные тесты
@@ -14,6 +15,7 @@ import org.gradle.api.tasks.testing.testng.TestNGOptions
 class TestConfigurer {
 
     fun init(target: Project) {
+        val module = target.extensions.getByType(JavaModuleExtension::class.java)
         target.tasks.create("testJunit", Test::class.java).apply {
             systemProperty("file.encoding", "UTF-8")
         }
@@ -22,8 +24,9 @@ class TestConfigurer {
             systemProperty("file.encoding", "UTF-8")
             options {
                 it as TestNGOptions
-                it.parallel = "classes"
-                it.threadCount = 8
+                it.parallel = module.test.parallel
+                it.threadCount = module.test.threadCount
+                it.listeners = module.test.listeners
             }
             dependsOn("testJunit")
         }
@@ -52,8 +55,9 @@ class TestConfigurer {
             systemProperty("file.encoding", "UTF-8")
             options {
                 it as TestNGOptions
-                it.parallel = "classes"
-                it.threadCount = 8
+                it.parallel = module.componentTest.parallel
+                it.threadCount = module.componentTest.threadCount
+                it.listeners = module.componentTest.listeners
             }
             val slowTest = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSet)
             testClassesDirs = slowTest.output.classesDirs

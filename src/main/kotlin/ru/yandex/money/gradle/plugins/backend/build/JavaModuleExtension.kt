@@ -15,4 +15,7 @@ open class JavaModuleExtension {
 
     var checkstyleEnabled: Boolean = DEFAULT_CHECKSTYLE_ENABLED
     var spotbugsEnabled = DEFAULT_SPOTBUGS_ENABLED
+
+    var test = TestNgExtension()
+    var componentTest = TestNgExtension()
 }

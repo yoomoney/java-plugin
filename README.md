@@ -23,6 +23,7 @@
  - в формате с одной мажорной версией, например `8`
 
 ## Статический анализ
+
 Плагин проверяет, что количество предупреждений для заданного вида анализа не превышает значения,
 заданного в файле static-analysis.properties.
 
@@ -68,8 +69,27 @@ class=80
 * `method` - Each non-abstract method contains at least one instruction. A method is considered as executed when at least one instruction has been executed. As JaCoCo works on byte code level also constructors and static initializers are counted as methods. Some of these methods may not have a direct correspondence in Java source code, like implicit and thus generated default constructors or initializers for constants.
 * `class` - A class is considered as executed when at least one of its methods has been executed. Note that JaCoCo considers constructors as well as static initializers as methods. As Java interface types may contain static initializers such interfaces are also considered as executable classes.
 
+## Настройка запуска тестов
+
+Плагин автоматически конфигурирует TestNG для запуска тестов и предоставляет api для изменения некоторых настроек в каждом проекте:
+```groovy
+javaModule {
+    test {
+        listeners.add('my.custom.TestListener')
+        threadCount = 2
+    }
+    componentTest {
+        threadCount = 4
+    }   
+}
+```
+
+По умолчанию список listeners пуст, а threadCount равен 8.
+
+**Не рекомендуется напрямую управлять настройками TestNg в проекте, иначе они неявно перезатрут ВСЕ настройки TestNG по умолчанию из плагина.**
 
 ## Подключение
+
 Минимально работающая конфигурация:
 ```groovy
 buildscript {
