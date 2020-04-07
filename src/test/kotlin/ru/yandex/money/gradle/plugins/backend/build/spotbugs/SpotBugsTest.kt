@@ -49,9 +49,9 @@ class SpotBugsTest : AbstractPluginTest() {
         MatcherAssert.assertThat("Report task exists", reportTask, CoreMatchers.notNullValue())
         MatcherAssert.assertThat("Report task failed", reportTask?.outcome, CoreMatchers.equalTo(TaskOutcome.FAILED))
         MatcherAssert.assertThat(
-                "Output contains SpotBugs failure",
-                buildResult.output,
-                CoreMatchers.containsString("Too much SpotBugs errors: actual=1, limit=0")
+            "Output contains SpotBugs failure",
+            buildResult.output,
+            CoreMatchers.containsString("Too much SpotBugs errors: actual=1, limit=0")
         )
         Files.delete(spotBugsSource.toPath())
         Files.delete(staticAnalysisPropertiesFile.toPath())
@@ -81,9 +81,9 @@ class SpotBugsTest : AbstractPluginTest() {
         MatcherAssert.assertThat("Report task exists", reportTask, CoreMatchers.notNullValue())
         MatcherAssert.assertThat("Report task succeed", reportTask?.outcome, CoreMatchers.equalTo(TaskOutcome.SUCCESS))
         MatcherAssert.assertThat(
-                "Output contains SpotBugs pass",
-                buildResult.output,
-                CoreMatchers.containsString("SpotBugs successfully passed with 1 (limit=1) errors")
+            "Output contains SpotBugs pass",
+            buildResult.output,
+            CoreMatchers.containsString("SpotBugs successfully passed with 1 (limit=1) errors")
         )
         Files.delete(spotBugsSource.toPath())
         Files.delete(staticAnalysisPropertiesFile.toPath())
@@ -123,7 +123,7 @@ class SpotBugsTest : AbstractPluginTest() {
     @Test
     fun `should only contain spotbugs task for main source set`() {
         val buildResult = runTasksSuccessfully("test", "build")
-        val tasks = buildResult.tasks.filter { it.path.contains("spotbugs") }
+        val tasks = buildResult.tasks.filter { it.path.contains("spotbugs") && it.outcome != TaskOutcome.SKIPPED }
         MatcherAssert.assertThat("Only one spotbugs task", tasks, Matchers.hasSize(1))
     }
 }

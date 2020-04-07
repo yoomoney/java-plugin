@@ -11,7 +11,7 @@ import org.gradle.api.Project
 class SpotBugsAnnotationsConfigurer {
 
     fun init(target: Project) {
-        target.dependencies.add("optional", "com.github.spotbugs:spotbugs-annotations:3.1.12")
+        target.dependencies.add("optional", "com.github.spotbugs:spotbugs-annotations:4.0.1")
         target.dependencies.add("optional", "com.google.code.findbugs:jsr305:3.0.2")
         target.dependencies.add("optional", "net.jcip:jcip-annotations:1.0")
     }

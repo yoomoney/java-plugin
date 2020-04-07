@@ -1,15 +1,15 @@
 package ru.yandex.money.gradle.plugins.backend.build.spotbugs
 
-import com.github.spotbugs.SpotBugsExtension
-import com.github.spotbugs.SpotBugsTask
-import com.github.spotbugs.SpotBugsXmlReport
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
+import com.github.spotbugs.snom.SpotBugsExtension
+import com.github.spotbugs.snom.SpotBugsReport
+import com.github.spotbugs.snom.SpotBugsTask
 import org.apache.commons.io.IOUtils
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.internal.file.TmpDirTemporaryFileProvider
 import org.gradle.api.internal.resources.StringBackedTextResource
-import org.gradle.api.plugins.JavaPluginConvention
-import org.gradle.api.tasks.SourceSet
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import ru.yandex.money.gradle.plugins.backend.build.staticanalysis.StaticAnalysisProperties
@@ -29,29 +29,19 @@ class SpotBugsConfigurer {
         val gitManager = GitManager(target)
 
         val extension = target.extensions.getByType(SpotBugsExtension::class.java)
-        extension.sourceSets = listOf(
-                target.convention.getPlugin(JavaPluginConvention::class.java)
-                        .sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-        )
-        extension.toolVersion = "3.1.12"
-        extension.reportsDir = target.file(target.buildDir.resolve("spotbugsReports"))
-        extension.effort = "default"
-        extension.reportLevel = "medium"
-        extension.excludeFilterConfig = StringBackedTextResource(TmpDirTemporaryFileProvider(), spotbugsExclude())
-        extension.isIgnoreFailures = true
+        extension.toolVersion.set("4.0.1")
+        extension.reportsDir.set(target.file(target.buildDir.resolve("spotbugsReports")))
+        extension.effort.set(Effort.DEFAULT)
+        extension.reportLevel.set(Confidence.MEDIUM)
+        extension.excludeFilter.set(StringBackedTextResource(TmpDirTemporaryFileProvider(), spotbugsExclude()).asFile())
+        extension.ignoreFailures.set(true)
 
         target.tasks.withType(SpotBugsTask::class.java).forEach {
-            it.reports.html.isEnabled = false
-            it.reports.xml.isEnabled = true
-            it.maxHeapSize = "3g"
+            it.reports.create("xml")
+            it.maxHeapSize.set("3g")
         }
 
         target.afterEvaluate {
-            extension.sourceSets = listOf(
-                    target.convention.getPlugin(JavaPluginConvention::class.java)
-                            .sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-            )
-
             /*
             Отключает все таски spotbugs не относящиеся к main source set'у
             Возникают проблемы с плагинами которые создают свои конфигурации, которые экстендятся из стандартных
@@ -66,23 +56,24 @@ class SpotBugsConfigurer {
         }
 
         target.tasks.filter { it.name.contains("spotbugs") }
-                .forEach { it.onlyIf { spotbugsEnabled(target, gitManager) } }
+            .forEach { it.onlyIf { spotbugsEnabled(target, gitManager) } }
 
         target.tasks.getByName("build").dependsOn("spotbugsMain")
         applyCheckTask(target)
         target.tasks.getByName("spotbugsMain").finalizedBy("checkFindBugsReport")
         target.dependencies.add(
-                "spotbugsPlugins",
-                "com.mebigfatguy.sb-contrib:sb-contrib:7.4.5"
+            "spotbugsPlugins",
+            "com.mebigfatguy.sb-contrib:sb-contrib:7.4.7"
         )
         target.dependencies.add(
-                "spotbugsPlugins",
-                "com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0"
+            "spotbugsPlugins",
+            "com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1"
         )
     }
 
     private fun applyCheckTask(target: Project) {
         target.tasks.create("checkFindBugsReport").doLast {
+            target.logger.lifecycle("Run checkFindBugsReport")
             val staticAnalysis = StaticAnalysisProperties.load(target)
 
             val findbugsLimit = staticAnalysis?.getProperty(StaticAnalysisProperties.FINDBUGS_KEY)
@@ -92,9 +83,13 @@ class SpotBugsConfigurer {
             }
             val spotBugsTask = target.tasks.maybeCreate("spotbugsMain", SpotBugsTask::class.java)
 
-            val xmlReport = spotBugsTask.reports.xml
+            val xmlReport = if (spotBugsTask.reports.findByName("xml") != null) {
+                spotBugsTask.reports.findByName("xml")
+            } else {
+                spotBugsTask.reports.create("xml")
+            }
             // если в проекте нет исходников, то отчет создан не будет. Пропускает такие проекты
-            if (!xmlReport.destination.exists()) {
+            if (!xmlReport?.destination?.exists()!!) {
                 target.logger.lifecycle("SpotBugs report not found: ${xmlReport.destination}. SpotBugs skipped.")
                 return@doLast
             }
@@ -104,9 +99,9 @@ class SpotBugsConfigurer {
 
             when {
                 bugsFound > findbugsLimit -> throw GradleException("Too much SpotBugs errors: actual=$bugsFound, " +
-                        "limit=$findbugsLimit. See the report at: ${xmlReport.destination}")
+                    "limit=$findbugsLimit. See the report at: ${xmlReport.destination}")
                 bugsFound < max(0, findbugsLimit - 10) -> updateIfLocalOrElseThrow(target, staticAnalysis, bugsFound,
-                        findbugsLimit, xmlReport)
+                    findbugsLimit, xmlReport)
                 else -> logSuccess(target, bugsFound, findbugsLimit, xmlReport)
             }
         }
@@ -126,7 +121,7 @@ class SpotBugsConfigurer {
         return IOUtils.toString(inputStream, StandardCharsets.UTF_8)
     }
 
-    private fun updateIfLocalOrElseThrow(target: Project, staticAnalysis: StaticAnalysisProperties, bugsFound: Int, bugsLimit: Int, xmlReport: SpotBugsXmlReport) {
+    private fun updateIfLocalOrElseThrow(target: Project, staticAnalysis: StaticAnalysisProperties, bugsFound: Int, bugsLimit: Int, xmlReport: SpotBugsReport) {
         if (!target.hasProperty("ci")) {
             staticAnalysis.setProperty(StaticAnalysisProperties.FINDBUGS_KEY, bugsFound)
             staticAnalysis.store()
@@ -134,12 +129,12 @@ class SpotBugsConfigurer {
             logSuccess(target, bugsFound, bugsLimit, xmlReport)
         } else {
             throw GradleException("SpotBugs limit is too high, " +
-                    "must be $bugsFound. Decrease it in file static-analysis.properties.")
+                "must be $bugsFound. Decrease it in file static-analysis.properties.")
         }
     }
 
-    private fun logSuccess(target: Project, bugsFound: Int, bugsLimit: Int, xmlReport: SpotBugsXmlReport) {
+    private fun logSuccess(target: Project, bugsFound: Int, bugsLimit: Int, xmlReport: SpotBugsReport) {
         target.logger.lifecycle("SpotBugs successfully passed with $bugsFound (limit=$bugsLimit) errors." +
-                " See the report at: ${xmlReport.destination}")
+            " See the report at: ${xmlReport.destination}")
     }
 }
