@@ -1,9 +1,9 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
-* Поднята версия spotbugs: 3.1.12 -> 4.0.1. Подняты версии зависимости и плагин spotbugs. 
-  В некоторых компонентах понадобится поправить лимит static-analysis.findbugs, 
-  так как при поднятии версии библиотеки добавились новые проверки.
-### NEXT_VERSION_DESCRIPTION_END
+## [2.3.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/5) (08-04-2020)
+
+* Поднята версия spotbugs: 3.1.12 -> 4.0.1. Подняты версии зависимости и плагин spotbugs.
+В некоторых компонентах понадобится поправить лимит static-analysis.findbugs,
+так как при поднятии версии библиотеки добавились новые проверки.
+
 ## [2.2.2](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/3) (26-03-2020)
 
 * Для задачи `overwriteTestReports` поправлено чтение некорректных XML символов из файла логов.
