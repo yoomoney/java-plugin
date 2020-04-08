@@ -1,6 +1,6 @@
 package ru.yandex.money.gradle.plugins.backend.build
 
-import com.github.spotbugs.SpotBugsPlugin
+import com.github.spotbugs.snom.SpotBugsPlugin
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -43,7 +43,7 @@ class JavaModulePlugin : Plugin<Project> {
         target.pluginManager.apply(CheckstylePlugin::class.java)
         target.pluginManager.apply(SpotBugsPlugin::class.java)
 
-        target.extensions.create("javaModule", JavaModuleExtension::class.java, target)
+        target.extensions.create("javaModule", JavaModuleExtension::class.java)
 
         WrapperConfigurer().init(target)
         GitFlowConfigurer().init(target)
