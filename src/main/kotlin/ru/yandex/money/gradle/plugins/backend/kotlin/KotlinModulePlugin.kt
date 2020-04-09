@@ -14,7 +14,6 @@ import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import ru.yandex.money.gradle.plugins.backend.build.JavaModulePlugin
 import ru.yandex.money.gradle.plugins.backend.build.getStaticAnalysisLimit
-import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPluginExtension
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -36,16 +35,9 @@ class KotlinModulePlugin : Plugin<Project> {
         configureKtlint(target)
         configureDetekt(target)
         configureKotlinDeps(target)
-        configureCheckDepsPlugin(target)
 
         target.afterEvaluate {
             target.tasks.getByName("compileJava").dependsOn(target.tasks.getByName("compileKotlin"))
-        }
-    }
-
-    private fun configureCheckDepsPlugin(target: Project) {
-        target.extensions.getByType(CheckDependenciesPluginExtension::class.java).apply {
-            excludedConfigurations = excludedConfigurations + "ktlint" + "detekt" + "kotlinCompilerClasspath"
         }
     }
 
