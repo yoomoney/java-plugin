@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Обновлен yamoney-check-dependencies-plugin: 5.0.0 -> 5.2.0.
+Перенесена конфигурация check-dependencies-plugin из component-project-plugin.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [2.3.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/5) (08-04-2020)
 

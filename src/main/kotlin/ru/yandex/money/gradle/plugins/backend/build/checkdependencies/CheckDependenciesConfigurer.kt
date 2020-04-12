@@ -6,7 +6,7 @@ import ru.yandex.money.gradle.plugins.backend.build.nexus.NexusUtils
 import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPluginExtension
 import ru.yandex.money.gradle.plugins.library.dependencies.checkversion.MajorVersionCheckerExtension
 import ru.yandex.money.gradle.plugins.library.dependencies.dsl.LibraryName
-import java.util.Arrays
+import ru.yandex.money.gradle.plugins.library.dependencies.forbiddenartifacts.ForbiddenDependenciesExtension
 import java.util.HashSet
 
 /**
@@ -24,6 +24,7 @@ class CheckDependenciesConfigurer {
         configureCheckDependenciesExtension(target)
         configureMajorVersionCheckerExtension(target)
         configurePlatformDependencies(target)
+        configureForbiddenDependencies(target)
     }
 
     private fun configureMajorVersionCheckerExtension(project: Project) {
@@ -67,17 +68,32 @@ class CheckDependenciesConfigurer {
         val checkDependenciesPluginExtension = project.extensions
                 .findByType(CheckDependenciesPluginExtension::class.java)
 
-        checkDependenciesPluginExtension!!.excludedConfigurations = Arrays.asList(
-                "checkstyle", "errorprone", "optional", "findbugs", "spotbugs",
-                "architecture", "architectureTestCompile", "architectureTestCompileClasspath",
-                "architectureTestRuntime", "architectureTestRuntimeClasspath", "dockerJava",
-                "grafanaDashboardsCompile", "grafana", "grafanaCompile", "grafanaCompileClasspath",
-                "grafanaRuntime", "grafanaRuntimeClasspath", "grafanaFromArtifactCompile",
-                "grafanaFromArtifactCompileClasspath", "grafanaFromArtifactRuntime", "grafanaFromArtifactRuntimeClasspath")
-
-        checkDependenciesPluginExtension.exclusionsRulesSources = listOf(
+        checkDependenciesPluginExtension!!.exclusionsRulesSources = listOf(
                 "ru.yandex.money.platform:yamoney-libraries-dependencies",
                 "libraries-versions-exclusions.properties"
         )
+    }
+
+    private fun configureForbiddenDependencies(project: Project) {
+        val forbiddenDependencies = project.extensions.getByType(ForbiddenDependenciesExtension::class.java)
+
+        forbiddenDependencies.run {
+            range(ForbiddenDependenciesExtension.ForbiddenArtifactParameter()
+                    .forbidden("ru.yandex.money.common:yamoney-http-client")
+                    .startVersion("5.0.0")
+                    .endVersion("5.0.1")
+                    .recommended("5.1.+")
+                    .comment("В версии есть ошибка конфигурирования socketTimeout и connectionTimeout"))
+
+            before(ForbiddenDependenciesExtension.ForbiddenArtifactParameter()
+                    .forbidden("ru.yandex.money.common:yamoney-db-utils:5.1.3")
+                    .recommended("5.1.4+")
+                    .comment("В версии 5.1.3 и ранее есть баг, вызывающий роллбэки"))
+
+            eq(ForbiddenDependenciesExtension.ForbiddenArtifactParameter()
+                    .forbidden("ru.yandex.money.common:yamoney-backend-platform-core:41.1.1")
+                    .recommended("41.1.2+")
+                    .comment("В версии 41.1.1 содержатся ошибки приводящие к падению приложения"))
+        }
     }
 }
