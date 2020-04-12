@@ -10,6 +10,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.internal.file.TmpDirTemporaryFileProvider
 import org.gradle.api.internal.resources.StringBackedTextResource
+import org.gradle.api.plugins.JavaPluginConvention
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import ru.yandex.money.gradle.plugins.backend.build.staticanalysis.StaticAnalysisProperties
@@ -36,27 +37,16 @@ class SpotBugsConfigurer {
         extension.excludeFilter.set(StringBackedTextResource(TmpDirTemporaryFileProvider(), spotbugsExclude()).asFile())
         extension.ignoreFailures.set(true)
 
-        target.tasks.withType(SpotBugsTask::class.java).forEach {
-            it.reports.create("xml")
-            it.maxHeapSize.set("3g")
-        }
+        with(target.tasks.create("spotbugsMain", SpotBugsTask::class.java)) {
+            val mainSourceSet = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getByName("main")
+            reports.create("xml")
+            maxHeapSize.set("3g")
+            sourceDirs.plus(mainSourceSet.allSource.srcDirs)
+            classDirs = mainSourceSet.output
+            auxClassPaths = mainSourceSet.compileClasspath
 
-        target.afterEvaluate {
-            /*
-            Отключает все таски spotbugs не относящиеся к main source set'у
-            Возникают проблемы с плагинами которые создают свои конфигурации, которые экстендятся из стандартных
-            джавовских, на них потом пытается пройти конфигуратор spotbugs и фейлится
-            Возможно починено в новых версиях плагина, но там нужен gradle версии 5 и выше
-             */
-            target.tasks.all { task ->
-                if (task.path.contains("spotbugs") && !task.path.contains("Main")) {
-                    task.enabled = false
-                }
-            }
+            onlyIf { spotbugsEnabled(target, gitManager) }
         }
-
-        target.tasks.filter { it.name.contains("spotbugs") }
-            .forEach { it.onlyIf { spotbugsEnabled(target, gitManager) } }
 
         target.tasks.getByName("build").dependsOn("spotbugsMain")
         applyCheckTask(target)
@@ -81,7 +71,7 @@ class SpotBugsConfigurer {
                 target.logger.warn("findbugs limit not found, skipping check")
                 return@doLast
             }
-            val spotBugsTask = target.tasks.maybeCreate("spotbugsMain", SpotBugsTask::class.java)
+            val spotBugsTask = target.tasks.getByName("spotbugsMain") as SpotBugsTask
 
             val xmlReport = if (spotBugsTask.reports.findByName("xml") != null) {
                 spotBugsTask.reports.findByName("xml")

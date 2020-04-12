@@ -1,6 +1,6 @@
 package ru.yandex.money.gradle.plugins.backend.build
 
-import com.github.spotbugs.snom.SpotBugsPlugin
+import com.github.spotbugs.snom.SpotBugsBasePlugin
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -41,7 +41,7 @@ class JavaModulePlugin : Plugin<Project> {
         target.pluginManager.apply(DependencyManagementPlugin::class.java)
         target.pluginManager.apply(CheckDependenciesPlugin::class.java)
         target.pluginManager.apply(CheckstylePlugin::class.java)
-        target.pluginManager.apply(SpotBugsPlugin::class.java)
+        target.pluginManager.apply(SpotBugsBasePlugin::class.java)
 
         target.extensions.create("javaModule", JavaModuleExtension::class.java)
 

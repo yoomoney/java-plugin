@@ -28,12 +28,14 @@ class CheckDependenciesConfigurer {
     }
 
     private fun configureMajorVersionCheckerExtension(project: Project) {
-        val includeGroupIdPrefixes = HashSet<String>()
-        includeGroupIdPrefixes.add("ru.yamoney")
-        includeGroupIdPrefixes.add("ru.yandex.money")
+        val includeGroupId = HashSet<String>()
+        includeGroupId.add("ru.yamoney")
+        includeGroupId.add("ru.yandex.money")
 
-        project.extensions.findByType(MajorVersionCheckerExtension::class.java)!!
-                .includeGroupIdPrefixes = includeGroupIdPrefixes
+        with(project.extensions.findByType(MajorVersionCheckerExtension::class.java)!!) {
+            includeGroupIdPrefixes = includeGroupId
+            excludeDependencies.add("ru.yandex.money.tools:yamoney-grafana-dashboard-dsl")
+        }
     }
 
     private fun configurePlatformDependencies(project: Project) {
