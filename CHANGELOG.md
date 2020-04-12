@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.4.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/7) (12-04-2020)
+
 * Обновлен yamoney-check-dependencies-plugin: 5.0.0 -> 5.2.0.
 Перенесена конфигурация check-dependencies-plugin из component-project-plugin.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.3.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/5) (08-04-2020)
 
 * Поднята версия spotbugs: 3.1.12 -> 4.0.1. Подняты версии зависимости и плагин spotbugs.
