@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.4.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/8) (13-04-2020)
+
 * Вместо SpotBugsPlugin применяется SpotBugsBasePlugin, который не создает автоматически таски для всех sourceSet.
-Добавлено создание таски spotbugsMain.  
-### NEXT_VERSION_DESCRIPTION_END
+Добавлено создание таски spotbugsMain.
+
 ## [2.4.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/7) (12-04-2020)
 
 * Обновлен yamoney-check-dependencies-plugin: 5.0.0 -> 5.2.0.
