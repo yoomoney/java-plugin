@@ -20,7 +20,6 @@ import ru.yandex.money.gradle.plugins.backend.build.kotlin.KotlinConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.spotbugs.SpotBugsAnnotationsConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.spotbugs.SpotBugsConfigurer
 import ru.yandex.money.gradle.plugins.backend.build.test.TestConfigurer
-import ru.yandex.money.gradle.plugins.backend.build.warning.CompileWarningsChecker
 import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPlugin
 
 /**
@@ -51,7 +50,6 @@ class JavaModulePlugin : Plugin<Project> {
         TestConfigurer().init(target)
         KotlinConfigurer().init(target)
         IdeaPluginConfigurer().init(target)
-        CompileWarningsChecker().init(target)
         SpotBugsConfigurer().init(target)
         SpotBugsAnnotationsConfigurer().init(target)
         CoverageConfigurer().init(target)
