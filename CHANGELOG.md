@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.5.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/12) (28-04-2020)
+
 * Поправил падающую сборку компонента, когда в ветке еще нет тегов
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.4.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/8) (13-04-2020)
 
 * Вместо SpotBugsPlugin применяется SpotBugsBasePlugin, который не создает автоматически таски для всех sourceSet.
