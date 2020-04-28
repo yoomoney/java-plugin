@@ -21,9 +21,7 @@ class GitManager(project: Project) : AutoCloseable {
 
     private fun branchName(): String = git.repository.branch
 
-    private fun hasTags(): Boolean = !git.tagList().call().isEmpty()
-
-    private fun describe(): String = git.describe().setTags(true).call()
+    private fun describe(): String? = git.describe().setTags(true).call()
 
     private fun isMasterBranch(): Boolean = branchName().equals("master", true)
 
@@ -35,7 +33,7 @@ class GitManager(project: Project) : AutoCloseable {
 
     private fun isHotfixBranch(): Boolean = branchName().matches(Regex("(hotfix)/.*"))
 
-    private fun isReleaseTag(): Boolean = hasTags() && describe().matches(Regex("\\d+\\.\\d+\\.\\d+"))
+    private fun isReleaseTag(): Boolean = describe()?.matches(Regex("\\d+\\.\\d+\\.\\d+")) ?: false
 
     private fun isStableBranch(): Boolean = isMasterOrDev() || isReleaseBranch() || isHotfixBranch() || isReleaseTag()
 
