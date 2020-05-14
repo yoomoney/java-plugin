@@ -35,6 +35,10 @@ class CheckDependenciesConfigurer {
         with(project.extensions.findByType(MajorVersionCheckerExtension::class.java)!!) {
             includeGroupIdPrefixes = includeGroupId
             excludeDependencies.add("ru.yandex.money.tools:yamoney-grafana-dashboard-dsl")
+            // временно отключаем падение билда и включаем отправку метрик, чтобы исправить конфликты, которые появились за
+            // время не работы проверки
+            failBuild = false
+            pushMetrics = true
         }
     }
 
