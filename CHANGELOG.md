@@ -1,9 +1,9 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.5.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/13) (19-05-2020)
+
 * Обновлен yamoney-check-dependencies-plugin: 5.2.0 -> 6.0.0.
-* Для проверки конфликтов мажорных версий временно отключено падение билда и включена отправка метрик, 
+* Для проверки конфликтов мажорных версий временно отключено падение билда и включена отправка метрик,
 чтобы исправить конфликты, которые появились за время не работы проверки.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.5.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/12) (28-04-2020)
 
 * Поправил падающую сборку компонента, когда в ветке еще нет тегов
