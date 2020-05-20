@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.5.3](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/15) (20-05-2020)
+
 * Обновлен yamoney-check-dependencies-plugin: 6.0.1 -> 6.0.2.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.5.2](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/14) (19-05-2020)
 
 * Обновлен yamoney-check-dependencies-plugin: 6.0.0 -> 6.0.1.
