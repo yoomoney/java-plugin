@@ -84,8 +84,9 @@ class CheckCheckstyleTest : AbstractPluginTest() {
         val buildResult = runTasksSuccessfully("build")
         assertThat(buildResult.output, containsString("Checkstyle check successfully passed"))
 
-        val staticAnalysisLimits = Properties()
-        staticAnalysisLimits.load(FileInputStream(staticAnalysisPropertiesFile))
+        val staticAnalysisLimits = Properties().apply {
+            FileInputStream(staticAnalysisPropertiesFile).use { load(it) }
+        }
         staticAnalysisLimits.getProperty("checkstyle") `should be equal to` "2"
     }
 

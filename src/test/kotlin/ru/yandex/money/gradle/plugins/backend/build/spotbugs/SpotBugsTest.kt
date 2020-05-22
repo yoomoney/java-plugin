@@ -112,8 +112,9 @@ class SpotBugsTest : AbstractPluginTest() {
         val buildResult = runTasksSuccessfully("build")
         buildResult.output shouldContain "SpotBugs successfully passed with 1 (limit=20) errors"
 
-        val staticAnalysisLimits = Properties()
-        staticAnalysisLimits.load(FileInputStream(staticAnalysisPropertiesFile))
+        val staticAnalysisLimits = Properties().apply {
+            FileInputStream(staticAnalysisPropertiesFile).use { load(it) }
+        }
         staticAnalysisLimits.getProperty("findbugs") `should be equal to` "1"
 
         Files.delete(spotBugsSource.toPath())
