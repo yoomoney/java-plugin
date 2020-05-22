@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [2.5.4](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/16) (22-05-2020)
 
 * Удалена проверка количества предупреждений компилятора `compiler`
