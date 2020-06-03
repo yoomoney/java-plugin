@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [2.6.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/10) (03-06-2020)
 
 * В настройки плагина добавлены параметры `test` и `componentTest`, которые позволяют передавать настройки `TestNgExtension`.
