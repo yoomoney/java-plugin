@@ -1,5 +1,10 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* В настройки плагина добавлены параметры `test` и `componentTest`, которые позволяют передавать настройки `TestNgExtension`.
+* В `TestNgExtension` доступна настройка `listeners` со списком классов слушателей для обработки результатов выполнения тестов.
+* В `TestNgExtension` доступна настройка `threadCount` с количеством потоков выполнения тестов, по умолчанию 8.
+* В `TestNgExtension` доступна настройка `parallel` с режимом параллельного выполнения тестов, по умолчанию "classes".
+Рекомендуется задавать `threadCount` через Extension плагина, а не через опции TestNG напрямую.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [2.5.4](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/16) (22-05-2020)
 
