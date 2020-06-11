@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Включено падение билда при наличии конфликта мажорных версий для фиче-веток.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [2.6.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/10) (03-06-2020)
 
