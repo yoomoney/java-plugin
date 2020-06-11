@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.7.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/17) (11-06-2020)
+
 * Включено падение билда при наличии конфликта мажорных версий для фиче-веток.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.6.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/10) (03-06-2020)
 
 * В настройки плагина добавлены параметры `test` и `componentTest`, которые позволяют передавать настройки `TestNgExtension`.
