@@ -2,6 +2,7 @@ package ru.yandex.money.gradle.plugins.backend.build.checkdependencies
 
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.Project
+import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import ru.yandex.money.gradle.plugins.backend.build.nexus.NexusUtils
 import ru.yandex.money.gradle.plugins.library.dependencies.CheckDependenciesPluginExtension
 import ru.yandex.money.gradle.plugins.library.dependencies.checkversion.MajorVersionCheckerExtension
@@ -31,13 +32,16 @@ class CheckDependenciesConfigurer {
         val includeGroupId = HashSet<String>()
         includeGroupId.add("ru.yamoney")
         includeGroupId.add("ru.yandex.money")
+        val gitManager = GitManager(project)
 
         with(project.extensions.findByType(MajorVersionCheckerExtension::class.java)!!) {
             includeGroupIdPrefixes = includeGroupId
             excludeDependencies.add("ru.yandex.money.tools:yamoney-grafana-dashboard-dsl")
-            // временно отключаем падение билда и включаем отправку метрик, чтобы исправить конфликты, которые появились за
-            // время не работы проверки
-            failBuild = false
+            if (gitManager.isDevelopmentBranch()) {
+                failBuild = true
+            } else {
+                failBuild = false
+            }
             pushMetrics = true
         }
     }
