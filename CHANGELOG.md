@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [2.8.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/18) (03-07-2020)
+
 * Поднята версия gradle: 6.0.1 -> 6.4.1.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.7.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/17) (11-06-2020)
 
 * Включено падение билда при наличии конфликта мажорных версий для фиче-веток.
