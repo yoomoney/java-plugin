@@ -8,6 +8,7 @@ import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.internal.jvm.Jvm
 import org.gradle.jvm.tasks.Jar
+import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
 import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import java.net.InetAddress
 import java.net.URI
@@ -87,6 +88,13 @@ class JarConfigurer {
         }
         target.repositories.maven { it.url = repos.getValue("thirdparty") }
         target.repositories.maven { it.url = repos.getValue("central") }
+
+        target.afterEvaluate {
+            val javaModuleExtension = target.extensions.getByType(JavaModuleExtension::class.java)
+
+            javaModuleExtension.additionalRepo
+                    .forEach { repo -> target.repositories.maven { it.url = URI(repo) } }
+        }
     }
 
     private fun isDevelopmentBranch(target: Project): Boolean = GitManager(target).isDevelopmentBranch()
