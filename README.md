@@ -71,10 +71,11 @@ class=80
 
 ## Настройка репозиториев
 
-С помощью плагина возможно добавить дополнительные репозитории:
+С помощью плагина возможно добавить дополнительные репозитории, которые будут просмотрены при поиске зависимостей:
 ```groovy
 javaModule {
-    additionalRepo = ["maven-central", "maven-public"]
+    additionalRepo = ["http://nexus.yamoney.ru/content/repositories/atlas-release/", 
+                      "http://nexus.yamoney.ru/repository/atlassian-public/"]
 }
 ```
 По умолчанию список дополнительных репозиториев пуст.
