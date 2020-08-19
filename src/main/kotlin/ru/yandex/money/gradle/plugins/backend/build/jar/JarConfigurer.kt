@@ -93,7 +93,7 @@ class JarConfigurer {
             val javaModuleExtension = target.extensions.getByType(JavaModuleExtension::class.java)
 
             javaModuleExtension.additionalRepo
-                    .forEach { repo -> target.repositories.maven { it.url = URI(repo) } }
+                    .forEach { repo -> target.repositories.maven { it.setUrl(repo) } }
         }
     }
 
