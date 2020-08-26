@@ -9,9 +9,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.internal.jvm.Jvm
 import org.gradle.jvm.tasks.Jar
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
-import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import java.net.InetAddress
-import java.net.URI
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
@@ -80,24 +78,13 @@ class JarConfigurer {
     }
 
     private fun configureRepos(target: Project) {
-        target.repositories.maven { it.url = repos.getValue("releases") }
-        target.repositories.maven { it.url = repos.getValue("jcenter") }
-        if (isDevelopmentBranch(target)) {
-            target.repositories.mavenLocal()
-            target.repositories.maven { it.url = repos.getValue("snapshots") }
-        }
-        target.repositories.maven { it.url = repos.getValue("thirdparty") }
-        target.repositories.maven { it.url = repos.getValue("central") }
-
         target.afterEvaluate {
             val javaModuleExtension = target.extensions.getByType(JavaModuleExtension::class.java)
 
-            javaModuleExtension.additionalRepo
+            javaModuleExtension.repositories
                     .forEach { repo -> target.repositories.maven { it.setUrl(repo) } }
         }
     }
-
-    private fun isDevelopmentBranch(target: Project): Boolean = GitManager(target).isDevelopmentBranch()
 
     private fun targetJavaVersion(target: Project) {
         val targetJavaVersion = target
@@ -155,15 +142,5 @@ class JarConfigurer {
         } else {
             System.getenv("JAVA_HOME")
         }
-    }
-
-    companion object {
-        val repos = mapOf(
-            "central" to URI("https://nexus.yamoney.ru/content/repositories/central/"),
-            "jcenter" to URI("https://nexus.yamoney.ru/content/repositories/jcenter.bintray.com/"),
-            "snapshots" to URI("https://nexus.yamoney.ru/content/repositories/snapshots/"),
-            "releases" to URI("https://nexus.yamoney.ru/content/repositories/releases/"),
-            "thirdparty" to URI("https://nexus.yamoney.ru/content/repositories/thirdparty/")
-        )
     }
 }

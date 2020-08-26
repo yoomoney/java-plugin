@@ -19,5 +19,5 @@ open class JavaModuleExtension {
     var test = TestNgExtension()
     var componentTest = TestNgExtension()
 
-    var additionalRepo: List<String> = emptyList()
+    var repositories: List<String> = emptyList()
 }
