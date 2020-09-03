@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=MAJOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [3.0.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/21) (03-09-2020)
+
 * Теперь репозитории для поиска зависимостей определяются в настройке repositories.
 Настройка additionalRepo удалена.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [2.9.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/20) (19-08-2020)
 
 * Пофикшено добавление дополнительных репозиториев.
