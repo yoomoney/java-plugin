@@ -44,6 +44,11 @@ abstract class AbstractPluginTest {
                 compile 'ru.yandex.money.common:yamoney-command-api:6.0.1'
                 optional 'org.testng:testng:6.14.3'
             }
+            javaModule.repositories = ['https://nexus.yamoney.ru/repository/gradle-plugins/' ,
+                                       'https://nexus.yamoney.ru/repository/thirdparty/', 
+                                       'https://nexus.yamoney.ru/repository/central/',
+                                       'https://nexus.yamoney.ru/repository/releases/', 
+                                       'https://nexus.yamoney.ru/repository/jcenter.bintray.com/']
         """.trimIndent())
 
         projectDir.newFolder("src", "main", "java", "sample")

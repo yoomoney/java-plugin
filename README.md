@@ -71,11 +71,10 @@ class=80
 
 ## Настройка репозиториев
 
-С помощью плагина возможно добавить дополнительные репозитории, которые будут просмотрены при поиске зависимостей:
+С помощью плагина возможно добавить репозитории, которые будут просмотрены при поиске зависимостей:
 ```groovy
 javaModule {
-    additionalRepo = ["http://nexus.yamoney.ru/content/repositories/atlas-release/", 
-                      "http://nexus.yamoney.ru/repository/atlassian-public/"]
+    repositories = ["https://maven.java.net/content/repositories/public/"]
 }
 ```
 По умолчанию список дополнительных репозиториев пуст.
@@ -105,12 +104,9 @@ javaModule {
 ```groovy
 buildscript {
     repositories {
-        maven { url 'https://nexus.yamoney.ru/repository/gradle-plugins/' }
-        maven { url 'https://nexus.yamoney.ru/repository/thirdparty/' }
-        maven { url 'https://nexus.yamoney.ru/repository/central/' }
-        maven { url 'https://nexus.yamoney.ru/repository/releases/' }
-        maven { url 'https://nexus.yamoney.ru/repository/jcenter.bintray.com/' }
-    }
+            //репозиторий, где хранится данный плагин
+            maven { url "https://maven.java.net/content/repositories/public/" }
+        }
     dependencies {
         classpath 'ru.yandex.money.gradle.plugins:yamoney-java-module-plugin:1.+'
     }
@@ -132,11 +128,8 @@ apply plugin: 'yamoney-java-module-plugin'
 ```groovy
 buildscript {
     repositories {
-        maven { url 'https://nexus.yamoney.ru/repository/gradle-plugins/' }
-        maven { url 'https://nexus.yamoney.ru/repository/thirdparty/' }
-        maven { url 'https://nexus.yamoney.ru/repository/central/' }
-        maven { url 'https://nexus.yamoney.ru/repository/releases/' }
-        maven { url 'https://nexus.yamoney.ru/repository/jcenter.bintray.com/' }
+        //репозиторий, где хранится данный плагин
+        maven { url "https://maven.java.net/content/repositories/public/" }
     }
     dependencies {
         classpath 'ru.yandex.money.gradle.plugins:yamoney-java-module-plugin:1.+'
