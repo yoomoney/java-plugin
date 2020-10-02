@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлена настройка snapshotsRepositories, в которой можно указать снапшотные репозитории. Они будут добавляться только для 
+фиче-веток. 
 ### NEXT_VERSION_DESCRIPTION_END
 ## [3.0.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/21) (03-09-2020)
 
