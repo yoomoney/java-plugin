@@ -75,9 +75,10 @@ class=80
 ```groovy
 javaModule {
     repositories = ["https://maven.java.net/content/repositories/public/"]
+    snapshotsRepositories = ["https://maven.java.net/content/repositories/snapshots/"]
 }
 ```
-По умолчанию список дополнительных репозиториев пуст.
+Репозитории из списка `snapshotsRepositories` будут добавлены только для фиче-веток.
 
 ## Настройка запуска тестов
 

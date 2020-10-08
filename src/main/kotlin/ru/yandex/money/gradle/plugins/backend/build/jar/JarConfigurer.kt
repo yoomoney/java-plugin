@@ -9,6 +9,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.internal.jvm.Jvm
 import org.gradle.jvm.tasks.Jar
 import ru.yandex.money.gradle.plugins.backend.build.JavaModuleExtension
+import ru.yandex.money.gradle.plugins.backend.build.git.GitManager
 import java.net.InetAddress
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -83,8 +84,16 @@ class JarConfigurer {
 
             javaModuleExtension.repositories
                     .forEach { repo -> target.repositories.maven { it.setUrl(repo) } }
+
+            //    для фиче веток доступны снапшотные репозитории
+            if (isDevelopmentBranch(target)) {
+                javaModuleExtension.snapshotsRepositories
+                        .forEach { repo -> target.repositories.maven { it.setUrl(repo) } }
+            }
         }
     }
+
+    private fun isDevelopmentBranch(target: Project): Boolean = GitManager(target).isDevelopmentBranch()
 
     private fun targetJavaVersion(target: Project) {
         val targetJavaVersion = target
