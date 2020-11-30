@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [3.2.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/24) (30-11-2020)
+
 * Обновлена версия kotlin 1.3.71 -> 1.3.50
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [3.2.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/23) (25-11-2020)
 
 * Обновлен yamoney-check-dependencies-plugin 6.0.2 -> 6.2.0
