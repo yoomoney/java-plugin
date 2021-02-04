@@ -1,26 +1,52 @@
-# yamoney-java-module-plugin
+# java-plugin
 
 ## Описание
 
-Плагин для сборки java модулей. Отвечает за следующий функционал:
+Плагин для сборки java проектов. Отвечает за следующий функционал:
 
+- Инициализация wrapper'а для gradle
 - Настройка компилятора Java
 - Конфигурация сборки Jar-артефакта
-- Настройка yamoney-check-dependencies-plugin 
 - Настройка среды разработки
 - Создание тестовых sourceSet и их настройка
 - Подключение kotlin для тестов
 - Проверка кода при помощи статического анализа
 - Проверка покрытия кода тестами
 
+## Инициализация wrapper'а для gradle
+Переопределяет таску на иницаиализацию wrapper'а для gradle, указывая url к дистрибутиву gradle.
+```groovy
+    javaModule {
+        gradleDistributionUrl = "https://services.gradle.org/distributions/gradle-6.4.1-all.zip" //значение по умолчанию
+    }
+```
+
 ## Настроки компиляции java кода
 
-Плагин порзволяет через gradle property `yamoney-java-module-plugin.jvm-version` указать целевую версию java для проекта.
+Плагин позволяет через gradle property `java-plugin.jvm-version` указать целевую версию java для проекта. 
+Переопределить название свойства можно с помощью настройки: 
+```groovy
+    javaModule {
+        javaVersionPropertyName = "java-plugin.jvm-version" //значение по умолчанию
+    }
+```
 Данная версия будет использована для задания аргументов компиляции `--release`, `-source`, `-target`
 
 Допускается указывать версию в двух форматах:
  - в legacy формате с двумя цифрами, например `1.8` 
  - в формате с одной мажорной версией, например `8`
+
+## Конфигурация сборки Jar-артефакта
+
+Конфигурация jar артифакта осуществляется в классе JarConfigurer.  
+Конфигуратор содержит настройку ```jarArchivePrefixName```. В данной настройке можно указать префикс, который будет добавлен к  
+каждому артефакту. Может использоваться для добавления префикса компании ко всем выпускаемым артефактам.
+
+```groovy
+    javaModule {
+        jarArchivePrefixName = "yoomoney-" //по умолчанию к имени артефакта ничего не добавляем
+    }
+```
 
 ## Статический анализ
 
@@ -109,11 +135,11 @@ buildscript {
             maven { url "https://maven.java.net/content/repositories/public/" }
         }
     dependencies {
-        classpath 'ru.yandex.money.gradle.plugins:yamoney-java-module-plugin:1.+'
+        classpath 'ru.yoomoney.gradle.plugins:java-plugin:1.+'
     }
 }
 
-apply plugin: 'yamoney-java-module-plugin'
+apply plugin: 'ru.yoomoney.gradle.plugins.java-plugin'
 
 ```
 
@@ -133,7 +159,7 @@ buildscript {
         maven { url "https://maven.java.net/content/repositories/public/" }
     }
     dependencies {
-        classpath 'ru.yandex.money.gradle.plugins:yamoney-java-module-plugin:1.+'
+        classpath 'ru.yoomoney.gradle.plugins:java-plugin:1.+'
     }
 }
 

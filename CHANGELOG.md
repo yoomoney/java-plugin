@@ -1,41 +1,50 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MAJOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Внесены изменения в связи с переходом в open source:
+* Переименованы пакеты
+* Плагин собирается без использования project-plugin, сборка полностью описывается в build.gradle
+* Подключен artifact-release-plugin для автоматического выпуска релиза.
+* Сборка переведена на travis (ранее использовался jenkins)
+***breaking_changes***
+* Удалено подключение check-dependencies-plugin и его конфигурация.
+* Появились настройки gradleDistributionUrl, jarArchivePrefixName, javaVersionPropertyName - описание в JavaExtension.  
+Необходимо прописать нужные значения при подключении в проект.
 ### NEXT_VERSION_DESCRIPTION_END
-## [3.2.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/24) (30-11-2020)
+## [3.2.1]() (30-11-2020)
 
 * Обновлена версия kotlin 1.3.71 -> 1.3.50
 
-## [3.2.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/23) (25-11-2020)
+## [3.2.0]() (25-11-2020)
 
-* Обновлен yamoney-check-dependencies-plugin 6.0.2 -> 6.2.0
+* Обновлен check-dependencies-plugin 6.0.2 -> 6.2.0
 
-## [3.1.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/22) (09-10-2020)
+## [3.1.0]() (09-10-2020)
 
 * Добавлена настройка snapshotsRepositories, в которой можно указать снапшотные репозитории. Они будут добавляться только для
 фиче-веток.
 
-## [3.0.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/21) (03-09-2020)
+## [3.0.0]() (03-09-2020)
 
 * Теперь репозитории для поиска зависимостей определяются в настройке repositories.
 Настройка additionalRepo удалена.
 
-## [2.9.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/20) (19-08-2020)
+## [2.9.1]() (19-08-2020)
 
 * Пофикшено добавление дополнительных репозиториев.
 
-## [2.9.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/19) (06-08-2020)
+## [2.9.0]() (06-08-2020)
 
 * Добавлена настройка для допольнительных репозиториев: additionalRepo.
 
-## [2.8.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/18) (03-07-2020)
+## [2.8.0]() (03-07-2020)
 
 * Поднята версия gradle: 6.0.1 -> 6.4.1.
 
-## [2.7.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/17) (11-06-2020)
+## [2.7.0]() (11-06-2020)
 
 * Включено падение билда при наличии конфликта мажорных версий для фиче-веток.
 
-## [2.6.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/10) (03-06-2020)
+## [2.6.0]() (03-06-2020)
 
 * В настройки плагина добавлены параметры `test` и `componentTest`, которые позволяют передавать настройки `TestNgExtension`.
 * В `TestNgExtension` доступна настройка `listeners` со списком классов слушателей для обработки результатов выполнения тестов.
@@ -43,54 +52,54 @@
 * В `TestNgExtension` доступна настройка `parallel` с режимом параллельного выполнения тестов, по умолчанию "classes".
 Рекомендуется задавать `threadCount` через Extension плагина, а не через опции TestNG напрямую.
 
-## [2.5.4](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/16) (22-05-2020)
+## [2.5.4]() (22-05-2020)
 
 * Удалена проверка количества предупреждений компилятора `compiler`
 
-## [2.5.3](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/15) (20-05-2020)
+## [2.5.3]() (20-05-2020)
 
 * Обновлен yamoney-check-dependencies-plugin: 6.0.1 -> 6.0.2.
 
-## [2.5.2](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/14) (19-05-2020)
+## [2.5.2]() (19-05-2020)
 
 * Обновлен yamoney-check-dependencies-plugin: 6.0.0 -> 6.0.1.
 
-## [2.5.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/13) (19-05-2020)
+## [2.5.1]() (19-05-2020)
 
 * Обновлен yamoney-check-dependencies-plugin: 5.2.0 -> 6.0.0.
 * Для проверки конфликтов мажорных версий временно отключено падение билда и включена отправка метрик,
 чтобы исправить конфликты, которые появились за время не работы проверки.
 
-## [2.5.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/12) (28-04-2020)
+## [2.5.0]() (28-04-2020)
 
 * Поправил падающую сборку компонента, когда в ветке еще нет тегов
 
-## [2.4.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/8) (13-04-2020)
+## [2.4.1]() (13-04-2020)
 
 * Вместо SpotBugsPlugin применяется SpotBugsBasePlugin, который не создает автоматически таски для всех sourceSet.
 Добавлено создание таски spotbugsMain.
 
-## [2.4.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/7) (12-04-2020)
+## [2.4.0]() (12-04-2020)
 
 * Обновлен yamoney-check-dependencies-plugin: 5.0.0 -> 5.2.0.
 Перенесена конфигурация check-dependencies-plugin из component-project-plugin.
 
-## [2.3.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/5) (08-04-2020)
+## [2.3.0]() (08-04-2020)
 
 * Поднята версия spotbugs: 3.1.12 -> 4.0.1. Подняты версии зависимости и плагин spotbugs.
 В некоторых компонентах понадобится поправить лимит static-analysis.findbugs,
 так как при поднятии версии библиотеки добавились новые проверки.
 
-## [2.2.2](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/3) (26-03-2020)
+## [2.2.2]() (26-03-2020)
 
 * Для задачи `overwriteTestReports` поправлено чтение некорректных XML символов из файла логов.
 
-## [2.2.1](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/2) (25-03-2020)
+## [2.2.1]() (25-03-2020)
 
 * Удален spp-releases, spp-snapshots репозитории, в которых оставались calypso зависимости.
 Используемые артефакты перенесены в репозиторий releases.
 
-## [2.2.0](https://bitbucket.yamoney.ru/projects/BACKEND-GRADLE-PLUGINS/repos/java-module-plugin/pull-requests/1) (28-02-2020)
+## [2.2.0]() (28-02-2020)
 
 * Добавлена новая Gradle-задача `overwriteTestReports`, которая выполняется после прогона компонентных тестов для
 перезаписывания логов в тестовых отчетах с разбиением по TraceID.

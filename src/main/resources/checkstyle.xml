@@ -9,8 +9,7 @@
 
     NOTE:
 
-    This configuration is altered to conform Yandex.Money conventions
-    https://bitbucket.yamoney.ru/projects/BACKEND/repos/coding-conventions/browse/Java%20coding%20conventions.asc
+    This configuration is altered to conform Yoomoney conventions
  -->
 
 <module name = "Checker">
