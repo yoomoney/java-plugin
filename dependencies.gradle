@@ -6,8 +6,6 @@ dependencies {
             'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.1',
             'org.jlleitschuh.gradle:ktlint-gradle:9.0.0',
             'commons-io:commons-io:2.6',
-            //Добавляем guava, т.к. Spotbugs ее использует, но транзитивно не приносит
-            'com.google.guava:guava:28.1-jre',
             'com.github.spotbugs:spotbugs-annotations:4.0.1'
 
     testImplementation 'org.amshove.kluent:kluent:1.34'

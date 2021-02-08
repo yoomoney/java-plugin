@@ -24,7 +24,7 @@ import java.nio.file.Paths
  * @author Valerii Zhirnov
  * @since 22.03.2019
  */
-class KotlinModulePlugin : Plugin<Project> {
+class KotlinPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         target.pluginManager.apply(JavaPlugin::class.java)

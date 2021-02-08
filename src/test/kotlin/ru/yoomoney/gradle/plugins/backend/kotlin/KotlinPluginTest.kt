@@ -12,7 +12,7 @@ import java.nio.file.Files
  * @author Valerii Zhirnov
  * @since 13.05.2019
  */
-class KotlinModulePluginTest : AbstractPluginTest() {
+class KotlinPluginTest : AbstractPluginTest() {
 
     @Before
     fun before() {

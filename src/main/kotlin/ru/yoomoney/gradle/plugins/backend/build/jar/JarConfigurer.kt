@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit
 class JarConfigurer {
 
     fun init(target: Project) {
-        configureArchiveName(target)
         forceEncoding(target)
         targetJavaVersion(target)
         configureRepos(target)
@@ -100,7 +99,7 @@ class JarConfigurer {
             val javaExtension = target.extensions.getByType(JavaExtension::class.java)
 
             val targetJavaVersion = target
-                    .findProperty(javaExtension.javaVersionPropertyName)
+                    .findProperty(javaExtension.jvmVersionPropertyName)
                     ?.let { it.toString().trim().let { version -> JavaVersion.toVersion(version) } }
                     ?: JavaVersion.VERSION_1_8
 
@@ -124,24 +123,6 @@ class JarConfigurer {
         }
         (target.tasks.getByName("compileTestJava") as JavaCompile).apply {
             options.encoding = "UTF-8"
-        }
-    }
-
-    private fun configureArchiveName(target: Project) {
-        target.afterEvaluate {
-            val javaExtension = target.extensions.getByType(JavaExtension::class.java)
-
-            val prefix = javaExtension.jarArchivePrefixName
-
-            if (!prefix.isEmpty()) {
-                target.convention.getPlugin(BasePluginConvention::class.java).apply {
-                    archivesBaseName = archivesBaseName.replace("\\bmoney-", "")
-                    archivesBaseName = when {
-                        archivesBaseName.startsWith(prefix) -> archivesBaseName
-                        else -> "$prefix$archivesBaseName"
-                    }
-                }
-            }
         }
     }
 

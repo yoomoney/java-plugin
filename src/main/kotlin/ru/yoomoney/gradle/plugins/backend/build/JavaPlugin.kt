@@ -11,7 +11,6 @@ import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import ru.yoomoney.gradle.plugins.backend.build.checkstyle.CheckCheckstyleConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.coverage.CoverageConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.git.GitFlowConfigurer
-import ru.yoomoney.gradle.plugins.backend.build.gradle.WrapperConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.idea.IdeaPluginConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.jar.JarConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.kotlin.KotlinConfigurer
@@ -39,7 +38,6 @@ class JavaPlugin : Plugin<Project> {
 
         target.extensions.create("javaModule", JavaExtension::class.java)
 
-        WrapperConfigurer().init(target)
         GitFlowConfigurer().init(target)
         JarConfigurer().init(target)
         TestConfigurer().init(target)

@@ -46,15 +46,5 @@ open class JavaExtension {
     /**
      * Имя gradle property, в которой можно указать версию целевую версию java для проекта
      */
-    var javaVersionPropertyName: String = "java-plugin.jvm-version"
-
-    /**
-     * url для скачивания дистрибутива gradle, используется для wrapper таски.
-     */
-    var gradleDistributionUrl: String = "https://services.gradle.org/distributions/gradle-6.4.1-all.zip"
-
-    /**
-     * Префикс для имени jar. Будет добавлен для каждого jar, может содержать, например, имя организации.
-     */
-    var jarArchivePrefixName: String = ""
+    var jvmVersionPropertyName: String = "ru.yoomoney.gradle.plugin.java-plugin.jvm-version"
 }

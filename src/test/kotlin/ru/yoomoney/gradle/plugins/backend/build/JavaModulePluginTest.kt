@@ -34,12 +34,11 @@ class JavaModulePluginTest : AbstractPluginTest() {
             javaModule {
                  repositories = ["https://jcenter.bintray.com/",
                         "https://repo1.maven.org/maven2/"]
-                 jarArchivePrefixName = "yoomoney-"
             }
         """.trimIndent())
 
         runTasksSuccessfully("build", "componentTest", "jar")
-        assertFileExists(File(projectDir.root, "/target/libs/yoomoney-${projectName()}-1.0.1-feature-BACKEND-2588-build-jar-SNAPSHOT.jar"))
+        assertFileExists(File(projectDir.root, "/target/libs/${projectName()}-1.0.1-feature-BACKEND-2588-build-jar-SNAPSHOT.jar"))
         assertFileExists(File(projectDir.root, "/target/tmp/jar/MANIFEST.MF"))
         val properties = Properties().apply { load(File(projectDir.root, "/target/tmp/jar/MANIFEST.MF").inputStream()) }
         assertThat("Implementation-Version", properties.getProperty("Implementation-Version"), notNullValue())

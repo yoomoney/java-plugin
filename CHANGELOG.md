@@ -7,7 +7,7 @@
 * Сборка переведена на travis (ранее использовался jenkins)
 ***breaking_changes***
 * Удалено подключение check-dependencies-plugin и его конфигурация.
-* Появились настройки gradleDistributionUrl, jarArchivePrefixName, javaVersionPropertyName - описание в JavaExtension.  
+* Появились настройки jvmVersionPropertyName - описание в JavaExtension.  
 Необходимо прописать нужные значения при подключении в проект.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [3.2.1]() (30-11-2020)
@@ -214,7 +214,7 @@
 1. Включение kotlin тестов по умолчанию, добавлять `System.setProperty("kotlinVersion", "")` теперь не требуется.
 2. Убрано отключение findbugs и checkstyle при подключении kotlin-module-plugin. Могут начать находиться нарушения.
 Если для проектов на kotlin не требуется findbugs или checkstyle, уберите соответствующие записи из static-analysis.properties.
-3. При подключении KotlinModulePlugin добавляется зависимость таски compileJava от compileKotlin, иначе появляются
+3. При подключении KotlinPlugin добавляется зависимость таски compileJava от compileKotlin, иначе появляются
 ошибки компиляции в проектах с двумя языках
 4. Включен параллельный запуск test и slowTest в 8 потоков.
 Если для вашего компонента параллельный запуск не работает, можно переопределить настройку в build.gradle, например,
