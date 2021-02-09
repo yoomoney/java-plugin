@@ -1,12 +1,12 @@
-# yamoney-java-module-plugin
+# java-plugin
 
 ## Описание
 
-Плагин для сборки java модулей. Отвечает за следующий функционал:
+Плагин для сборки java проектов. Отвечает за следующий функционал:
 
+- Инициализация wrapper'а для gradle
 - Настройка компилятора Java
 - Конфигурация сборки Jar-артефакта
-- Настройка yamoney-check-dependencies-plugin 
 - Настройка среды разработки
 - Создание тестовых sourceSet и их настройка
 - Подключение kotlin для тестов
@@ -15,7 +15,13 @@
 
 ## Настроки компиляции java кода
 
-Плагин порзволяет через gradle property `yamoney-java-module-plugin.jvm-version` указать целевую версию java для проекта.
+Плагин позволяет через gradle property `ru.yoomoney.gradle.plugins.java-plugin.jvm-version` указать целевую версию java для проекта. 
+Переопределить название свойства можно с помощью настройки: 
+```groovy
+    javaModule {
+        jvmVersionPropertyName = "ru.yoomoney.gradle.plugins.java-plugin.jvm-version" //значение по умолчанию
+    }
+```
 Данная версия будет использована для задания аргументов компиляции `--release`, `-source`, `-target`
 
 Допускается указывать версию в двух форматах:
@@ -109,11 +115,11 @@ buildscript {
             maven { url "https://maven.java.net/content/repositories/public/" }
         }
     dependencies {
-        classpath 'ru.yandex.money.gradle.plugins:yamoney-java-module-plugin:1.+'
+        classpath 'ru.yoomoney.gradle.plugins:java-plugin:1.+'
     }
 }
 
-apply plugin: 'yamoney-java-module-plugin'
+apply plugin: 'ru.yoomoney.gradle.plugins.java-plugin'
 
 ```
 
@@ -133,7 +139,7 @@ buildscript {
         maven { url "https://maven.java.net/content/repositories/public/" }
     }
     dependencies {
-        classpath 'ru.yandex.money.gradle.plugins:yamoney-java-module-plugin:1.+'
+        classpath 'ru.yoomoney.gradle.plugins:java-plugin:1.+'
     }
 }
 

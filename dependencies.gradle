@@ -1,0 +1,18 @@
+dependencies {
+    api localGroovy(),
+            'org.eclipse.jgit:org.eclipse.jgit:5.5.1.201910021850-r',
+            'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50',
+            'gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.0.5',
+            'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.1',
+            'org.jlleitschuh.gradle:ktlint-gradle:9.0.0',
+            'commons-io:commons-io:2.6',
+            'com.github.spotbugs:spotbugs-annotations:4.0.1'
+
+    testImplementation 'org.amshove.kluent:kluent:1.34'
+
+    testImplementation gradleTestKit(),
+            'com.netflix.nebula:nebula-test:7.4.0',
+            'org.mockito:mockito-core:3.1.0',
+            'org.testng:testng:6.14.3',
+            'org.hamcrest:hamcrest-all:1.3'
+}
