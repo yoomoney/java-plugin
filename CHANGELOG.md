@@ -1,5 +1,5 @@
-### NEXT_VERSION_TYPE=MAJOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [4.0.0](https://github.com/yoomoney-gradle-plugins/java-plugin/pull/1) (09-02-2021)
+
 * Внесены изменения в связи с переходом в open source:
 * Переименованы пакеты
 * Плагин собирается без использования project-plugin, сборка полностью описывается в build.gradle
@@ -7,9 +7,9 @@
 * Сборка переведена на travis (ранее использовался jenkins)
 ***breaking_changes***
 * Удалено подключение check-dependencies-plugin и его конфигурация.
-* Появились настройки jvmVersionPropertyName - описание в JavaExtension.  
+* Появились настройки jvmVersionPropertyName - описание в JavaExtension.
 Необходимо прописать нужные значения при подключении в проект.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [3.2.1]() (30-11-2020)
 
 * Обновлена версия kotlin 1.3.71 -> 1.3.50
