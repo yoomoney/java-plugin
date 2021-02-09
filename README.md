@@ -15,7 +15,7 @@
 
 ## Настроки компиляции java кода
 
-Плагин позволяет через gradle property `java-plugin.jvm-version` указать целевую версию java для проекта. 
+Плагин позволяет через gradle property `ru.yoomoney.gradle.plugins.java-plugin.jvm-version` указать целевую версию java для проекта. 
 Переопределить название свойства можно с помощью настройки: 
 ```groovy
     javaModule {

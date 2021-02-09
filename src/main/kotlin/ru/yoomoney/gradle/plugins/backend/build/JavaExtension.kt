@@ -46,5 +46,5 @@ open class JavaExtension {
     /**
      * Имя gradle property, в которой можно указать версию целевую версию java для проекта
      */
-    var jvmVersionPropertyName: String = "ru.yoomoney.gradle.plugin.java-plugin.jvm-version"
+    var jvmVersionPropertyName: String = "ru.yoomoney.gradle.plugins.java-plugin.jvm-version"
 }
