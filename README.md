@@ -19,7 +19,7 @@
 Переопределить название свойства можно с помощью настройки: 
 ```groovy
     javaModule {
-        jvmVersionPropertyName = "ru.yoomoney.gradle.plugin.java-plugin.jvm-version" //значение по умолчанию
+        jvmVersionPropertyName = "ru.yoomoney.gradle.plugins.java-plugin.jvm-version" //значение по умолчанию
     }
 ```
 Данная версия будет использована для задания аргументов компиляции `--release`, `-source`, `-target`
