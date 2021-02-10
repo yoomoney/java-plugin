@@ -143,5 +143,5 @@ buildscript {
     }
 }
 
-apply plugin: 'yamoney-kotlin-module-plugin'
+apply plugin: 'ru.yoomoney.gradle.plugins.kotlin-plugin'
 ```
