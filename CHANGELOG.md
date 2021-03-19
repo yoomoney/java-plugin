@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Сборка проекта переведена на gradle-project-plugin.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [4.0.0](https://github.com/yoomoney-gradle-plugins/java-plugin/pull/1) (09-02-2021)
 
