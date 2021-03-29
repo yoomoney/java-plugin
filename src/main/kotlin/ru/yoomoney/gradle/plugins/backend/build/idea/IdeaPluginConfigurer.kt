@@ -32,9 +32,6 @@ class IdeaPluginConfigurer {
                         "  </component>")
             }
         }
-        ideaModule.testSourceDirs.plusAssign(
-            target.rootDir.listFiles()
-                .filter { it.name == "slowTest" }[0])
         ideaModule.jdkName = "12"
         val iml = ideaModule.iml
 
