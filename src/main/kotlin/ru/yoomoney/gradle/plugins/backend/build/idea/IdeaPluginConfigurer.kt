@@ -2,6 +2,7 @@ package ru.yoomoney.gradle.plugins.backend.build.idea
 
 import org.gradle.api.Project
 import org.gradle.plugins.ide.idea.IdeaPlugin
+import org.gradle.plugins.ide.idea.model.IdeaModel
 
 /**
  * Настраивает ide
@@ -20,6 +21,15 @@ class IdeaPluginConfigurer {
         ideaModule.isDownloadJavadoc = true
         ideaModule.isDownloadSources = true
         ideaModule.inheritOutputDirs = true
+
+        target.extensions.configure(IdeaModel::class.java) {
+            it.workspace.iws.withXml { provider ->
+//                 val addedConfiguration = XmlParser().parse(javaClass.getResourceAsStream("clean-build-configuration.xml"))
+                provider.asNode().appendNode("<component name=\"AAAA\">\n" +
+                        "  </component>")
+            }
+        }
+//        ideaModule.jdkName = "12"
 
         ideaModule.excludeDirs.minusAssign(target.buildDir)
         val toExclude = listOf(

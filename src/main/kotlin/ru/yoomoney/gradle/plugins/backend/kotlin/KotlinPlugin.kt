@@ -69,7 +69,7 @@ class KotlinPlugin : Plugin<Project> {
             it.doLast {
                 val tmp = TmpDirTemporaryFileProvider()
                 val config = tmp.createTemporaryFile("detekt", "yml")
-                config.writeText(detektConfig().replace("%MAX_ISSUES%", "999", false))
+                config.writeText(detektConfig().replace("%MAX_ISSUES%", getDetektLimit(target).toString(), false))
                 val targetConfig = Paths.get(target.buildDir.absolutePath, "detekt.yml")
                 Files.deleteIfExists(targetConfig)
                 Files.move(config.toPath(), targetConfig)
