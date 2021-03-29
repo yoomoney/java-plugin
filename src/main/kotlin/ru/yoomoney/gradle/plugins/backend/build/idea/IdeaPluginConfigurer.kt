@@ -21,15 +21,6 @@ class IdeaPluginConfigurer {
         ideaModule.isDownloadSources = true
         ideaModule.inheritOutputDirs = true
 
-//        target.extensions.configure(IdeaModel::class.java) {
-//            it.workspace.iws.withXml { provider ->
-////                val addedConfiguration = XmlParser().parse(javaClass.getResourceAsStream("clean-build-configuration.xml"))
-//                provider.asNode().appendNode("<component name=\"AAAA\">\n" +
-//                        "  </component>")
-//            }
-//        }
-//        ideaModule.jdkName = "12"
-
         ideaModule.excludeDirs.minusAssign(target.buildDir)
         val toExclude = listOf(
                 "classes", "docs", "jacoco", "deb-templates", "publications", "out", "tmp",
