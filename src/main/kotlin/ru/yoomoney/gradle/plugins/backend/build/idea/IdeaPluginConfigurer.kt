@@ -23,10 +23,10 @@ class IdeaPluginConfigurer {
         ideaModule.inheritOutputDirs = true
 
         target.extensions.configure(IdeaModel::class.java) {
-            it.workspace.iws.withXml { provider ->
-//                 val addedConfiguration = XmlParser().parse(javaClass.getResourceAsStream("clean-build-configuration.xml"))
-                provider.asNode().appendNode("<component name=\"AAAA\">\n" +
-                        "  </component>")
+            it.project.ipr.withXml { provider ->
+
+                val node = provider.asNode()
+                node.appendNode("ALEXALEX", "ALEXALEX")
             }
         }
 //        ideaModule.jdkName = "12"
