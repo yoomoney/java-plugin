@@ -5,7 +5,7 @@ target/
 bin/
 test-output/
 .gradle/
-./build/
+build/
 temp/
 tmp/
 .idea/
