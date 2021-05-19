@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/yoomoney-gradle-plugins/java-plugin.svg?branch=master)](https://travis-ci.com/yoomoney-gradle-plugins/java-plugin)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # java-plugin
 
 ## Описание
