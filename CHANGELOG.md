@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [4.1.2](https://github.com/yoomoney-gradle-plugins/java-plugin/pull/4) (19-05-2021)
+
 * Добавлена информация о сборке и лицензии в README.md.
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [4.1.1](https://github.com/yoomoney-gradle-plugins/java-plugin/pull/3) (23-04-2021)
 
 * Директория build/ удалена и добавлена в gitignore
