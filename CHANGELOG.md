@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлено логирование для master/dev ветки о том, что snapshot репозитории не добавляются.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [4.1.2](https://github.com/yoomoney-gradle-plugins/java-plugin/pull/4) (19-05-2021)
 

@@ -87,6 +87,8 @@ class JarConfigurer {
             if (isDevelopmentBranch(target)) {
                 javaExtension.snapshotsRepositories
                         .forEach { repo -> target.repositories.maven { it.setUrl(repo) } }
+            } else {
+                target.logger.lifecycle("Attention: snapshot repositories won't be added!")
             }
         }
     }
