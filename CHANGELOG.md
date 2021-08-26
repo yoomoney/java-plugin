@@ -1,19 +1,20 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Переезд организации yoomoney-gradle-plugins -> yoomoney
 ### NEXT_VERSION_DESCRIPTION_END
-## [4.1.2](https://github.com/yoomoney-gradle-plugins/java-plugin/pull/4) (19-05-2021)
+## [4.1.2](https://github.com/yoomoney/java-plugin/pull/4) (19-05-2021)
 
 * Добавлена информация о сборке и лицензии в README.md.
 
-## [4.1.1](https://github.com/yoomoney-gradle-plugins/java-plugin/pull/3) (23-04-2021)
+## [4.1.1](https://github.com/yoomoney/java-plugin/pull/3) (23-04-2021)
 
 * Директория build/ удалена и добавлена в gitignore
 
-## [4.1.0](https://github.com/yoomoney-gradle-plugins/java-plugin/pull/2) (19-03-2021)
+## [4.1.0](https://github.com/yoomoney/java-plugin/pull/2) (19-03-2021)
 
 * Сборка проекта переведена на gradle-project-plugin.
 
-## [4.0.0](https://github.com/yoomoney-gradle-plugins/java-plugin/pull/1) (09-02-2021)
+## [4.0.0](https://github.com/yoomoney/java-plugin/pull/1) (09-02-2021)
 
 * Внесены изменения в связи с переходом в open source:
 * Переименованы пакеты
