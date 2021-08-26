@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [4.2.0](https://github.com/yoomoney/java-plugin/pull/5) (26-08-2021)
+
 * Переезд организации yoomoney-gradle-plugins -> yoomoney
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [4.1.2](https://github.com/yoomoney/java-plugin/pull/4) (19-05-2021)
 
 * Добавлена информация о сборке и лицензии в README.md.
