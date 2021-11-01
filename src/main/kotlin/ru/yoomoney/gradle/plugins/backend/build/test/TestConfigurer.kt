@@ -15,10 +15,10 @@ import ru.yoomoney.gradle.plugins.backend.build.JavaExtension
  */
 class TestConfigurer {
     companion object {
-        public val ALL_TESTS_TASK_NAME = "unitAndComponentTests"
-        private val UNIT_TESTS_TASK_NAME = "test"
-        private val COMPONENT_TESTS_TASK_NAME = "componentTest"
-        private val DEPRECATED_COMPONENT_TESTS_TASK_NAME = "slowTest"
+        const val ALL_TESTS_TASK_NAME = "unitAndComponentTests"
+        private const val UNIT_TESTS_TASK_NAME = "test"
+        private const val COMPONENT_TESTS_TASK_NAME = "componentTest"
+        private const val DEPRECATED_COMPONENT_TESTS_TASK_NAME = "slowTest"
     }
 
     fun init(target: Project) {
