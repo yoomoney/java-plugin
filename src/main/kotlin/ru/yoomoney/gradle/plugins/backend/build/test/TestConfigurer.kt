@@ -15,6 +15,7 @@ import ru.yoomoney.gradle.plugins.backend.build.JavaExtension
  */
 class TestConfigurer {
     companion object {
+        public val ALL_TESTS_TASK_NAME = "unitAndComponentTests"
         private val UNIT_TESTS_TASK_NAME = "test"
         private val COMPONENT_TESTS_TASK_NAME = "componentTest"
         private val DEPRECATED_COMPONENT_TESTS_TASK_NAME = "slowTest"
@@ -26,18 +27,25 @@ class TestConfigurer {
         // Настройка unit тестов
         configureUnitTestTasks(target, extension)
 
-        // Установка SourceSet для компонентных тестов
-        val componentTestSourceSetName = setUpComponentTestsSourceSet(target)
+        if (hasComponentTest(target)) {
+            // Установка SourceSet для компонентных тестов
+            val componentTestSourceSetName = setUpComponentTestsSourceSet(target)
 
-        // Сохранение SourceSet для компонентных тестов в глобальную переменную с помощью механизма convention
-        setGlobalSourceSet(target, componentTestSourceSetName)
+            // Сохранение SourceSet для компонентных тестов в глобальную переменную с помощью механизма convention
+            setGlobalSourceSet(target, componentTestSourceSetName)
 
-        // Настройка компонентных тестов
-        configureComponentTestTasks(target, extension, componentTestSourceSetName)
+            // Настройка компонентных тестов
+            configureComponentTestTasks(target, extension, componentTestSourceSetName)
 
-        // задача запуска всех компонентных и unit тестов
-        target.tasks.create("unitAndComponentTests").apply {
-            dependsOn("test", "componentTest")
+            // задача запуска всех существующих тестов
+            target.tasks.create(ALL_TESTS_TASK_NAME).apply {
+                dependsOn("test", "componentTest")
+            }
+        } else {
+            // задача запуска всех существующих тестов
+            target.tasks.create(ALL_TESTS_TASK_NAME).apply {
+                dependsOn("test")
+            }
         }
 
         target.tasks.withType(Test::class.java).forEach {
@@ -45,6 +53,10 @@ class TestConfigurer {
             it.reports.junitXml.isOutputPerTestCase = true
             it.reports.html.destination = target.file("${target.buildDir}/reports/${it.name}")
         }
+    }
+
+    private fun hasComponentTest(target: Project): Boolean {
+        return target.file("src/${COMPONENT_TESTS_TASK_NAME}").exists() || target.file("src/${DEPRECATED_COMPONENT_TESTS_TASK_NAME}").exists()
     }
 
     private fun setUpComponentTestsSourceSet(target: Project): String {
