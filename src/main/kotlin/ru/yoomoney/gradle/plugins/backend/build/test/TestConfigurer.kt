@@ -56,11 +56,11 @@ class TestConfigurer {
     }
 
     private fun hasComponentTest(target: Project): Boolean {
-        return target.file("src/${COMPONENT_TESTS_TASK_NAME}").exists() || target.file("src/${DEPRECATED_COMPONENT_TESTS_TASK_NAME}").exists()
+        return target.file("src/$COMPONENT_TESTS_TASK_NAME").exists() || target.file("src/$DEPRECATED_COMPONENT_TESTS_TASK_NAME").exists()
     }
 
     private fun setUpComponentTestsSourceSet(target: Project): String {
-        val chosenSourceSetName = if (target.file("src/${COMPONENT_TESTS_TASK_NAME}").exists()) COMPONENT_TESTS_TASK_NAME else DEPRECATED_COMPONENT_TESTS_TASK_NAME
+        val chosenSourceSetName = if (target.file("src/$COMPONENT_TESTS_TASK_NAME").exists()) COMPONENT_TESTS_TASK_NAME else DEPRECATED_COMPONENT_TESTS_TASK_NAME
 
         val compileTestJavaTaskName = "compile${chosenSourceSetName}Java"
 
