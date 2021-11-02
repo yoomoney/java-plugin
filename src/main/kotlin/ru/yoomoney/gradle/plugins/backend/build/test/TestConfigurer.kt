@@ -24,13 +24,13 @@ class TestConfigurer {
     fun init(target: Project) {
         val extension = target.extensions.getByType(JavaExtension::class.java)
 
-        val allTestTaskNames = arrayOf(UNIT_TESTS_TASK_NAME)
+        val allTestTaskNames = mutableListOf(UNIT_TESTS_TASK_NAME)
 
         configureUnitTestTasks(target, extension)
 
         if (hasComponentTest(target)) {
             configureComponentTestTasks(target, extension)
-            allTestTaskNames[1] = COMPONENT_TESTS_TASK_NAME
+            allTestTaskNames.add(COMPONENT_TESTS_TASK_NAME)
         }
 
         // задача запуска всех существующих тестов
@@ -47,37 +47,6 @@ class TestConfigurer {
 
     private fun hasComponentTest(target: Project): Boolean {
         return target.file("src/$COMPONENT_TESTS_TASK_NAME").exists() || target.file("src/$DEPRECATED_COMPONENT_TESTS_TASK_NAME").exists()
-    }
-
-    private fun setUpComponentTestsSourceSet(target: Project): SourceSet {
-        val chosenSourceSetName = if (target.file("src/$COMPONENT_TESTS_TASK_NAME").exists()) COMPONENT_TESTS_TASK_NAME else DEPRECATED_COMPONENT_TESTS_TASK_NAME
-
-        val compileTestJavaTaskName = "compile${chosenSourceSetName}Java"
-
-        target.tasks.getByName("check").apply {
-            dependsOn += compileTestJavaTaskName
-        }
-
-        target.configurations
-            .getByName("${chosenSourceSetName}Compile")
-            .extendsFrom(target.configurations.getByName("testCompile"))
-        target.configurations
-            .getByName("${chosenSourceSetName}Runtime")
-            .extendsFrom(target.configurations.getByName("testRuntime"))
-
-        // Создание и сохранение SourceSet для компонентных тестов в глобальную переменную с помощью механизма convention
-        target.convention.getPlugin(JavaPluginConvention::class.java).apply {
-            val componentTest = sourceSets.create(chosenSourceSetName)
-            componentTest.compileClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
-            componentTest.runtimeClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
-            componentTest.java { it.srcDir(target.file("src/$chosenSourceSetName/java")) }
-            componentTest.resources {
-                it.srcDir(target.file("src/$chosenSourceSetName/resources"))
-            }
-        }.sourceSets.getAt(chosenSourceSetName)
-
-        // Получение SourceSet для компонентных тестов из глобальной переменной с помощью механизма convention
-        return target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSetName)
     }
 
     private fun configureUnitTestTasks(target: Project, extension: JavaExtension) {
@@ -139,5 +108,36 @@ class TestConfigurer {
         target.tasks.create("componentTest").apply {
             dependsOn("${sourceSet.name}Test", "${sourceSet.name}TestNg")
         }
+
+        val compileTestJavaTaskName = "compile${Character.toUpperCase(sourceSet.name[0])}${sourceSet.name.substring(1)}Java"
+
+        target.tasks.getByName("check").apply {
+            dependsOn += compileTestJavaTaskName
+        }
+    }
+
+    private fun setUpComponentTestsSourceSet(target: Project): SourceSet {
+        val chosenSourceSetName = if (target.file("src/$COMPONENT_TESTS_TASK_NAME").exists()) COMPONENT_TESTS_TASK_NAME else DEPRECATED_COMPONENT_TESTS_TASK_NAME
+
+        // Создание и сохранение SourceSet для компонентных тестов в глобальную переменную с помощью механизма convention
+        target.convention.getPlugin(JavaPluginConvention::class.java).apply {
+            val componentTest = sourceSets.create(chosenSourceSetName)
+            componentTest.compileClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
+            componentTest.runtimeClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
+            componentTest.java { it.srcDir(target.file("src/$chosenSourceSetName/java")) }
+            componentTest.resources {
+                it.srcDir(target.file("src/$chosenSourceSetName/resources"))
+            }
+        }.sourceSets.getAt(chosenSourceSetName)
+
+        target.configurations
+            .getByName("${chosenSourceSetName}Compile")
+            .extendsFrom(target.configurations.getByName("testCompile"))
+        target.configurations
+            .getByName("${chosenSourceSetName}Runtime")
+            .extendsFrom(target.configurations.getByName("testRuntime"))
+
+        // Получение SourceSet для компонентных тестов из глобальной переменной с помощью механизма convention
+        return target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSetName)
     }
 }
