@@ -24,28 +24,18 @@ class TestConfigurer {
     fun init(target: Project) {
         val extension = target.extensions.getByType(JavaExtension::class.java)
 
-        // Настройка unit тестов
+        val allTestTaskNames = arrayOf(UNIT_TESTS_TASK_NAME)
+
         configureUnitTestTasks(target, extension)
 
         if (hasComponentTest(target)) {
-            // Установка SourceSet для компонентных тестов
-            val componentTestSourceSetName = setUpComponentTestsSourceSet(target)
+            configureComponentTestTasks(target, extension)
+            allTestTaskNames[1] = COMPONENT_TESTS_TASK_NAME
+        }
 
-            // Сохранение SourceSet для компонентных тестов в глобальную переменную с помощью механизма convention
-            setGlobalSourceSet(target, componentTestSourceSetName)
-
-            // Настройка компонентных тестов
-            configureComponentTestTasks(target, extension, componentTestSourceSetName)
-
-            // задача запуска всех существующих тестов
-            target.tasks.create(ALL_TESTS_TASK_NAME).apply {
-                dependsOn("test", "componentTest")
-            }
-        } else {
-            // задача запуска всех существующих тестов
-            target.tasks.create(ALL_TESTS_TASK_NAME).apply {
-                dependsOn("test")
-            }
+        // задача запуска всех существующих тестов
+        target.tasks.create(ALL_TESTS_TASK_NAME).apply {
+            dependsOn(allTestTaskNames)
         }
 
         target.tasks.withType(Test::class.java).forEach {
@@ -59,7 +49,7 @@ class TestConfigurer {
         return target.file("src/$COMPONENT_TESTS_TASK_NAME").exists() || target.file("src/$DEPRECATED_COMPONENT_TESTS_TASK_NAME").exists()
     }
 
-    private fun setUpComponentTestsSourceSet(target: Project): String {
+    private fun setUpComponentTestsSourceSet(target: Project): SourceSet {
         val chosenSourceSetName = if (target.file("src/$COMPONENT_TESTS_TASK_NAME").exists()) COMPONENT_TESTS_TASK_NAME else DEPRECATED_COMPONENT_TESTS_TASK_NAME
 
         val compileTestJavaTaskName = "compile${chosenSourceSetName}Java"
@@ -75,7 +65,19 @@ class TestConfigurer {
             .getByName("${chosenSourceSetName}Runtime")
             .extendsFrom(target.configurations.getByName("testRuntime"))
 
-        return chosenSourceSetName
+        // Создание и сохранение SourceSet для компонентных тестов в глобальную переменную с помощью механизма convention
+        target.convention.getPlugin(JavaPluginConvention::class.java).apply {
+            val componentTest = sourceSets.create(chosenSourceSetName)
+            componentTest.compileClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
+            componentTest.runtimeClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
+            componentTest.java { it.srcDir(target.file("src/$chosenSourceSetName/java")) }
+            componentTest.resources {
+                it.srcDir(target.file("src/$chosenSourceSetName/resources"))
+            }
+        }.sourceSets.getAt(chosenSourceSetName)
+
+        // Получение SourceSet для компонентных тестов из глобальной переменной с помощью механизма convention
+        return target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSetName)
     }
 
     private fun configureUnitTestTasks(target: Project, extension: JavaExtension) {
@@ -102,23 +104,22 @@ class TestConfigurer {
         }
     }
 
-    private fun configureComponentTestTasks(target: Project, extension: JavaExtension, componentTestSourceSetName: String) {
-        // Получение SourceSet для компонентных тестов из глобальной переменной с помощью механизма convention
-        val sourceSet = getGlobalSourceSet(target, componentTestSourceSetName)
+    private fun configureComponentTestTasks(target: Project, extension: JavaExtension) {
+        val sourceSet = setUpComponentTestsSourceSet(target)
 
         // задача запуска компонентных Junit тестов
-        target.tasks.create("${componentTestSourceSetName}Test", Test::class.java).apply {
+        target.tasks.create("${sourceSet.name}Test", Test::class.java).apply {
             systemProperty("file.encoding", "UTF-8")
             testClassesDirs = sourceSet.output.classesDirs
             classpath = sourceSet.runtimeClasspath
         }
 
         val overwriteTestReportsTask = target.tasks.create("overwriteTestReports", OverwriteTestReportsTask::class.java).apply {
-            xmlReportsPath = "${target.property("testResultsDir")}/${componentTestSourceSetName}TestNg"
+            xmlReportsPath = "${target.property("testResultsDir")}/${sourceSet.name}TestNg"
         }
 
         // задача запуска компонентных TestNG тестов
-        target.tasks.create("${componentTestSourceSetName}TestNg", Test::class.java).apply {
+        target.tasks.create("${sourceSet.name}TestNg", Test::class.java).apply {
             useTestNG()
             systemProperty("file.encoding", "UTF-8")
             options {
@@ -136,23 +137,7 @@ class TestConfigurer {
 
         // задача запуска компонентных TestNG и Junit тестов
         target.tasks.create("componentTest").apply {
-            dependsOn("${componentTestSourceSetName}Test", "${componentTestSourceSetName}TestNg")
+            dependsOn("${sourceSet.name}Test", "${sourceSet.name}TestNg")
         }
-    }
-
-    private fun setGlobalSourceSet(target: Project, sourceSetName: String) {
-        target.convention.getPlugin(JavaPluginConvention::class.java).apply {
-            val componentTest = sourceSets.create(sourceSetName)
-            componentTest.compileClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
-            componentTest.runtimeClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
-            componentTest.java { it.srcDir(target.file("src/$sourceSetName/java")) }
-            componentTest.resources {
-                it.srcDir(target.file("src/$sourceSetName/resources"))
-            }
-        }
-    }
-
-    private fun getGlobalSourceSet(target: Project, sourceSetName: String): SourceSet {
-        return target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(sourceSetName)
     }
 }

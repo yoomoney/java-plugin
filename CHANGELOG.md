@@ -1,6 +1,13 @@
 ### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
-Исправление дублирования запуска unit тестов
+Проведен рефакторинг TestConfigurer. А именно, выделены задачи запуска тестов:
+* Task "testJunit" - запуск unit тестов (только Junit)
+* Task "testTestNG" - запуск unit тестов (только TestNG)
+* Task "test" - запуск unit тестов (Junit и TestNG)
+* Task "componentTestTest" - запуск компонентных тестов (только Junit)
+* Task "componentTestTestNg" - запуск компонентных тестов (только TestNG)
+* Task "componentTest" - запуск компонентных тестов (Junit и TestNG)
+* Task "unitAndComponentTest" - запуск компонентных и unit тестов
 ### NEXT_VERSION_DESCRIPTION_END
 ## [4.2.0](https://github.com/yoomoney/java-plugin/pull/5) (26-08-2021)
 
