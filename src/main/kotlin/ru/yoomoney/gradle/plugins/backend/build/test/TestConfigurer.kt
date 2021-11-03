@@ -69,7 +69,8 @@ class TestConfigurer {
         }
 
         // задача запуска TestNG и Junit тестов
-        target.tasks.maybeCreate(UNIT_TESTS_TASK_NAME, DefaultTask::class.java).apply {
+        target.tasks.maybeCreate(UNIT_TESTS_TASK_NAME).apply {
+            enabled = false
             dependsOn("testJunit", "testTestNG")
         }
     }
