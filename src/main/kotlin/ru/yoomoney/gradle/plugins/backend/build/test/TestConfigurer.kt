@@ -24,18 +24,13 @@ class TestConfigurer {
     fun init(target: Project) {
         val extension = target.extensions.getByType(JavaExtension::class.java)
 
-        val allTestTaskNames = mutableListOf(UNIT_TESTS_TASK_NAME)
-
         configureUnitTestTasks(target, extension)
 
-        if (hasComponentTest(target)) {
-            configureComponentTestTasks(target, extension)
-            allTestTaskNames.add(COMPONENT_TESTS_TASK_NAME)
-        }
+        configureComponentTestTasks(target, extension)
 
         // задача запуска всех существующих тестов
         target.tasks.create(ALL_TESTS_TASK_NAME).apply {
-            dependsOn(allTestTaskNames)
+            dependsOn(UNIT_TESTS_TASK_NAME, COMPONENT_TESTS_TASK_NAME)
         }
 
         target.tasks.withType(Test::class.java).forEach {
@@ -43,10 +38,6 @@ class TestConfigurer {
             it.reports.junitXml.isOutputPerTestCase = true
             it.reports.html.destination = target.file("${target.buildDir}/reports/${it.name}")
         }
-    }
-
-    private fun hasComponentTest(target: Project): Boolean {
-        return target.file("src/$COMPONENT_TESTS_TASK_NAME").exists() || target.file("src/$DEPRECATED_COMPONENT_TESTS_TASK_NAME").exists()
     }
 
     private fun configureUnitTestTasks(target: Project, extension: JavaExtension) {
