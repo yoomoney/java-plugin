@@ -1,5 +1,6 @@
 package ru.yoomoney.gradle.plugins.backend.build.test
 
+import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.SourceSet
@@ -68,7 +69,7 @@ class TestConfigurer {
         }
 
         // задача запуска TestNG и Junit тестов
-        target.tasks.maybeCreate(UNIT_TESTS_TASK_NAME).apply {
+        target.tasks.maybeCreate(UNIT_TESTS_TASK_NAME, DefaultTask::class.java).apply {
             dependsOn("testJunit", "testTestNG")
         }
     }
