@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлено исключение для mapstruct
 ### NEXT_VERSION_DESCRIPTION_END
 ## [4.2.0](https://github.com/yoomoney/java-plugin/pull/5) (26-08-2021)
 
