@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [4.2.1](https://github.com/yoomoney/java-plugin/pull/7) (11-11-2021)
+
 * Добавлено исключение для mapstruct
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [4.2.0](https://github.com/yoomoney/java-plugin/pull/5) (26-08-2021)
 
 * Переезд организации yoomoney-gradle-plugins -> yoomoney
