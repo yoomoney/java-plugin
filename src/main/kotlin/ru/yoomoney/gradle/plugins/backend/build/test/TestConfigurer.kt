@@ -98,6 +98,7 @@ class TestConfigurer {
 
         // задача запуска компонентных TestNG и Junit тестов
         target.tasks.create("componentTest").apply {
+            enabled = false
             dependsOn("${sourceSet.name}Test", "${sourceSet.name}TestNg")
         }
 
