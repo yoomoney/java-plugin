@@ -1,5 +1,5 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [4.3.0](https://github.com/yoomoney/java-plugin/pull/6) (15-11-2021)
+
 Проведен рефакторинг TestConfigurer. А именно, выделены задачи запуска тестов:
 * Task "testJunit" - запуск unit тестов (только Junit)
 * Task "testTestNG" - запуск unit тестов (только TestNG)
@@ -8,7 +8,7 @@
 * Task "componentTestTestNg" - запуск компонентных тестов (только TestNG)
 * Task "componentTest" - запуск компонентных тестов (Junit и TestNG)
 * Task "unitAndComponentTest" - запуск компонентных и unit тестов
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [4.2.1](https://github.com/yoomoney/java-plugin/pull/7) (11-11-2021)
 
 * Добавлено исключение для mapstruct
