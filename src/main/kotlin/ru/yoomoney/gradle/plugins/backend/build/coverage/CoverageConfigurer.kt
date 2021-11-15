@@ -6,6 +6,7 @@ import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
+import ru.yoomoney.gradle.plugins.backend.build.test.TestConfigurer
 import java.io.FileInputStream
 import java.util.Properties
 import javax.xml.parsers.DocumentBuilderFactory
@@ -29,7 +30,8 @@ class CoverageConfigurer {
         val jacocoAggReportTask = configureJacocoAggReportTask(project)
         val checkCoverageTask = configureCheckCoverageTask(project)
 
-        jacocoAggReportTask.dependsOn("check", "componentTest")
+        jacocoAggReportTask.dependsOn("check", TestConfigurer.ALL_TESTS_TASK_NAME)
+
         checkCoverageTask.dependsOn("jacocoAggReport")
     }
 

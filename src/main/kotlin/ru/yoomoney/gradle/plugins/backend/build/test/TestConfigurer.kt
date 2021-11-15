@@ -2,6 +2,7 @@ package ru.yoomoney.gradle.plugins.backend.build.test
 
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.testng.TestNGOptions
 import ru.yoomoney.gradle.plugins.backend.build.JavaExtension
@@ -13,13 +14,40 @@ import ru.yoomoney.gradle.plugins.backend.build.JavaExtension
  * @since 17.04.2019
  */
 class TestConfigurer {
+    companion object {
+        const val ALL_TESTS_TASK_NAME = "unitAndComponentTest"
+        private const val UNIT_TESTS_TASK_NAME = "test"
+        private const val COMPONENT_TESTS_TASK_NAME = "componentTest"
+        private const val DEPRECATED_COMPONENT_TESTS_TASK_NAME = "slowTest"
+    }
 
     fun init(target: Project) {
         val extension = target.extensions.getByType(JavaExtension::class.java)
+
+        configureUnitTestTasks(target, extension)
+
+        configureComponentTestTasks(target, extension)
+
+        // задача запуска всех существующих тестов
+        target.tasks.create(ALL_TESTS_TASK_NAME).apply {
+            dependsOn(UNIT_TESTS_TASK_NAME, COMPONENT_TESTS_TASK_NAME)
+        }
+
+        target.tasks.withType(Test::class.java).forEach {
+            it.reports.junitXml.destination = target.file("${target.property("testResultsDir")}/${it.name}")
+            it.reports.junitXml.isOutputPerTestCase = true
+            it.reports.html.destination = target.file("${target.buildDir}/reports/${it.name}")
+        }
+    }
+
+    private fun configureUnitTestTasks(target: Project, extension: JavaExtension) {
+        // задача запуска Junit тестов
         target.tasks.create("testJunit", Test::class.java).apply {
             systemProperty("file.encoding", "UTF-8")
         }
-        target.tasks.maybeCreate("test", Test::class.java).apply {
+
+        // задача запуска TestNG тестов
+        target.tasks.create("testTestNG", Test::class.java).apply {
             useTestNG()
             systemProperty("file.encoding", "UTF-8")
             options {
@@ -28,29 +56,31 @@ class TestConfigurer {
                 it.threadCount = extension.test.threadCount
                 it.listeners = extension.test.listeners
             }
-            dependsOn("testJunit")
-        }
-        val chosenSourceSet = if (target.file("src/componentTest").exists()) "componentTest" else "slowTest"
-        target.convention.getPlugin(JavaPluginConvention::class.java).apply {
-            val componentTest = sourceSets.create(chosenSourceSet)
-            componentTest.compileClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
-            componentTest.runtimeClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
-            componentTest.java { it.srcDir(target.file("src/$chosenSourceSet/java")) }
-            componentTest.resources {
-                it.srcDir(target.file("src/$chosenSourceSet/resources"))
-            }
         }
 
-        target.configurations
-                .getByName("${chosenSourceSet}Compile")
-                .extendsFrom(target.configurations.getByName("testCompile"))
-        target.configurations
-                .getByName("${chosenSourceSet}Runtime")
-                .extendsFrom(target.configurations.getByName("testRuntime"))
-        val overwriteTestReportsTask = target.tasks.create("overwriteTestReports", OverwriteTestReportsTask::class.java).apply {
-            xmlReportsPath = "${target.property("testResultsDir")}/${chosenSourceSet}TestNg"
+        // задача запуска TestNG и Junit тестов
+        target.tasks.maybeCreate(UNIT_TESTS_TASK_NAME).apply {
+            enabled = false
+            dependsOn("testJunit", "testTestNG")
         }
-        target.tasks.create("${chosenSourceSet}TestNg", Test::class.java).apply {
+    }
+
+    private fun configureComponentTestTasks(target: Project, extension: JavaExtension) {
+        val sourceSet = setUpComponentTestsSourceSet(target)
+
+        // задача запуска компонентных Junit тестов
+        target.tasks.create("${sourceSet.name}Test", Test::class.java).apply {
+            systemProperty("file.encoding", "UTF-8")
+            testClassesDirs = sourceSet.output.classesDirs
+            classpath = sourceSet.runtimeClasspath
+        }
+
+        val overwriteTestReportsTask = target.tasks.create("overwriteTestReports", OverwriteTestReportsTask::class.java).apply {
+            xmlReportsPath = "${target.property("testResultsDir")}/${sourceSet.name}TestNg"
+        }
+
+        // задача запуска компонентных TestNG тестов
+        target.tasks.create("${sourceSet.name}TestNg", Test::class.java).apply {
             useTestNG()
             systemProperty("file.encoding", "UTF-8")
             options {
@@ -59,30 +89,48 @@ class TestConfigurer {
                 it.threadCount = extension.componentTest.threadCount
                 it.listeners = extension.componentTest.listeners
             }
-            val slowTest = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSet)
-            testClassesDirs = slowTest.output.classesDirs
-            classpath = slowTest.runtimeClasspath
+
+            testClassesDirs = sourceSet.output.classesDirs
+            classpath = sourceSet.runtimeClasspath
+
             finalizedBy(overwriteTestReportsTask)
         }
-        target.tasks.create("${chosenSourceSet}Test", Test::class.java).apply {
-            systemProperty("file.encoding", "UTF-8")
-            val slowTest = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSet)
-            testClassesDirs = slowTest.output.classesDirs
-            classpath = slowTest.runtimeClasspath
-            dependsOn("${chosenSourceSet}TestNg")
+
+        // задача запуска компонентных TestNG и Junit тестов
+        target.tasks.create("componentTest").apply {
+            enabled = false
+            dependsOn("${sourceSet.name}Test", "${sourceSet.name}TestNg")
         }
-        target.tasks.create("componentTest", Test::class.java).apply {
-            systemProperty("file.encoding", "UTF-8")
-            dependsOn("${chosenSourceSet}Test")
-        }
-        target.tasks.withType(Test::class.java).forEach {
-            it.reports.junitXml.destination = target.file("${target.property("testResultsDir")}/${it.name}")
-            it.reports.junitXml.isOutputPerTestCase = true
-            it.reports.html.destination = target.file("${target.buildDir}/reports/${it.name}")
-        }
-        val compileTestJavaTaskName = if (target.file("src/componentTest").exists()) "compileComponentTestJava" else "compileSlowTestJava"
+
+        val compileTestJavaTaskName = "compile${Character.toUpperCase(sourceSet.name[0])}${sourceSet.name.substring(1)}Java"
+
         target.tasks.getByName("check").apply {
             dependsOn += compileTestJavaTaskName
         }
+    }
+
+    private fun setUpComponentTestsSourceSet(target: Project): SourceSet {
+        val chosenSourceSetName = if (target.file("src/$COMPONENT_TESTS_TASK_NAME").exists()) COMPONENT_TESTS_TASK_NAME else DEPRECATED_COMPONENT_TESTS_TASK_NAME
+
+        // Создание и сохранение SourceSet для компонентных тестов в глобальную переменную с помощью механизма convention
+        target.convention.getPlugin(JavaPluginConvention::class.java).apply {
+            val componentTest = sourceSets.create(chosenSourceSetName)
+            componentTest.compileClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
+            componentTest.runtimeClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
+            componentTest.java { it.srcDir(target.file("src/$chosenSourceSetName/java")) }
+            componentTest.resources {
+                it.srcDir(target.file("src/$chosenSourceSetName/resources"))
+            }
+        }
+
+        target.configurations
+            .getByName("${chosenSourceSetName}Compile")
+            .extendsFrom(target.configurations.getByName("testCompile"))
+        target.configurations
+            .getByName("${chosenSourceSetName}Runtime")
+            .extendsFrom(target.configurations.getByName("testRuntime"))
+
+        // Получение SourceSet для компонентных тестов из глобальной переменной с помощью механизма convention
+        return target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSetName)
     }
 }

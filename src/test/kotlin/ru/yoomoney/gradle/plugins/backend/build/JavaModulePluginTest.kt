@@ -37,7 +37,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
             }
         """.trimIndent())
 
-        runTasksSuccessfully("build", "componentTest", "jar")
+        runTasksSuccessfully("build", "jar")
         assertFileExists(File(projectDir.root, "/target/libs/${projectName()}-1.0.1-feature-BACKEND-2588-build-jar-SNAPSHOT.jar"))
         assertFileExists(File(projectDir.root, "/target/tmp/jar/MANIFEST.MF"))
         val properties = Properties().apply { load(File(projectDir.root, "/target/tmp/jar/MANIFEST.MF").inputStream()) }
