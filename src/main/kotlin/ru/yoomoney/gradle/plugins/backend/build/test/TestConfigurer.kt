@@ -121,7 +121,7 @@ class TestConfigurer {
             componentTest.resources {
                 it.srcDir(target.file("src/$chosenSourceSetName/resources"))
             }
-        }.sourceSets.getAt(chosenSourceSetName)
+        }
 
         target.configurations
             .getByName("${chosenSourceSetName}Compile")
