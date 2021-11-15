@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [4.3.0](https://github.com/yoomoney/java-plugin/pull/6) (15-11-2021)
 
 Проведен рефакторинг TestConfigurer. А именно, выделены задачи запуска тестов:
