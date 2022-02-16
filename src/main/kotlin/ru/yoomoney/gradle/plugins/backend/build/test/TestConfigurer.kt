@@ -8,7 +8,7 @@ import org.gradle.api.tasks.testing.testng.TestNGOptions
 import ru.yoomoney.gradle.plugins.backend.build.JavaExtension
 
 /**
- * Конфигрурует unit тесты и компонетные тесты
+ * Конфигурирует unit тесты и компонентные тесты
  *
  * @author Valerii Zhirnov
  * @since 17.04.2019
@@ -16,9 +16,12 @@ import ru.yoomoney.gradle.plugins.backend.build.JavaExtension
 class TestConfigurer {
     companion object {
         const val ALL_TESTS_TASK_NAME = "unitAndComponentTest"
+        const val UNIT_TEST_SOURCE_SET_NAME = "test"
+        const val COMPONENT_TEST_SOURCE_SET_NAME = "componentTest"
+        const val COMPONENT_TEST_DEPRECATED_SOURCE_SET_NAME = "slowTest"
+
         private const val UNIT_TESTS_TASK_NAME = "test"
         private const val COMPONENT_TESTS_TASK_NAME = "componentTest"
-        private const val DEPRECATED_COMPONENT_TESTS_TASK_NAME = "slowTest"
     }
 
     fun init(target: Project) {
@@ -110,7 +113,11 @@ class TestConfigurer {
     }
 
     private fun setUpComponentTestsSourceSet(target: Project): SourceSet {
-        val chosenSourceSetName = if (target.file("src/$COMPONENT_TESTS_TASK_NAME").exists()) COMPONENT_TESTS_TASK_NAME else DEPRECATED_COMPONENT_TESTS_TASK_NAME
+        val chosenSourceSetName = if (target.file("src/$COMPONENT_TESTS_TASK_NAME").exists()) {
+            COMPONENT_TEST_SOURCE_SET_NAME
+        } else {
+            COMPONENT_TEST_DEPRECATED_SOURCE_SET_NAME
+        }
 
         // Создание и сохранение SourceSet для компонентных тестов в глобальную переменную с помощью механизма convention
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {

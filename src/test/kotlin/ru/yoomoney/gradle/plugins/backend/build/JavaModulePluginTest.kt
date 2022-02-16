@@ -2,6 +2,7 @@ package ru.yoomoney.gradle.plugins.backend.build
 
 import org.apache.commons.io.IOUtils
 import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.hasItem
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
@@ -114,5 +115,51 @@ class JavaModulePluginTest : AbstractPluginTest() {
         Files.delete(javaTest.toPath())
         Files.delete(kotlinTest.toPath())
         Files.delete(slowTest.toPath())
+    }
+
+    @Test
+    fun `should pass parameters to sonarqube tasks`() {
+        buildFile.appendText("\n")
+        buildFile.appendText("""
+            javaModule {                
+                sonarqube.host = "https://sonar-host.unknown-host"
+                sonarqube.projectKey = "projectKey"
+                sonarqube.token = "token"
+                sonarqube.supplyLibrariesPath = false
+            }
+            
+            task printSonarqubeProperties {
+                doLast {
+                    project.tasks.getByName("sonarqube").properties.forEach { key, value ->
+                        println(key + "=" + value)
+                    }
+                }
+            }
+        """.trimIndent())
+
+        val buildResult = runTasksSuccessfully("printSonarqubeProperties")
+        assertThat(buildResult.output.lines(), hasItem("sonar.login=token"))
+        assertThat(buildResult.output.lines(), hasItem("sonar.host.url=https://sonar-host.unknown-host"))
+        assertThat(buildResult.output.lines(), hasItem("sonar.projectKey=projectKey"))
+        assertThat(buildResult.output.lines(), hasItem("sonar.branch.name=feature-BACKEND-2588-build-jar"))
+        assertThat(buildResult.output.lines(), hasItem("sonar.java.libraries="))
+        assertThat(buildResult.output.lines(), hasItem("sonar.java.test.libraries="))
+    }
+
+    @Test
+    fun `sonarqube should depends on jacoco and checkstyle tasks`() {
+        buildFile.appendText("\n")
+        buildFile.appendText("""
+            task printDependsOnSonarqubeTasks {
+                doLast {
+                    project.tasks.getByName("sonarqube").dependsOn.forEach { println(it) }
+                }
+            }
+        """.trimIndent())
+
+        val buildResult = runTasksSuccessfully("printDependsOnSonarqubeTasks")
+        assertThat(buildResult.output, containsString("checkCheckstyle"))
+        assertThat(buildResult.output, containsString("jacocoAggReport"))
+        assertThat(buildResult.output, containsString("jacocoTestReport"))
     }
 }
