@@ -13,21 +13,9 @@ class SonarqubeSettings {
     var enabled: Boolean = false
 
     /**
-     * Адрес сервера
-     */
-    var host: String? = null
-
-    /**
      * Ключ-идентификатор проекта в SonarQube
      */
     var projectKey: String? = null
-
-    /**
-     * Токен к серверу SonarQube.
-     * <p>
-     * Используется для получения правил статического анализатора и отправки результатов анализа
-     */
-    var token: String? = null
 
     /**
      * Флаг включающий передачу путей к внешним зависимостям(артефактам).

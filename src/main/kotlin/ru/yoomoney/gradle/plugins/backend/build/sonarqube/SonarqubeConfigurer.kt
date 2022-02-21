@@ -40,11 +40,9 @@ class SonarqubeConfigurer {
     private fun resolveStaticProperties(project: Project) {
         val sonarqubeSettings = project.extensions.getByType(JavaExtension::class.java).sonarqube
         val sonarqubeExtension = project.extensions.getByType(SonarQubeExtension::class.java)
-        val currentBranch = GitManager(project).branchFullName()
+        val currentBranch = GitManager(project).branchName()
 
         sonarqubeExtension.properties {
-            it.properties.putIfAbsent("sonar.login", sonarqubeSettings.token)
-            it.properties.putIfAbsent("sonar.host.url", sonarqubeSettings.host)
             it.properties.putIfAbsent("sonar.projectKey", sonarqubeSettings.projectKey)
             it.properties.putIfAbsent("sonar.branch.name", currentBranch)
 

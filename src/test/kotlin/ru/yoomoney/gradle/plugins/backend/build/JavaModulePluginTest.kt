@@ -121,10 +121,8 @@ class JavaModulePluginTest : AbstractPluginTest() {
     fun `should pass parameters to sonarqube tasks`() {
         buildFile.appendText("\n")
         buildFile.appendText("""
-            javaModule {                
-                sonarqube.host = "https://sonar-host.unknown-host"
+            javaModule {
                 sonarqube.projectKey = "projectKey"
-                sonarqube.token = "token"
                 sonarqube.supplyLibrariesPath = false
             }
             
@@ -138,10 +136,8 @@ class JavaModulePluginTest : AbstractPluginTest() {
         """.trimIndent())
 
         val buildResult = runTasksSuccessfully("printSonarqubeProperties")
-        assertThat(buildResult.output.lines(), hasItem("sonar.login=token"))
-        assertThat(buildResult.output.lines(), hasItem("sonar.host.url=https://sonar-host.unknown-host"))
         assertThat(buildResult.output.lines(), hasItem("sonar.projectKey=projectKey"))
-        assertThat(buildResult.output.lines(), hasItem("sonar.branch.name=feature-BACKEND-2588-build-jar"))
+        assertThat(buildResult.output.lines(), hasItem("sonar.branch.name=feature/BACKEND-2588_build_jar"))
         assertThat(buildResult.output.lines(), hasItem("sonar.java.libraries="))
         assertThat(buildResult.output.lines(), hasItem("sonar.java.test.libraries="))
     }

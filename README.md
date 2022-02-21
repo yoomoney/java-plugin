@@ -76,8 +76,7 @@ javaModule {
 5. Настройка текущей `git` ветки приложения;
 6. Настройка путей к связанным библиотекам приложения.
 
-Основные настройки статического анализатора вынесены в настройки текущего плагина 
-(см. `ru.yoomoney.gradle.plugins.backend.build.JavaExtension`).
+Описание настроек смотрите в `ru.yoomoney.gradle.plugins.backend.build.JavaExtension`.
 
 ## Проверка тестового покрытия
 
