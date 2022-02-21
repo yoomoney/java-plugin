@@ -43,7 +43,12 @@ class SonarqubeConfigurer {
         val currentBranch = GitManager(project).branchName()
 
         sonarqubeExtension.properties {
-            it.properties.putIfAbsent("sonar.projectKey", sonarqubeSettings.projectKey)
+            if (sonarqubeSettings.projectKey != null) {
+                it.properties.putIfAbsent("sonar.projectKey", sonarqubeSettings.projectKey)
+            }
+            if (sonarqubeSettings.projectName != null) {
+                it.properties.putIfAbsent("sonar.projectName", sonarqubeSettings.projectName)
+            }
             it.properties.putIfAbsent("sonar.branch.name", currentBranch)
 
             if (!sonarqubeSettings.supplyLibrariesPath) {
@@ -62,6 +67,13 @@ class SonarqubeConfigurer {
                 it.properties["sonar.java.checkstyle.reportPaths"] = resolveCheckstyleReportPaths(cursor)
                 it.properties["sonar.tests"] = resolveTestSourcePaths(cursor)
                 it.properties["sonar.java.test.binaries"] = resolveTestBinariesPaths(cursor)
+            }
+        }
+
+        if (project.logger.isDebugEnabled) {
+            val sonarqubeTask = project.tasks.withType(SonarQubeTask::class.java).firstOrNull()
+            sonarqubeTask?.properties?.forEach { (key, value) ->
+                project.logger.debug("[sonarqube] properties: {}={}", key, value)
             }
         }
     }
@@ -101,7 +113,7 @@ class SonarqubeConfigurer {
 
     private fun resolveTestBinariesPaths(project: Project): List<String> {
         return resolveTestSourceSets(project)
-            .flatMap { it.compileClasspath }
+            .flatMap { it.output }
             .filter { it.exists() }
             .mapNotNull { it.absolutePath }
             .toList()
