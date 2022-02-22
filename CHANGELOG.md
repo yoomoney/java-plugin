@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=PATCH
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Отключение репозитория bintray в тестовых скриптах;
+* Отключение проксирования `system.out` при запуске `gradle` из тестов.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [4.4.0](https://github.com/yoomoney/java-plugin/pull/8) (22-02-2022)
 
