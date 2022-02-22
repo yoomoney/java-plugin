@@ -2,6 +2,7 @@ package ru.yoomoney.gradle.plugins.backend.build
 
 import org.apache.commons.io.IOUtils
 import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.hasItem
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
@@ -114,5 +115,102 @@ class JavaModulePluginTest : AbstractPluginTest() {
         Files.delete(javaTest.toPath())
         Files.delete(kotlinTest.toPath())
         Files.delete(slowTest.toPath())
+    }
+
+    @Test
+    fun `should pass parameters to sonarqube tasks`() {
+        buildFile.appendText("\n")
+        buildFile.appendText("""
+            javaModule {
+                sonarqube.projectKey = "projectKey"
+                sonarqube.supplyLibrariesPath = false
+            }
+            
+            task printSonarqubeProperties {
+                doLast {
+                    project.tasks.getByName("sonarqube").properties.forEach { key, value ->
+                        println(key + "=" + value)
+                    }
+                }
+            }
+        """.trimIndent())
+
+        val buildResult = runTasksSuccessfully("printSonarqubeProperties")
+        assertThat(buildResult.output.lines(), hasItem("sonar.projectKey=projectKey"))
+        assertThat(buildResult.output.lines(), hasItem("sonar.branch.name=feature/BACKEND-2588_build_jar"))
+        assertThat(buildResult.output.lines(), hasItem("sonar.java.libraries="))
+        assertThat(buildResult.output.lines(), hasItem("sonar.java.test.libraries="))
+    }
+
+    @Test
+    fun `sonarqube should depend on jacoco and checkstyle tasks`() {
+        buildFile.appendText("\n")
+        buildFile.appendText("""
+            task printDependsOnSonarqubeTasks {
+                doLast {
+                    project.tasks.getByName("sonarqube").dependsOn.forEach { println(it) }
+                }
+            }
+        """.trimIndent())
+
+        val buildResult = runTasksSuccessfully("printDependsOnSonarqubeTasks")
+        assertThat(buildResult.output, containsString("checkstyleMain"))
+        assertThat(buildResult.output, containsString("jacocoAggReport"))
+        assertThat(buildResult.output, containsString("jacocoTestReport"))
+    }
+
+    @Test
+    fun `analysis tasks should be disabled when analyseDevelopmentBranchesOnly true`() {
+        buildFile.appendText("\n")
+        buildFile.appendText("""
+            javaModule.sonarqube.enabled = true
+            
+            task printAnalysisTasksStatus {
+                doLast {
+                    def sonarqube = project.tasks.getByName("sonarqube")
+                    def checkstyle = project.tasks.getByName("checkstyleMain")
+                    def spotbugs = project.tasks.getByName("spotbugsMain")
+                    
+                    println("sonarqube:" + sonarqube.onlyIf.isSatisfiedBy(sonarqube))
+                    println("checkstyle:" + checkstyle.onlyIf.isSatisfiedBy(checkstyle))
+                    println("spotbugs:" + spotbugs.onlyIf.isSatisfiedBy(spotbugs))
+                }
+            }
+        """.trimIndent())
+
+        git.checkout().setName("master").call()
+
+        val buildResult = runTasksSuccessfully("printAnalysisTasksStatus")
+        assertThat(buildResult.output, containsString("sonarqube:false"))
+        assertThat(buildResult.output, containsString("checkstyle:false"))
+        assertThat(buildResult.output, containsString("spotbugs:false"))
+    }
+
+    @Test
+    fun `analysis tasks should be enabled when analyseDevelopmentBranchesOnly false`() {
+        buildFile.appendText("\n")
+        buildFile.appendText("""
+            javaModule.sonarqube.enabled = true
+            javaModule.analyseDevelopmentBranchesOnly = false
+            
+            task printAnalysisTasksStatus {
+                doLast {
+                    def sonarqube = project.tasks.getByName("sonarqube")
+                    def checkstyle = project.tasks.getByName("checkstyleMain")
+                    def spotbugs = project.tasks.getByName("spotbugsMain")
+                    
+                    println("sonarqube:" + sonarqube.onlyIf.isSatisfiedBy(sonarqube))
+                    println("checkstyle:" + checkstyle.onlyIf.isSatisfiedBy(checkstyle))
+                    println("spotbugs:" + spotbugs.onlyIf.isSatisfiedBy(spotbugs))
+                }
+            }
+        """.trimIndent())
+
+        git.checkout().setName("master").call()
+
+        val buildResult = runTasksSuccessfully("printAnalysisTasksStatus")
+        assertThat(buildResult.output, containsString("sonarqube:true"))
+        assertThat(buildResult.output, containsString("checkstyle:true"))
+        assertThat(buildResult.output, containsString("spotbugs:true"))
     }
 }

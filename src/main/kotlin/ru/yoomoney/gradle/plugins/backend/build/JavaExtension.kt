@@ -1,5 +1,7 @@
 package ru.yoomoney.gradle.plugins.backend.build
 
+import ru.yoomoney.gradle.plugins.backend.build.sonarqube.SonarqubeSettings
+
 /**
  * Расширения для плагина
  *
@@ -21,7 +23,17 @@ open class JavaExtension {
     /**
      * Флаг включения проверки ошибок spotbugs
      */
-    var spotbugsEnabled = DEFAULT_SPOTBUGS_ENABLED
+    var spotbugsEnabled: Boolean = DEFAULT_SPOTBUGS_ENABLED
+
+    /**
+     * Настройки статического анализатора SonarQube
+     */
+    var sonarqube: SonarqubeSettings = SonarqubeSettings()
+
+    /**
+     * Настройки статического анализатора SonarQube
+     */
+    var analyseDevelopmentBranchesOnly: Boolean = true
 
     /**
      * Настройки unit тестов. см. {@link TestNgExtension}

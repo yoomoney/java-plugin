@@ -19,8 +19,6 @@ class GitManager(project: Project) : AutoCloseable {
                     .build()
     )
 
-    private fun branchName(): String = git.repository.branch
-
     private fun describe(): String? = git.describe().setTags(true).call()
 
     private fun isMasterBranch(): Boolean = branchName().equals("master", true)
@@ -38,6 +36,8 @@ class GitManager(project: Project) : AutoCloseable {
     private fun isStableBranch(): Boolean = isMasterOrDev() || isReleaseBranch() || isHotfixBranch() || isReleaseTag()
 
     fun isDevelopmentBranch(): Boolean = !isStableBranch()
+
+    fun branchName(): String = git.repository.branch
 
     fun branchFullName(): String = branchName().replace(Regex("[^a-zA-Z0-9\\-\\.]+"), "-")
 

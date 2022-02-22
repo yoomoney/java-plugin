@@ -26,7 +26,7 @@ open class CheckCheckstyleTask : DefaultTask() {
         }
 
         val reportsDir = project.extensions.getByType(CheckstyleExtension::class.java).reportsDir
-        val checkStyleReport = project.file("$reportsDir/main.xml")
+        val checkStyleReport = reportsDir.resolve(CHECKSTYLE_REPORT_FILE_NAME)
         if (!checkStyleReport.exists() || !checkStyleReport.isFile) {
             logger.warn("Have not found $reportsDir/main.xml, skipping check.")
             return
@@ -70,5 +70,9 @@ open class CheckCheckstyleTask : DefaultTask() {
 
     private fun getCheckstyleLowerLimit(limit: Int): Int {
         return limit * 95 / 100
+    }
+
+    companion object {
+        const val CHECKSTYLE_REPORT_FILE_NAME = "main.xml"
     }
 }

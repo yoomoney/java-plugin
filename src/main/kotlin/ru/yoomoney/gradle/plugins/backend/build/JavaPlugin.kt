@@ -8,12 +8,14 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CheckstylePlugin
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
+import org.sonarqube.gradle.SonarQubePlugin
 import ru.yoomoney.gradle.plugins.backend.build.checkstyle.CheckCheckstyleConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.coverage.CoverageConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.git.GitFlowConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.idea.IdeaPluginConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.jar.JarConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.kotlin.KotlinConfigurer
+import ru.yoomoney.gradle.plugins.backend.build.sonarqube.SonarqubeConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.spotbugs.SpotBugsAnnotationsConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.spotbugs.SpotBugsConfigurer
 import ru.yoomoney.gradle.plugins.backend.build.test.TestConfigurer
@@ -35,6 +37,7 @@ class JavaPlugin : Plugin<Project> {
         target.pluginManager.apply(JacocoPlugin::class.java)
         target.pluginManager.apply(CheckstylePlugin::class.java)
         target.pluginManager.apply(SpotBugsBasePlugin::class.java)
+        target.pluginManager.apply(SonarQubePlugin::class.java)
 
         target.extensions.create("javaModule", JavaExtension::class.java)
 
@@ -47,5 +50,6 @@ class JavaPlugin : Plugin<Project> {
         SpotBugsAnnotationsConfigurer().init(target)
         CoverageConfigurer().init(target)
         CheckCheckstyleConfigurer().init(target)
+        SonarqubeConfigurer().init(target)
     }
 }
