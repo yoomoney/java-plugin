@@ -154,7 +154,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
         """.trimIndent())
 
         val buildResult = runTasksSuccessfully("printDependsOnSonarqubeTasks")
-        assertThat(buildResult.output, containsString("checkCheckstyle"))
+        assertThat(buildResult.output, containsString("checkstyleMain"))
         assertThat(buildResult.output, containsString("jacocoAggReport"))
         assertThat(buildResult.output, containsString("jacocoTestReport"))
     }
