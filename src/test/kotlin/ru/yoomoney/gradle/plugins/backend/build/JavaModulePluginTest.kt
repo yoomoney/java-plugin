@@ -22,7 +22,6 @@ class JavaModulePluginTest : AbstractPluginTest() {
         buildFile.writeText("""
             buildscript {
                 repositories {
-                        jcenter()
                         mavenCentral()
                 }
             }
@@ -33,8 +32,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
                 optional 'org.testng:testng:6.14.3'
             }
             javaModule {
-                 repositories = ["https://jcenter.bintray.com/",
-                        "https://repo1.maven.org/maven2/"]
+                 repositories = ["https://repo1.maven.org/maven2/"]
             }
         """.trimIndent())
 

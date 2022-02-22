@@ -30,7 +30,6 @@ abstract class AbstractPluginTest {
         buildFile.writeText("""
             buildscript {
                 repositories {
-                        jcenter()
                         mavenCentral()
                 }
             }
@@ -40,8 +39,7 @@ abstract class AbstractPluginTest {
             dependencies {
                 optional 'org.testng:testng:6.14.3'
             }
-            javaModule.repositories = ["https://jcenter.bintray.com/",
-                        "https://repo1.maven.org/maven2/"]
+            javaModule.repositories = ["https://repo1.maven.org/maven2/"]
         """.trimIndent())
 
         projectDir.newFolder("src", "main", "java", "sample")
@@ -98,7 +96,6 @@ abstract class AbstractPluginTest {
                 .withProjectDir(projectDir.root)
                 .withArguments(tasks.toList() + "--stacktrace" + "-i")
                 .withPluginClasspath()
-                .forwardOutput()
                 .build()
     }
 
@@ -107,7 +104,6 @@ abstract class AbstractPluginTest {
                 .withProjectDir(projectDir.root)
                 .withArguments(tasks.toList() + "--stacktrace" + "-Pci=true")
                 .withPluginClasspath()
-                .forwardOutput()
                 .buildAndFail()
     }
 
@@ -116,7 +112,6 @@ abstract class AbstractPluginTest {
                 .withProjectDir(projectDir.root)
                 .withArguments(tasks.toList() + "--stacktrace")
                 .withPluginClasspath()
-                .forwardOutput()
                 .buildAndFail()
     }
 

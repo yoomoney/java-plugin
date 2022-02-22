@@ -19,7 +19,6 @@ class KotlinPluginTest : AbstractPluginTest() {
         buildFile.writeText("""
             buildscript {
                 repositories {
-                        jcenter()
                         mavenCentral()
                 }
             }
@@ -27,7 +26,6 @@ class KotlinPluginTest : AbstractPluginTest() {
                 id 'ru.yoomoney.gradle.plugins.kotlin-plugin'
             }
             repositories {
-                jcenter()
                 mavenCentral()
             }
             dependencies {
