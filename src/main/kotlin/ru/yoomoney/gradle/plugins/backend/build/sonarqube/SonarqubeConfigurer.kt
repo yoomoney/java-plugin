@@ -3,6 +3,7 @@ package ru.yoomoney.gradle.plugins.backend.build.sonarqube
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.testing.Test
@@ -24,17 +25,24 @@ import ru.yoomoney.gradle.plugins.backend.build.test.TestConfigurer
 class SonarqubeConfigurer {
 
     fun init(project: Project) {
-        val sonarqubeSettings = project.extensions.getByType(JavaExtension::class.java).sonarqube
-
         resolveStaticProperties(project)
 
         project.tasks.withType(SonarQubeTask::class.java).forEach { task ->
-            task.onlyIf { sonarqubeSettings.enabled }
+            task.onlyIf { isSonarqubeEnabled(project) }
             task.doFirst { resolveDynamicProperties(project) }
 
-            project.tasks.withType(CheckCheckstyleTask::class.java).forEach { task.dependsOn(it) }
+            project.tasks.withType(Checkstyle::class.java).forEach { task.dependsOn(it) }
             project.tasks.withType(JacocoReport::class.java).forEach { task.dependsOn(it) }
         }
+    }
+
+    private fun isSonarqubeEnabled(project: Project): Boolean {
+        val javaModuleExtension = project.extensions.getByType(JavaExtension::class.java)
+        if (javaModuleExtension.analyseDevelopmentBranchesOnly && !GitManager(project).isDevelopmentBranch()) {
+            project.logger.warn("SonarQube is enabled on feature/ and hotfix/ and bugfix/ branches. Skipping.")
+            return false
+        }
+        return javaModuleExtension.sonarqube.enabled
     }
 
     private fun resolveStaticProperties(project: Project) {

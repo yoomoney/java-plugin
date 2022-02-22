@@ -2,7 +2,6 @@ package ru.yoomoney.gradle.plugins.backend.build.checkstyle
 
 import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.internal.file.TmpDirTemporaryFileProvider
 import org.gradle.api.internal.resources.StringBackedTextResource
 import org.gradle.api.plugins.JavaPluginConvention
@@ -35,11 +34,9 @@ class CheckCheckstyleConfigurer {
         }
 
         val gitManager = GitManager(project)
-
-        project.tasks.matching { task -> task.name.contains("checkstyle") }
-                .forEach { t: Task ->
-                    t.onlyIf { checkstyleEnabled(t.project, gitManager) }
-                }
+        project.tasks.withType(Checkstyle::class.java).forEach { task ->
+            task.onlyIf { checkstyleEnabled(task.project, gitManager) }
+        }
 
         val checkCheckstyleTask = project.tasks.create("checkCheckstyle", CheckCheckstyleTask::class.java)
 
@@ -47,11 +44,11 @@ class CheckCheckstyleConfigurer {
     }
 
     private fun checkstyleEnabled(project: Project, gitManager: GitManager): Boolean {
-        if (!gitManager.isDevelopmentBranch()) {
+        val javaModuleExtension = project.extensions.getByType(JavaExtension::class.java)
+        if (javaModuleExtension.analyseDevelopmentBranchesOnly && !gitManager.isDevelopmentBranch()) {
             project.logger.warn("Checkstyle is enabled on feature/ and hotfix/ and bugfix/ branches. Skipping.")
             return false
         }
-        val javaModuleExtension = project.extensions.getByType(JavaExtension::class.java)
         return javaModuleExtension.checkstyleEnabled
     }
 

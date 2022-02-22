@@ -31,6 +31,11 @@ open class JavaExtension {
     var sonarqube: SonarqubeSettings = SonarqubeSettings()
 
     /**
+     * Настройки статического анализатора SonarQube
+     */
+    var analyseDevelopmentBranchesOnly: Boolean = true
+
+    /**
      * Настройки unit тестов. см. {@link TestNgExtension}
      */
     var test = TestNgExtension()

@@ -9,7 +9,10 @@
   5. Настройка параметра `sonar.branch.name` (`git` ветка приложения);
   6. Настройка путей к связанным библиотекам приложения.
 * Добавлена функциональность настройки статического анализатора `SonarQube` через 
-  настройки (`extensions`) текущего плагина (см `ru.yoomoney.gradle.plugins.backend.build.JavaExtension`).  
+  настройки (`extensions`) текущего плагина (см `ru.yoomoney.gradle.plugins.backend.build.JavaExtension`);
+* Добавлена функциональность включения статического анализа (`spotbugs`, `checkstyle` и `sonarqube`) в 
+  стабильных ветках. По умолчанию поведение не изменилось - статический анализ производится в `development` 
+  ветках - `feature`, `hotfix`, `bugfix`.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [4.3.0](https://github.com/yoomoney/java-plugin/pull/6) (15-11-2021)
 

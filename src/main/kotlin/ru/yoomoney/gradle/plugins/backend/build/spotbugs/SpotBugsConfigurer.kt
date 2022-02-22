@@ -98,12 +98,12 @@ class SpotBugsConfigurer {
     }
 
     private fun spotbugsEnabled(target: Project, gitManager: GitManager): Boolean {
-        if (!gitManager.isDevelopmentBranch()) {
+        val javaModuleExtension = target.extensions.getByType(JavaExtension::class.java)
+        if (javaModuleExtension.analyseDevelopmentBranchesOnly && !gitManager.isDevelopmentBranch()) {
             target.logger.warn("SpotBugs check is enabled on feature/ and hotfix/ and bugfix/ branches. Skipping.")
             return false
         }
-        val module = target.extensions.getByType(JavaExtension::class.java)
-        return module.spotbugsEnabled
+        return javaModuleExtension.spotbugsEnabled
     }
 
     private fun spotbugsExclude(): String {
