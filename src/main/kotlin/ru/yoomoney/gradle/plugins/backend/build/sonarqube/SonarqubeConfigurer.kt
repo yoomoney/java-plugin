@@ -25,7 +25,10 @@ import ru.yoomoney.gradle.plugins.backend.build.test.TestConfigurer
 class SonarqubeConfigurer {
 
     fun init(project: Project) {
-        resolveStaticProperties(project)
+        project.afterEvaluate {
+            SonarqubeIncrementalAnalysisConfigurer.configure(project)
+            resolveStaticProperties(project)
+        }
 
         project.tasks.withType(SonarQubeTask::class.java).forEach { task ->
             task.onlyIf { isSonarqubeEnabled(project) }
@@ -38,7 +41,8 @@ class SonarqubeConfigurer {
 
     private fun isSonarqubeEnabled(project: Project): Boolean {
         val javaModuleExtension = project.extensions.getByType(JavaExtension::class.java)
-        if (javaModuleExtension.analyseDevelopmentBranchesOnly && !GitManager(project).isDevelopmentBranch()) {
+        if (javaModuleExtension.analyseDevelopmentBranchesOnly &&
+            !GitManager(project).use { it.isDevelopmentBranch() }) {
             project.logger.warn("SonarQube is enabled on feature/ and hotfix/ and bugfix/ branches. Skipping.")
             return false
         }
@@ -48,7 +52,7 @@ class SonarqubeConfigurer {
     private fun resolveStaticProperties(project: Project) {
         val sonarqubeSettings = project.extensions.getByType(JavaExtension::class.java).sonarqube
         val sonarqubeExtension = project.extensions.getByType(SonarQubeExtension::class.java)
-        val currentBranch = GitManager(project).branchName()
+        val currentBranch = GitManager(project).use { it.branchName() }
 
         sonarqubeExtension.properties {
             if (sonarqubeSettings.projectKey != null) {
