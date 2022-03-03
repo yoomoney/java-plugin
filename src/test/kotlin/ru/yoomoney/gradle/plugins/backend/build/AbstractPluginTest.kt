@@ -94,7 +94,6 @@ abstract class AbstractPluginTest {
                 .withProjectDir(projectDir.root)
                 .withArguments(tasks.toList() + "--stacktrace" + "-i")
                 .withPluginClasspath()
-                .forwardOutput()
                 .build()
     }
 

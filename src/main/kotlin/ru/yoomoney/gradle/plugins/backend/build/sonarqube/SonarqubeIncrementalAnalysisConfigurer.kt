@@ -45,8 +45,7 @@ object SonarqubeIncrementalAnalysisConfigurer {
 
     private fun findModifiedFiles(project: Project): List<File>? {
         val closestStableAncestor = resolveClosestStableAncestor(project) ?: return null
-        project.logger.lifecycle("[sonarqube] incremental analysis enabled: closestStableAncestor={}",
-            closestStableAncestor)
+        project.logger.lifecycle("[sonarqube] found closest stable ancestor: commit={}", closestStableAncestor)
 
         GitManager(project).use { gitManager ->
             return gitManager.findModifiedFiles(head = gitManager.branchName(), tail = closestStableAncestor)
