@@ -27,12 +27,15 @@ object SonarqubeIncrementalAnalysisConfigurer {
         val modifiedFiles = findModifiedFiles(project) ?: return
         val sonarqubeExtension = project.extensions.getByType(SonarQubeExtension::class.java)
 
+        val mainSourcePaths = resolveMainSourcePaths(project, modifiedFiles)
+        val testSourcePaths = resolveTestSourcePaths(project, modifiedFiles)
+
         sonarqubeExtension.properties {
-            it.properties["sonar.inclusions"] = resolveMainSourcePaths(project, modifiedFiles)
-            it.properties["sonar.test.inclusions"] = resolveTestSourcePaths(project, modifiedFiles)
+            it.properties["sonar.inclusions"] = mainSourcePaths.ifEmpty { "empty" }
+            it.properties["sonar.test.inclusions"] = testSourcePaths.ifEmpty { "empty" }
         }
-        project.logger.lifecycle("[sonarqube] incremental analysis configured: modifiedFiles.count={}",
-            modifiedFiles.size)
+        project.logger.lifecycle("[sonarqube] incremental analysis configured: " +
+                "mainSourcePaths.count={}, testSourcePaths.count={}", mainSourcePaths.size, testSourcePaths.size)
     }
 
     private fun isIncrementalAnalysisEnabled(project: Project): Boolean {
