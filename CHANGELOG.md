@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [4.5.0](https://github.com/yoomoney/java-plugin/pull/10) (04-03-2022)
+
 * Добавлена поддержка инкрементального анализа в SonarQube
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [4.4.1](https://github.com/yoomoney/java-plugin/pull/9) (22-02-2022)
 
 * Отключение репозитория bintray в тестовых скриптах;
