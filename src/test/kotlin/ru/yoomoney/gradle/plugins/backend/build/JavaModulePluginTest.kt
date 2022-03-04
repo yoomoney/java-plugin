@@ -1,6 +1,8 @@
 package ru.yoomoney.gradle.plugins.backend.build
 
 import org.apache.commons.io.IOUtils
+import org.eclipse.jgit.revwalk.RevObject
+import org.eclipse.jgit.transport.RefSpec
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.hasItem
 import org.hamcrest.CoreMatchers.notNullValue
@@ -210,5 +212,48 @@ class JavaModulePluginTest : AbstractPluginTest() {
         assertThat(buildResult.output, containsString("sonarqube:true"))
         assertThat(buildResult.output, containsString("checkstyle:true"))
         assertThat(buildResult.output, containsString("spotbugs:true"))
+    }
+
+    @Test
+    fun `should set sonar_inclusions property when incremental analysis enabled`() {
+        buildFile.appendText("\n")
+        buildFile.appendText("""
+            javaModule.sonarqube.incrementalAnalysisEnabled = true
+            javaModule.sonarqube.stableBranches = ['dev', 'master']
+            
+            task printSonarqubeProperties {
+                doLast {
+                    project.tasks.getByName("sonarqube").properties.forEach { key, value ->
+                        println(key + "=" + value)
+                    }
+                }
+            }
+        """.trimIndent())
+
+        commit("commit gradle.build changes")
+        git.push().setRemote("origin").setRefSpecs(RefSpec("HEAD:refs/heads/master")).call()
+        git.checkout().setCreateBranch(true).setName("feature/incremental-analysis").call()
+
+        val mainSetDir = projectDir.root.resolve("src/main/java").also { it.mkdirs() }
+        val testSetDir = projectDir.root.resolve("src/test/java").also { it.mkdirs() }
+
+        mainSetDir.resolve("main-set-file.txt").writeText("new")
+        testSetDir.resolve("test-set-file.txt").writeText("new")
+        commit("new.txt")
+
+        val buildResult = runTasksSuccessfully("printSonarqubeProperties")
+        assertThat(
+            buildResult.output.lines(),
+            hasItem("""sonar.inclusions=${File("src/main/java/main-set-file.txt").path}""")
+        )
+        assertThat(
+            buildResult.output.lines(),
+            hasItem("""sonar.test.inclusions=${File("src/test/java/test-set-file.txt").path}""")
+        )
+    }
+
+    private fun commit(message: String): RevObject {
+        git.add().addFilepattern(".").call()
+        return git.commit().setMessage(message).call()
     }
 }
