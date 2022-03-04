@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [4.5.0](https://github.com/yoomoney/java-plugin/pull/10) (04-03-2022)
 
 * Добавлена поддержка инкрементального анализа в SonarQube
