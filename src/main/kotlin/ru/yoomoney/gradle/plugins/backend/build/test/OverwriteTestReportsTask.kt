@@ -1,8 +1,6 @@
 package ru.yoomoney.gradle.plugins.backend.build.test
 
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.Project
 import org.w3c.dom.Document
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
@@ -20,7 +18,10 @@ import javax.xml.transform.stream.StreamResult
  * @author Dmitry Komarov
  * @since 14.02.2020
  */
-open class OverwriteTestReportsTask : DefaultTask() {
+internal class OverwriteTestReportsTask(
+    private val xmlReportsPath: String,
+    private val project: Project
+) {
 
     companion object {
         /**
@@ -47,10 +48,6 @@ open class OverwriteTestReportsTask : DefaultTask() {
         private val XML_INVALID_CHARS = "&#(x?)([A-Fa-f0-9]+);".toRegex()
     }
 
-    @Input
-    lateinit var xmlReportsPath: String
-
-    @TaskAction
     fun overwriteTestReports() {
         val traceIdLogs = collectTraceIdLogs()
         if (traceIdLogs.isEmpty()) {
@@ -81,7 +78,7 @@ open class OverwriteTestReportsTask : DefaultTask() {
                 reportFile.name.length - REPORT_FILE_POSTFIX.length
         )
         if (fullyQualifiedClassName !in traceIdLogs) {
-            logger.debug("Unknown report file to overwrite: reportFile=$reportFile")
+            project.logger.debug("Unknown report file to overwrite: reportFile=$reportFile")
             return
         }
         val traceIdLogFile = traceIdLogs[fullyQualifiedClassName]
@@ -127,7 +124,7 @@ open class OverwriteTestReportsTask : DefaultTask() {
                 return true
             }
         }
-        logger.debug("'$SYSTEM_OUT_TAG_NAME' tag not found for given test case")
+        project.logger.debug("'$SYSTEM_OUT_TAG_NAME' tag not found for given test case")
         return false
     }
 
