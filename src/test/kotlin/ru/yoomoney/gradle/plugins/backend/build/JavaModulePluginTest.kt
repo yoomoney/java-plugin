@@ -123,6 +123,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
         buildFile.appendText("""
             javaModule {
                 sonarqube.projectKey = "projectKey"
+                sonarqube.projectName = "projectName"
                 sonarqube.supplyLibrariesPath = false
             }
             
@@ -137,6 +138,7 @@ class JavaModulePluginTest : AbstractPluginTest() {
 
         val buildResult = runTasksSuccessfully("printSonarqubeProperties")
         assertThat(buildResult.output.lines(), hasItem("sonar.projectKey=projectKey"))
+        assertThat(buildResult.output.lines(), hasItem("sonar.projectName=projectName"))
         assertThat(buildResult.output.lines(), hasItem("sonar.branch.name=feature/BACKEND-2588_build_jar"))
         assertThat(buildResult.output.lines(), hasItem("sonar.java.libraries="))
         assertThat(buildResult.output.lines(), hasItem("sonar.java.test.libraries="))
