@@ -1,11 +1,11 @@
-### NEXT_VERSION_TYPE=MAJOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [5.0.0](https://github.com/yoomoney/java-plugin/pull/11) (17-03-2022)
+
 * Исправлена работа проверки `UP-TO-DATE` для задачи запуска компонентных тестов;
-* Исправлена передача параметра `sonar.projectName` в sonarqube - установленный параметр 
-  в `javaModule` переопределяет стандартное значение.
+* Исправлена передача параметра `sonar.projectName` в sonarqube - установленный параметр
+в `javaModule` переопределяет стандартное значение.
 * ***breaking changes*** Удалена `gradle` задача `overwriteTestReports`. Функциональность
-  перенесена в задачу запуска компонентных тестов.
-### NEXT_VERSION_DESCRIPTION_END
+перенесена в задачу запуска компонентных тестов.
+
 ## [4.5.0](https://github.com/yoomoney/java-plugin/pull/10) (04-03-2022)
 
 * Добавлена поддержка инкрементального анализа в SonarQube
