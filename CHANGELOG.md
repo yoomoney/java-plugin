@@ -1,5 +1,10 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MAJOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Исправлена работа проверки `UP-TO-DATE` для задачи запуска компонентных тестов;
+* Исправлена передача параметра `sonar.projectName` в sonarqube - установленный параметр 
+  в `javaModule` переопределяет стандартное значение.
+* ***breaking changes*** Удалена `gradle` задача `overwriteTestReports`. Функциональность
+  перенесена в задачу запуска компонентных тестов.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [4.5.0](https://github.com/yoomoney/java-plugin/pull/10) (04-03-2022)
 

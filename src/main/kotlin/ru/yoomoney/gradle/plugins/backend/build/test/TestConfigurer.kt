@@ -78,9 +78,10 @@ class TestConfigurer {
             classpath = sourceSet.runtimeClasspath
         }
 
-        val overwriteTestReportsTask = target.tasks.create("overwriteTestReports", OverwriteTestReportsTask::class.java).apply {
-            xmlReportsPath = "${target.property("testResultsDir")}/${sourceSet.name}TestNg"
-        }
+        val overwriteTestReportsTask = OverwriteTestReportsTask(
+            xmlReportsPath = "${target.property("testResultsDir")}/${sourceSet.name}TestNg",
+            project = target
+        )
 
         // задача запуска компонентных TestNG тестов
         target.tasks.create("${sourceSet.name}TestNg", Test::class.java).apply {
@@ -96,7 +97,9 @@ class TestConfigurer {
             testClassesDirs = sourceSet.output.classesDirs
             classpath = sourceSet.runtimeClasspath
 
-            finalizedBy(overwriteTestReportsTask)
+            doLast {
+                overwriteTestReportsTask.overwriteTestReports()
+            }
         }
 
         // задача запуска компонентных TestNG и Junit тестов

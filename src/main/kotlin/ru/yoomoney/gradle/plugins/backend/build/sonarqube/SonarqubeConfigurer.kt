@@ -59,7 +59,7 @@ class SonarqubeConfigurer {
                 it.properties.putIfAbsent("sonar.projectKey", sonarqubeSettings.projectKey)
             }
             if (sonarqubeSettings.projectName != null) {
-                it.properties.putIfAbsent("sonar.projectName", sonarqubeSettings.projectName)
+                it.properties["sonar.projectName"] = sonarqubeSettings.projectName
             }
             it.properties.putIfAbsent("sonar.branch.name", currentBranch)
 
