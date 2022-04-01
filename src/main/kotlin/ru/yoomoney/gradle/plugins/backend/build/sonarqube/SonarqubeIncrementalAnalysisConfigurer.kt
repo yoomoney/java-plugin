@@ -20,7 +20,6 @@ object SonarqubeIncrementalAnalysisConfigurer {
 
     fun configure(project: Project) {
         if (!isIncrementalAnalysisEnabled(project)) {
-            project.logger.lifecycle("[sonarqube] incremental analysis disabled")
             return
         }
 

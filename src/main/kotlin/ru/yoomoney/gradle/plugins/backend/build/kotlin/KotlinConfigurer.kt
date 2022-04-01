@@ -16,14 +16,7 @@ class KotlinConfigurer {
     fun init(target: Project) {
         val sourceSets = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets
         target.plugins.apply(KotlinPluginWrapper::class.java)
-        target.dependencies.add(
-                "testCompile",
-                "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${KotlinVersion.CURRENT}"
-        )
-        target.dependencies.add(
-                "testCompile",
-                "org.jetbrains.kotlin:kotlin-reflect:${KotlinVersion.CURRENT}"
-        )
+
         target.tasks.withType(KotlinCompile::class.java).configureEach {
             sourceSets.getByName("main").output.classesDirs.forEach { it.mkdirs() }
             it.kotlinOptions.jvmTarget = "1.8"
