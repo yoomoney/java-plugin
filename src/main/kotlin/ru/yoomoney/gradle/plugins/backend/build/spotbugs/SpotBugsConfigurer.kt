@@ -8,7 +8,7 @@ import com.github.spotbugs.snom.SpotBugsTask
 import org.apache.commons.io.IOUtils
 import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import ru.yoomoney.gradle.plugins.backend.build.JavaExtension
 import ru.yoomoney.gradle.plugins.backend.build.git.GitManager
 import ru.yoomoney.gradle.plugins.backend.build.staticanalysis.StaticAnalysisProperties
@@ -38,7 +38,7 @@ class SpotBugsConfigurer {
         extension.ignoreFailures.set(true)
 
         with(target.tasks.create("spotbugsMain", SpotBugsTask::class.java)) {
-            val mainSourceSet = target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getByName("main")
+            val mainSourceSet = project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.getByName("main")
             reports.create("xml")
             maxHeapSize.set("3g")
             sourceDirs.plus(mainSourceSet.allSource.srcDirs)

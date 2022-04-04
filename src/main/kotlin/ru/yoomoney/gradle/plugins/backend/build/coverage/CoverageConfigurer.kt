@@ -3,7 +3,7 @@ package ru.yoomoney.gradle.plugins.backend.build.coverage
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import ru.yoomoney.gradle.plugins.backend.build.test.TestConfigurer
@@ -24,8 +24,8 @@ class CoverageConfigurer {
         jacocoPluginExtension.toolVersion = "0.8.5"
 
         val jacocoTestReportTask = project.tasks.findByName("jacocoTestReport") as JacocoReport
-        jacocoTestReportTask.reports.xml.isEnabled = true
-        jacocoTestReportTask.reports.html.isEnabled = true
+        jacocoTestReportTask.reports.xml.required.set(true)
+        jacocoTestReportTask.reports.html.required.set(true)
 
         val jacocoAggReportTask = configureJacocoAggReportTask(project)
         val checkCoverageTask = configureCheckCoverageTask(project)
@@ -37,14 +37,14 @@ class CoverageConfigurer {
 
     private fun configureJacocoAggReportTask(project: Project): JacocoReport {
         val jacocoAggReportTask = project.tasks.create("jacocoAggReport", JacocoReport::class.java)
-        val sourceSets = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets
+        val sourceSets = project.extensions.getByType(JavaPluginExtension::class.java).sourceSets
 
         jacocoAggReportTask.getSourceDirectories().setFrom(project.files(sourceSets.getByName("main").allSource.srcDirs))
         jacocoAggReportTask.getClassDirectories().setFrom(project.files(sourceSets.getByName("main").output))
         jacocoAggReportTask.getExecutionData().setFrom(project.fileTree(project.buildDir).include("/jacoco/*.exec"))
 
-        jacocoAggReportTask.reports.xml.isEnabled = true
-        jacocoAggReportTask.reports.html.isEnabled = true
+        jacocoAggReportTask.reports.xml.required.set(true)
+        jacocoAggReportTask.reports.html.required.set(true)
 
         jacocoAggReportTask.setOnlyIf {
             true
@@ -96,7 +96,7 @@ class CoverageConfigurer {
             for (i in 0 until nodes.length) {
                 if (nodes.item(i).nodeName == "counter") {
                     val counter = nodes.item(i)
-                    val type = counter.attributes.getNamedItem("type").textContent.toLowerCase()
+                    val type = counter.attributes.getNamedItem("type").textContent.lowercase()
                     if (type == "line" || "complexity" == type) {
                         continue
                     }

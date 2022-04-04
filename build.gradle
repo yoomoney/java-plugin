@@ -22,13 +22,3 @@ gradlePlugin {
         }
     }
 }
-
-compileKotlin {
-    kotlinOptions.apiVersion = "1.3"
-    kotlinOptions.languageVersion = "1.3"
-}
-
-compileTestKotlin {
-    kotlinOptions.apiVersion = "1.3"
-    kotlinOptions.languageVersion = "1.3"
-}

@@ -1,9 +1,9 @@
 package ru.yoomoney.gradle.plugins.backend.build.coverage
 
 import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
-import org.testng.Assert.assertEquals
 import org.junit.Test
 import ru.yoomoney.gradle.plugins.backend.build.AbstractPluginTest
 import java.io.File
@@ -174,7 +174,7 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
             }
         }
         coverageLimits.getProperty("method")
-        assertEquals(coverageLimits.getProperty("method"), "50")
+        assertThat(coverageLimits.getProperty("method"), equalTo("50"))
         Files.delete(javaTest.toPath())
         Files.delete(kotlinTest.toPath())
         Files.delete(slowTest.toPath())
@@ -241,7 +241,7 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
             }
         }
         coverageLimits.getProperty("method")
-        assertEquals(coverageLimits.getProperty("method"), "40")
+        assertThat(coverageLimits.getProperty("method"), equalTo("40"))
         Files.delete(javaTest.toPath())
         Files.delete(kotlinTest.toPath())
         Files.delete(slowTest.toPath())
@@ -304,8 +304,8 @@ class CheckCoverageTaskTest : AbstractPluginTest() {
             }
         }
         coverageLimits.getProperty("method")
-        assertEquals(coverageLimits.getProperty("method"), "50")
-        assertEquals(coverageLimits.getProperty("class"), "100")
+        assertThat(coverageLimits.getProperty("method"), equalTo("50"))
+        assertThat(coverageLimits.getProperty("class"), equalTo("100"))
         Files.delete(javaTest.toPath())
         Files.delete(kotlinTest.toPath())
         Files.delete(slowTest.toPath())

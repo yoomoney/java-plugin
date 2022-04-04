@@ -4,7 +4,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPlugin.COMPILE_JAVA_TASK_NAME
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.internal.jvm.Jvm
 import org.gradle.jvm.tasks.Jar
@@ -69,7 +69,7 @@ class JarConfigurer {
     private fun optionalSourceSet(target: Project) {
         val optional = target.configurations.create("optional")
         target.configurations.getByName(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME).extendsFrom(optional)
-        target.convention.getPlugin(JavaPluginConvention::class.java).apply {
+        target.extensions.getByType(JavaPluginExtension::class.java).apply {
             sourceSets.getByName("main").compileClasspath =
                 sourceSets.getByName("main")
                     .compileClasspath
@@ -103,7 +103,7 @@ class JarConfigurer {
                     ?.let { it.toString().trim().let { version -> JavaVersion.toVersion(version) } }
                     ?: JavaVersion.VERSION_1_8
 
-            target.convention.getPlugin(JavaPluginConvention::class.java).apply {
+            target.extensions.getByType(JavaPluginExtension::class.java).apply {
                 sourceCompatibility = targetJavaVersion
                 targetCompatibility = targetJavaVersion
             }

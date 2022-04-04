@@ -2,7 +2,7 @@ package ru.yoomoney.gradle.plugins.backend.build.sonarqube
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.sonarqube.gradle.SonarQubeExtension
 import ru.yoomoney.gradle.plugins.backend.build.JavaExtension
 import ru.yoomoney.gradle.plugins.backend.build.git.GitManager
@@ -64,7 +64,7 @@ object SonarqubeIncrementalAnalysisConfigurer {
                 .mapNotNull { gitManager.findRemoteBranch(it) }
                 .map { gitManager.findCommonAncestor(it, currentBranch) }
                 .map { it to gitManager.getCommitCount(head = currentBranch, tail = it) }
-                .minBy { it.second }
+                .minByOrNull { it.second }
                 ?.first
         }
     }
@@ -84,9 +84,9 @@ object SonarqubeIncrementalAnalysisConfigurer {
         modifiedFiles: List<File>,
         vararg sourceSet: String
     ): Set<String> {
-        val javaPluginConvention = project.convention.getPlugin(JavaPluginConvention::class.java)
+        val javaPluginExtension = project.extensions.getByType(JavaPluginExtension::class.java)
         val sourceSetDirectories = sourceSet.toList()
-            .mapNotNull { javaPluginConvention.sourceSets.findByName(it) }
+            .mapNotNull { javaPluginExtension.sourceSets.findByName(it) }
             .flatMap { it.allJava.sourceDirectories }
             .toSet()
 

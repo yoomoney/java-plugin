@@ -12,8 +12,7 @@ dependencies {
     testImplementation 'org.amshove.kluent:kluent:1.34'
 
     testImplementation gradleTestKit(),
-            'com.netflix.nebula:nebula-test:7.4.0',
-            'org.mockito:mockito-core:3.1.0',
-            'org.testng:testng:6.14.3',
+            'junit:junit:4.13.2',
+            'org.mockito:mockito-core:4.3.1',
             'org.hamcrest:hamcrest-all:1.3'
 }

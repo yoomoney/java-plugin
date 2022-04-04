@@ -2,7 +2,7 @@ package ru.yoomoney.gradle.plugins.backend.build.checkstyle
 
 import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import ru.yoomoney.gradle.plugins.backend.build.JavaExtension
@@ -26,8 +26,8 @@ class CheckCheckstyleConfigurer {
 
         project.tasks.withType(Checkstyle::class.java) {
             it.reports { reports ->
-                reports.xml.isEnabled = true
-                reports.html.isEnabled = false
+                reports.xml.required.set(true)
+                reports.html.required.set(false)
             }
         }
 
@@ -53,7 +53,8 @@ class CheckCheckstyleConfigurer {
     private fun configureCheckstyleExtensions(project: Project) {
         val checkstyleExtension = project.extensions.getByType(CheckstyleExtension::class.java)
         checkstyleExtension.toolVersion = "7.3"
-        checkstyleExtension.sourceSets = listOf(project.convention.getPlugin(JavaPluginConvention::class.java)
+        checkstyleExtension.sourceSets = listOf(
+            project.extensions.getByType(JavaPluginExtension::class.java)
                 .sourceSets.getAt("main"))
         checkstyleExtension.isIgnoreFailures = true
         checkstyleExtension.reportsDir = project.file("${project.buildDir}/checkstyleReports")

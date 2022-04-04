@@ -50,7 +50,7 @@ class KotlinPlugin : Plugin<Project> {
 
     private fun configureDetekt(target: Project) {
         target.extensions.getByType(DetektExtension::class.java).apply {
-            input = target.files(DetektExtension.DEFAULT_SRC_DIR_KOTLIN)
+            source = target.files(DetektExtension.DEFAULT_SRC_DIR_KOTLIN)
             config = target.files(target.layout.buildDirectory.get().file("detekt.yml").asFile)
         }
         target.tasks.create("copyDetektConfig") {
