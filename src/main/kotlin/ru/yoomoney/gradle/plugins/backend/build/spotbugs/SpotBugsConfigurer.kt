@@ -32,7 +32,9 @@ class SpotBugsConfigurer {
         extension.reportsDir.set(target.file(target.buildDir.resolve("spotbugsReports")))
         extension.effort.set(Effort.DEFAULT)
         extension.reportLevel.set(Confidence.MEDIUM)
-        extension.excludeFilter.set(target.resources.text.fromString(spotbugsExclude()).asFile())
+        extension.excludeFilter.set {
+            target.resources.text.fromString(spotbugsExclude()).asFile()
+        }
         extension.ignoreFailures.set(true)
 
         with(target.tasks.create("spotbugsMain", SpotBugsTask::class.java)) {
