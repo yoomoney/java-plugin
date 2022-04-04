@@ -1,3 +1,6 @@
+### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_DESCRIPTION_BEGIN
+### NEXT_VERSION_DESCRIPTION_END
 ## [6.0.0](https://github.com/yoomoney/java-plugin/pull/12) (04-04-2022)
 
 * Добавлена совместимость плагина с `gradle 7`;
