@@ -62,6 +62,7 @@ class KotlinPlugin : Plugin<Project> {
                 Files.move(config.toPath(), targetConfig)
                 Files.deleteIfExists(config.toPath())
             }
+            it.dependsOn(target.tasks.findByName(org.gradle.api.plugins.JavaPlugin.PROCESS_RESOURCES_TASK_NAME))
         }
         target.tasks.withType(Detekt::class.java).forEach {
             it.dependsOn("copyDetektConfig")

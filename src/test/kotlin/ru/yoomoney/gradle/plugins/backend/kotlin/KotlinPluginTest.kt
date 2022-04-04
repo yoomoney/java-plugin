@@ -105,7 +105,7 @@ class KotlinPluginTest : AbstractPluginTest() {
                 }
                 """.trimIndent() + '\n'
         )
-        runTasksSuccessfully("build", "check")
+        runTasksSuccessfully("clean", "build", "check")
         Files.delete(sourceFile.toPath())
     }
 }
