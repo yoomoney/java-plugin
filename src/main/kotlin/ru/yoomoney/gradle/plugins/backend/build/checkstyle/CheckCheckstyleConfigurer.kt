@@ -2,8 +2,6 @@ package ru.yoomoney.gradle.plugins.backend.build.checkstyle
 
 import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
-import org.gradle.api.internal.file.TmpDirTemporaryFileProvider
-import org.gradle.api.internal.resources.StringBackedTextResource
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstyleExtension
@@ -59,7 +57,7 @@ class CheckCheckstyleConfigurer {
                 .sourceSets.getAt("main"))
         checkstyleExtension.isIgnoreFailures = true
         checkstyleExtension.reportsDir = project.file("${project.buildDir}/checkstyleReports")
-        checkstyleExtension.config = StringBackedTextResource(TmpDirTemporaryFileProvider(), checkstyleConfig())
+        checkstyleExtension.config = project.resources.text.fromString(checkstyleConfig())
     }
 
     private fun checkstyleConfig(): String {

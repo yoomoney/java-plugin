@@ -1,5 +1,10 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MAJOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Добавлена совместимость плагина с `gradle 7`;
+* Удалено использование внутреннего `gradle-api` - `org.gradle.api.internal`;
+* **breaking changes** Версия `kotlin` поднята до `1.5.31`;
+* **breaking changes** Плагин устанавливает зависимости для `implementation` и `runtimeOnly` конфигураций, вместо 
+  устаревших `compile` и `runtime`.
 ### NEXT_VERSION_DESCRIPTION_END
 ## [5.0.0](https://github.com/yoomoney/java-plugin/pull/11) (17-03-2022)
 

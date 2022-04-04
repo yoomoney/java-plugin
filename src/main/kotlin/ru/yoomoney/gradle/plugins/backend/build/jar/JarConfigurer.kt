@@ -2,6 +2,7 @@ package ru.yoomoney.gradle.plugins.backend.build.jar
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPlugin.COMPILE_JAVA_TASK_NAME
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.compile.JavaCompile
@@ -67,7 +68,7 @@ class JarConfigurer {
 
     private fun optionalSourceSet(target: Project) {
         val optional = target.configurations.create("optional")
-        target.configurations.getByName("testCompile").extendsFrom(optional)
+        target.configurations.getByName(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME).extendsFrom(optional)
         target.convention.getPlugin(JavaPluginConvention::class.java).apply {
             sourceSets.getByName("main").compileClasspath =
                 sourceSets.getByName("main")

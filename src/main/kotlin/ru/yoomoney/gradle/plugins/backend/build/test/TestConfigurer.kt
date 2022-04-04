@@ -1,6 +1,7 @@
 package ru.yoomoney.gradle.plugins.backend.build.test
 
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.testing.Test
@@ -134,11 +135,11 @@ class TestConfigurer {
         }
 
         target.configurations
-            .getByName("${chosenSourceSetName}Compile")
-            .extendsFrom(target.configurations.getByName("testCompile"))
+            .getByName("${chosenSourceSetName}Implementation")
+            .extendsFrom(target.configurations.getByName(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME))
         target.configurations
-            .getByName("${chosenSourceSetName}Runtime")
-            .extendsFrom(target.configurations.getByName("testRuntime"))
+            .getByName("${chosenSourceSetName}RuntimeOnly")
+            .extendsFrom(target.configurations.getByName(JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME))
 
         // Получение SourceSet для компонентных тестов из глобальной переменной с помощью механизма convention
         return target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSetName)
