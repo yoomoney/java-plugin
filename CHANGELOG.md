@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=PATCH
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [6.0.1](https://github.com/yoomoney/java-plugin/pull/13) (04-04-2022)
+
 * Исправлен поиск временных ресурсов в случае, когда сборка `gradle` запускает задачу `clean`
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [6.0.0](https://github.com/yoomoney/java-plugin/pull/12) (04-04-2022)
 
 * Добавлена совместимость плагина с `gradle 7`;
