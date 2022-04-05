@@ -21,7 +21,7 @@ class CoverageConfigurer {
 
     fun init(project: Project) {
         val jacocoPluginExtension = project.extensions.getByType(JacocoPluginExtension::class.java)
-        jacocoPluginExtension.toolVersion = "0.8.5"
+        jacocoPluginExtension.toolVersion = "0.8.7"
 
         val jacocoTestReportTask = project.tasks.findByName("jacocoTestReport") as JacocoReport
         jacocoTestReportTask.reports.xml.isEnabled = true

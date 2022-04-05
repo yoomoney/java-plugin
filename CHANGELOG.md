@@ -1,5 +1,6 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MINOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Поднята версия `jacoco` - `0.8.5` -> `0.8.7` 
 ### NEXT_VERSION_DESCRIPTION_END
 ## [6.0.1](https://github.com/yoomoney/java-plugin/pull/13) (04-04-2022)
 
