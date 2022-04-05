@@ -1,7 +1,7 @@
-### NEXT_VERSION_TYPE=MINOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
-* Поднята версия `jacoco` - `0.8.5` -> `0.8.7` 
-### NEXT_VERSION_DESCRIPTION_END
+## [6.1.0](https://github.com/yoomoney/java-plugin/pull/14) (05-04-2022)
+
+* Поднята версия `jacoco` - `0.8.5` -> `0.8.7`
+
 ## [6.0.1](https://github.com/yoomoney/java-plugin/pull/13) (04-04-2022)
 
 * Исправлен поиск временных ресурсов в случае, когда сборка `gradle` запускает задачу `clean`
