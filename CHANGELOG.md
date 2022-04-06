@@ -1,8 +1,8 @@
-### NEXT_VERSION_TYPE=MAJOR
-### NEXT_VERSION_DESCRIPTION_BEGIN
+## [7.0.0](https://github.com/yoomoney/java-plugin/pull/15) (06-04-2022)
+
 * Удалено использование `deprecated` `gradle api`;
 * **breaking changes** Сборка плагина для gradle `7.4.1`;
-### NEXT_VERSION_DESCRIPTION_END
+
 ## [6.1.0](https://github.com/yoomoney/java-plugin/pull/14) (05-04-2022)
 
 * Поднята версия `jacoco` - `0.8.5` -> `0.8.7`
