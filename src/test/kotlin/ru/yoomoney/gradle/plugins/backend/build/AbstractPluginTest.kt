@@ -4,10 +4,10 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.transport.URIish
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
-import org.junit.rules.TemporaryFolder
-import org.testng.Assert.assertFalse
-import org.testng.Assert.assertTrue
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.rules.TemporaryFolder
 import java.io.File
 
 abstract class AbstractPluginTest {

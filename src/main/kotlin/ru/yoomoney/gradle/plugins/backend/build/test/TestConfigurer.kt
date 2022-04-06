@@ -2,7 +2,7 @@ package ru.yoomoney.gradle.plugins.backend.build.test
 
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.testng.TestNGOptions
@@ -38,9 +38,9 @@ class TestConfigurer {
         }
 
         target.tasks.withType(Test::class.java).forEach {
-            it.reports.junitXml.destination = target.file("${target.property("testResultsDir")}/${it.name}")
+            it.reports.junitXml.outputLocation.set(target.file("${target.property("testResultsDir")}/${it.name}"))
             it.reports.junitXml.isOutputPerTestCase = true
-            it.reports.html.destination = target.file("${target.buildDir}/reports/${it.name}")
+            it.reports.html.outputLocation.set(target.file("${target.buildDir}/reports/${it.name}"))
         }
     }
 
@@ -124,7 +124,7 @@ class TestConfigurer {
         }
 
         // Создание и сохранение SourceSet для компонентных тестов в глобальную переменную с помощью механизма convention
-        target.convention.getPlugin(JavaPluginConvention::class.java).apply {
+        target.extensions.getByType(JavaPluginExtension::class.java).apply {
             val componentTest = sourceSets.create(chosenSourceSetName)
             componentTest.compileClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
             componentTest.runtimeClasspath += sourceSets.getByName("main").output + sourceSets.getByName("test").output
@@ -142,6 +142,6 @@ class TestConfigurer {
             .extendsFrom(target.configurations.getByName(JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME))
 
         // Получение SourceSet для компонентных тестов из глобальной переменной с помощью механизма convention
-        return target.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getAt(chosenSourceSetName)
+        return target.extensions.getByType(JavaPluginExtension::class.java).sourceSets.getAt(chosenSourceSetName)
     }
 }

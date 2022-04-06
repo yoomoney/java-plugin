@@ -1,5 +1,7 @@
-### NEXT_VERSION_TYPE=MAJOR|MINOR|PATCH
+### NEXT_VERSION_TYPE=MAJOR
 ### NEXT_VERSION_DESCRIPTION_BEGIN
+* Удалено использование `deprecated` `gradle api`;
+* **breaking changes** Сборка плагина для gradle `7.4.1`;
 ### NEXT_VERSION_DESCRIPTION_END
 ## [6.1.0](https://github.com/yoomoney/java-plugin/pull/14) (05-04-2022)
 

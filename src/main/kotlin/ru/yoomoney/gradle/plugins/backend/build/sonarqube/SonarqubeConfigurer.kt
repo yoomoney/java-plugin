@@ -2,7 +2,7 @@ package ru.yoomoney.gradle.plugins.backend.build.sonarqube
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import org.gradle.api.tasks.SourceSet
@@ -100,8 +100,8 @@ class SonarqubeConfigurer {
 
     private fun resolveJacocoReportPaths(project: Project): List<String> {
         return project.tasks.withType(JacocoReport::class.java).asSequence()
-            .filter { it.reports.xml.isEnabled }
-            .mapNotNull { it.reports.xml?.destination }
+            .filter { it.reports.xml.required.get() }
+            .mapNotNull { it.reports.xml?.outputLocation?.get()?.asFile }
             .filter { it.exists() }
             .map { it.absolutePath }
             .toList()
@@ -109,7 +109,7 @@ class SonarqubeConfigurer {
 
     private fun resolveTestReportPaths(project: Project): List<String> {
         return project.tasks.withType(Test::class.java).asSequence()
-            .mapNotNull { it.reports.junitXml?.destination }
+            .mapNotNull { it.reports.junitXml?.outputLocation?.get()?.asFile }
             .filter { it.exists() }
             .mapNotNull { it.absolutePath }
             .toList()
@@ -132,11 +132,11 @@ class SonarqubeConfigurer {
     }
 
     private fun resolveTestSourceSets(project: Project): List<SourceSet> {
-        val javaPluginConvention = project.convention.getPlugin(JavaPluginConvention::class.java)
+        val javaPluginExtension = project.extensions.getByType(JavaPluginExtension::class.java)
         return listOfNotNull(
-            javaPluginConvention.sourceSets.findByName(TestConfigurer.UNIT_TEST_SOURCE_SET_NAME),
-            javaPluginConvention.sourceSets.findByName(TestConfigurer.COMPONENT_TEST_SOURCE_SET_NAME),
-            javaPluginConvention.sourceSets.findByName(TestConfigurer.COMPONENT_TEST_DEPRECATED_SOURCE_SET_NAME)
+            javaPluginExtension.sourceSets.findByName(TestConfigurer.UNIT_TEST_SOURCE_SET_NAME),
+            javaPluginExtension.sourceSets.findByName(TestConfigurer.COMPONENT_TEST_SOURCE_SET_NAME),
+            javaPluginExtension.sourceSets.findByName(TestConfigurer.COMPONENT_TEST_DEPRECATED_SOURCE_SET_NAME)
         )
     }
 }
